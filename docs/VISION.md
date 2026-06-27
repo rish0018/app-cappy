@@ -13,3 +13,7 @@ Cappy exists to make accessibility-based communication easier to learn, practice
 - Keep the experience simple and approachable.
 - Prioritize educational value over novelty.
 - Build reusable foundations for future languages and systems.
+- Make the product feel encouraging, inclusive, and calm rather than punitive or overly game-like.
+
+## Long-term intent
+Cappy should become the most approachable platform for learning accessibility communication while remaining useful for everyday learners, students, and educators.
