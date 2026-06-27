@@ -1,1 +1,5 @@
-/PROJECT_BIBLE.md
+/CONTEXT.md
+/docs/AI_project_bible.md
+/docs/*.tmp
+/docs/*.bak
+/docs/*.log

@@ -1,8 +1,10 @@
 # Changelog
 
 ## Unreleased
-- Initialized the monorepo directory structure.
-- Added documentation scaffolding for product, vision, decisions, and contributor guidance.
+- Expanded the documentation set to reflect the broader project bible context.
+- Added a root project context file with explicit guardrails for truthful, clear documentation.
+- Added documentation guidance for keeping future decisions explicit and traceable.
 
 ## 0.1.0
-- Added initial project planning documentation and repo structure outline.
+- Created initial documentation structure for the monorepo.
+- Added product, vision, decisions, and contributor guidance files.
