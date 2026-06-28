@@ -466,4 +466,10 @@ Date: YYYY-MM-DD
 
 ---
 
+## 21. COLOR PALLETE for AI context
+#d9aa78
+#cec1ae
+#8ab8ae
+#3e948c
+#3e948c
 *This document is the map. VISION.md (one page, four questions) is the compass. Both should be updated as the product evolves. Never erase old decisions — document how thinking changed.*

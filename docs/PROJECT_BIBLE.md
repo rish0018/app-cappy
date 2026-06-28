@@ -10,7 +10,12 @@
 ---
 
 # Part I — Foundation
-
+COLOR PALLETE 
+#d9aa78
+#cec1ae
+#8ab8ae
+#3e948c
+#3e948c
 ---
 
 # 1. Introduction
