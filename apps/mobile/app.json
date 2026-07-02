@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Cappy",
+    "slug": "cappy-mobile",
+    "scheme": "cappy",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/cappy-logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/cappy-logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3e948c"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cappy.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/cappy-logo.png",
+        "backgroundColor": "#3e948c"
+      },
+      "package": "com.cappy.mobile"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"]
+  }
+}
