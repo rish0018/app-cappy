@@ -1,7 +1,7 @@
 # Progress — Cappy
 
 **Last updated:** 2026-07-02
-**Status:** UI structure scaffolded across web + mobile. No backend, no ML wiring yet.
+**Status:** UI structure scaffolded across web + mobile for the ASL module. No backend, no ML wiring yet. A second module (Morse Code) has since been built at a comparable maturity — see `docs/PROGRESS_MORSE.md` for that module's own status; this doc covers the ASL/overall-project side.
 
 ---
 
@@ -9,17 +9,20 @@
 
 ### Monorepo foundation
 - Turborepo + pnpm workspace set up at repo root (`package.json`, `pnpm-workspace.yaml`, `turbo.json`).
-- Repo tree matches `docs/PROJECT_BIBLE.md` §7 exactly: `apps/{web,mobile,training}`, `packages/{ui,core,api,types,shared,config}`.
+- Repo tree matches `docs/PROJECT_BIBLE.md`'s specified monorepo structure: `apps/{web,mobile,training}`, `packages/{ui,core,api,types,shared,config}`. (Note: PROJECT_BIBLE.md has grown substantially since this repo structure was first scaffolded — section numbers cited elsewhere in this doc may no longer match the current document.)
 - `pnpm install` from root resolves cleanly across all workspace packages.
 
 ### `packages/types` — shared domain types
 - `User`, `Course`, `Unit`, `Lesson`, `Exercise`, `UserProgress`, `LessonProgress`, `LetterMastery`, `Streak`, `Achievement`, `UserAchievement`, `Statistics`.
 - `Letter` (A–Z union) and `LETTER_GROUPS` / `ALL_LETTERS` constants encoding the v1 curriculum letter groupings.
+- `LetterMastery.masteryScore` is documented as a 0–100 scale directly on the type (a real bug — web's mock data treated it as 0–1 while mobile's treated the same shared type as 0–100 — was found and fixed; see the "Fixed bugs" note below).
+- `morse.ts` — a fully separate, parallel type set for the Morse Code module (`MorseCharacter`, `MORSE_MAP`, `MORSE_GROUPS`, `MorseLesson`, `MorseCharacterMastery`, etc.), deliberately not coupled to the ASL types above. See `docs/PROGRESS_MORSE.md`.
 
 ### `packages/ui` — web design system (React DOM + Tailwind)
 - Design tokens as plain TS objects: `colors.ts`, `spacing.ts`, `typography.ts`, `radius.ts`, `motion.ts` — the single source of truth for brand identity (teal primary `#3e948c`, tan `#d9aa78`, warm neutral `#cec1ae`, navy info `#2c5f8a`, orange accent `#e8823c`, plus derived success/warning/error scales).
 - `tailwind-preset.js` mirrors those tokens for consumption by both apps.
-- Components: `Button`, `Card`, `ProgressBar`, `StreakBadge`, `XPBadge`, `LessonTile` (locked/active/completed), `AchievementBadge`, `MascotMoment` (mascot only renders for onboarding/milestone/mistake-explanation contexts), `ConfidenceIndicator` (high/medium/low, always color + icon + text).
+- Components: `Button`, `Card`, `ProgressBar`, `StreakBadge`, `XPBadge`, `LessonTile` (locked/active/completed), `AchievementBadge`, `MascotMoment` (mascot only renders for onboarding/milestone/mistake-explanation contexts), `ConfidenceIndicator` (high/medium/low, always color + icon + text; classification now imports `classifyConfidence` from `@cappy/core` instead of duplicating the 0.9/0.7 thresholds locally — `packages/ui` depends on `@cappy/core` now).
+- Plus Morse-specific additions: `MorseKeyer` (tap/hold input, built on the Pointer Events API with pointer capture so a hold that drifts off the button still registers), `MorseAudioPlayer`, `MorseSequenceDisplay` — see `docs/PROGRESS_MORSE.md`.
 - Accessibility built in: 44px min touch targets, visible focus rings, `motion-reduce` handling.
 - **Scope note:** this package is web-only (React DOM). Mobile has its own parallel RN component set (see below) — no shared native UI package yet.
 
@@ -57,6 +60,15 @@ Same 9 screens ported to native, mirroring web's visual language:
 - Practice screen scaffolds `expo-camera`'s `CameraView` as the viewport placeholder, with a `TODO` marking exactly where `HandPosePredictor` inference plugs in later.
 - Depends only on `@cappy/types`, `@cappy/core`, `@cappy/api` (not `@cappy/ui`, since that package is React DOM only).
 - **Verified:** `pnpm --filter @cappy/mobile typecheck` passes cleanly.
+
+---
+
+## 1a. Fixed bugs (cross-cutting, affect ASL too)
+
+Found while building and auditing the Morse module, but these were real, pre-existing issues in shared ASL code — not Morse-only:
+
+1. **`LetterMastery.masteryScore` scale mismatch** — web's ASL mock data (`apps/web/src/mockData.ts`) treated it as a 0–1 fraction; mobile's ASL mock data treated the identical shared type as 0–100. Would have silently misrendered the moment both platforms read from one real backend. Fixed by standardizing on 0–100 (documented on the type) and updating web's mock data + three consumer screens (`Dashboard.tsx`, `Profile.tsx`, `LessonReview.tsx`).
+2. **`ConfidenceIndicator` (web) duplicated confidence thresholds** instead of importing the single source of truth from `@cappy/core`. Fixed by adding `@cappy/core` as a dependency of `packages/ui` and importing `classifyConfidence` directly.
 
 ---
 

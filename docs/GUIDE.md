@@ -1,6 +1,8 @@
 # Guide — Running Cappy Locally
 
-This is the practical "how do I actually run this thing" doc. For product/architecture context see `PROJECT_BIBLE.md`; for what's built vs. not, see `PROGRESS.md`.
+This is the practical "how do I actually run this thing" doc. For product/architecture context see `PROJECT_BIBLE.md`; for what's built vs. not, see `PROGRESS.md` (ASL + overall) and `PROGRESS_MORSE.md` (Morse Code module).
+
+Both the ASL and Morse learning modules live in the same web/mobile apps — once running, web shows a "Morse" tab in the top nav alongside Dashboard/Lessons, and mobile shows a "Morse" tab in the bottom tab bar alongside Home/Lessons. No separate setup or commands are needed to reach either module.
 
 ---
 
@@ -126,8 +128,8 @@ cappy/
 │   ├── mobile/        # pnpm --filter @cappy/mobile ...
 │   └── training/     # Python ML pipeline (separate from the JS workspace — see apps/training/README.md)
 ├── packages/
-│   ├── ui/            # web-only React components + design tokens (colors, spacing, etc.)
-│   ├── core/           # framework-agnostic business logic (XP, streaks, ML prediction contract)
+│   ├── ui/            # web-only React components + design tokens (colors, spacing, etc.) — depends on @cappy/core
+│   ├── core/           # framework-agnostic business logic (XP, streaks, ML prediction contract, Morse encode/decode + timing)
 │   ├── api/            # Supabase abstraction layer (stubbed for now)
 │   ├── types/          # shared TypeScript types used by everything
 │   ├── shared/         # small cross-cutting utilities
