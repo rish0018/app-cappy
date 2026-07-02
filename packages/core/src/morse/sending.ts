@@ -55,3 +55,14 @@ export function validateSendAttempt(
 
   return { correct: pattern === expectedPattern, accuracy, pattern, expectedPattern };
 }
+
+/**
+ * Averages a learner's recorded calibration taps into a personal unit
+ * duration (ms), used in place of DEFAULT_UNIT_MS for later classification.
+ * Falls back to DEFAULT_UNIT_MS if no taps were recorded.
+ */
+export function calibrateUnitMs(taps: readonly TapEvent[]): number {
+  if (taps.length === 0) return DEFAULT_UNIT_MS;
+  const total = taps.reduce((sum, tap) => sum + tap.durationMs, 0);
+  return Math.round(total / taps.length);
+}

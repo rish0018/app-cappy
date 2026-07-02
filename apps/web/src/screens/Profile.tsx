@@ -66,7 +66,7 @@ export function Profile() {
         </div>
         <div>
           <p className="text-2xl font-display font-bold text-primary-700">
-            {mockLetterMastery.filter((m) => m.masteryScore >= 0.85).length}
+            {mockLetterMastery.filter((m) => m.masteryScore >= 85).length}
           </p>
           <p className="text-sm text-neutral-500">Letters mastered</p>
         </div>
@@ -86,7 +86,7 @@ export function Profile() {
             return (
               <ProgressBar
                 key={letter}
-                value={mastery?.masteryScore ?? 0}
+                value={(mastery?.masteryScore ?? 0) / 100}
                 label={`Letter ${letter}`}
               />
             );

@@ -35,6 +35,7 @@ export interface LessonProgress {
 export interface LetterMastery {
   userId: string;
   letter: Letter;
+  /** 0-100 scale. */
   masteryScore: number;
   lastPracticed: string | null;
   accuracy: number;

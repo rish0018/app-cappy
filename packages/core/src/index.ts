@@ -5,3 +5,4 @@ export * from "./lessons/ordering";
 export * from "./morse/ordering";
 export * from "./morse/sending";
 export * from "./morse/receiving";
+export * from "./morse/pattern";

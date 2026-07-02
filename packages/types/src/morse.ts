@@ -52,7 +52,7 @@ export const MORSE_GROUPS: readonly MorseGroup[] = [
   { id: "level-6", label: "Level 6 — Bonus: Prosigns", characters: [], prosigns: ["SOS", "AR", "KN"] },
 ] as const;
 
-export type MorseExerciseType = "send" | "receive" | "checkout";
+export type MorseExerciseType = "learn" | "send" | "receive" | "checkout";
 
 export interface MorseUnit {
   id: string;

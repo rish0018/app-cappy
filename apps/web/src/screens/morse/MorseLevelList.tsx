@@ -5,7 +5,9 @@ import { mockMorseLessonStatusById, mockMorseLessons, mockMorseUnits } from "../
 
 /** Routes send/receive/checkout lessons to their respective screens. */
 function pathForLesson(lessonId: string, exerciseType: string): string {
-  return `/morse/levels/${lessonId}/${exerciseType}`;
+  // Send lessons route through a one-time calibration step first.
+  const step = exerciseType === "send" ? "calibrate" : exerciseType;
+  return `/morse/levels/${lessonId}/${step}`;
 }
 
 export function MorseLevelList() {

@@ -41,7 +41,7 @@ export function LessonReview() {
                 <div>
                   <p className="font-semibold text-neutral-800">Letter {letter}</p>
                   <p className="text-sm text-neutral-500">
-                    Mastery {Math.round((mastery?.masteryScore ?? 0) * 100)}%
+                    Mastery {Math.round(mastery?.masteryScore ?? 0)}%
                   </p>
                 </div>
               </div>

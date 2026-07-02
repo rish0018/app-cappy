@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, Card, ConfidenceIndicator, MorseKeyer, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
-import { validateSendAttempt, type TapEvent } from "@cappy/core";
+import { DEFAULT_UNIT_MS, validateSendAttempt, type TapEvent } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
 
 const SEND_COPY = {
@@ -14,6 +14,8 @@ const SEND_COPY = {
 export function MorseSend() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const unitMs = (location.state as { unitMs?: number } | null)?.unitMs ?? DEFAULT_UNIT_MS;
   const lesson = id ? mockMorseLessonById[id] : undefined;
   const [charIndex, setCharIndex] = React.useState(0);
   const [taps, setTaps] = React.useState<TapEvent[]>([]);
@@ -31,7 +33,7 @@ export function MorseSend() {
   };
 
   const checkAttempt = () => {
-    setResult(validateSendAttempt(taps, character));
+    setResult(validateSendAttempt(taps, character, unitMs));
   };
 
   const nextCharacter = () => {

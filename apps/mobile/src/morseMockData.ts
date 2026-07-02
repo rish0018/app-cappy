@@ -1,7 +1,7 @@
 /**
- * Static mock data for the Morse module — mirrors the pattern in
- * mockData.ts, but built from MORSE_GROUPS/MORSE_MAP rather than ASL's
- * LETTER_GROUPS, since Morse has its own parallel type set.
+ * Static mock data for the mobile Morse module — mirrors
+ * apps/web/src/morseMockData.ts, built from MORSE_GROUPS/MORSE_MAP rather
+ * than ASL's LETTER_GROUPS, since Morse has its own parallel type set.
  */
 import {
   MORSE_GROUPS,
@@ -96,7 +96,7 @@ const ALL_MORSE_CHARACTERS = Object.keys(MORSE_MAP) as MorseCharacter[];
 export const mockMorseMastery: MorseCharacterMastery[] = ALL_MORSE_CHARACTERS.map((character, index) => {
   const masteryScore = Math.max(0, 90 - index * 3);
   return {
-    userId: "u-1",
+    userId: "user-1",
     character,
     masteryScore,
     lastPracticed: index < 10 ? "2026-06-30" : null,
@@ -116,7 +116,7 @@ export function averageMasteryForCharacters(characters: MorseCharacter[]): numbe
  * In-memory calibration state for this mock-data stage — there's no backend
  * yet to persist it against a real user. Once calibrated, subsequent Send
  * lessons should skip straight past the calibration screen instead of
- * re-prompting every time.
+ * re-prompting every time. Mirrors apps/web/src/morseMockData.ts.
  */
 let calibratedUnitMs: number | null = null;
 

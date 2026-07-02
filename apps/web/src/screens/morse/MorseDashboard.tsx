@@ -39,9 +39,9 @@ export function MorseDashboard() {
           variant="primary"
           onClick={() =>
             navigate(
-              activeLesson.exerciseType === "checkout"
-                ? `/morse/levels/${activeLesson.id}/checkout`
-                : `/morse/levels/${activeLesson.id}/${activeLesson.exerciseType}`,
+              `/morse/levels/${activeLesson.id}/${
+                activeLesson.exerciseType === "send" ? "calibrate" : activeLesson.exerciseType
+              }`,
             )
           }
         >

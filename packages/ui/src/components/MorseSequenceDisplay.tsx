@@ -1,4 +1,5 @@
 import * as React from "react";
+import { describeMorsePattern } from "@cappy/core";
 
 export interface MorseSequenceDisplayProps {
   pattern: string;
@@ -10,10 +11,7 @@ export function MorseSequenceDisplay({ pattern, className = "" }: MorseSequenceD
   return (
     <div
       role="text"
-      aria-label={`Pattern: ${pattern
-        .split("")
-        .map((symbol) => (symbol === "-" ? "dash" : "dot"))
-        .join(" ")}`}
+      aria-label={`Pattern: ${describeMorsePattern(pattern)}`}
       className={["flex items-center gap-sm font-mono text-3xl text-neutral-800", className].join(" ")}
     >
       {pattern.split("").map((symbol, index) => (

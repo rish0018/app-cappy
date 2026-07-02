@@ -5,6 +5,8 @@ export interface MorseKeyerProps {
   onTap: (durationMs: number) => void;
   disabled?: boolean;
   className?: string;
+  /** Button label override — e.g. calibration uses a plain "Tap" instead of "Tap / Hold". */
+  label?: string;
 }
 
 /**
@@ -12,20 +14,39 @@ export interface MorseKeyerProps {
  * short tap records a dot, a longer hold records a dash. Timing
  * classification happens in @cappy/core's classifyTap, not here — this
  * component only captures raw press duration.
+ *
+ * Uses the Pointer Events API (not separate mouse/touch handlers) with
+ * pointer capture: once a press starts, this element keeps receiving that
+ * pointer's up/cancel events even if the cursor/finger drifts outside the
+ * button's bounds before release. A prior mouse-event-only implementation
+ * cancelled the whole gesture on mouseleave, which fires very easily on a
+ * small circular target during an intentional hold — that read as "tap and
+ * hold doesn't work" even though presses dead-center worked fine.
  */
-export function MorseKeyer({ onTap, disabled = false, className = "" }: MorseKeyerProps) {
+export function MorseKeyer({ onTap, disabled = false, className = "", label = "Tap / Hold" }: MorseKeyerProps) {
   const pressStartRef = React.useRef<number | null>(null);
 
-  const handleStart = () => {
-    if (disabled) return;
-    pressStartRef.current = performance.now();
-  };
-
-  const handleEnd = () => {
-    if (disabled || pressStartRef.current === null) return;
+  const finishPress = () => {
+    if (pressStartRef.current === null) return;
     const durationMs = performance.now() - pressStartRef.current;
     pressStartRef.current = null;
     onTap(durationMs);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (disabled) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    pressStartRef.current = performance.now();
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (disabled) return;
+    event.currentTarget.releasePointerCapture(event.pointerId);
+    finishPress();
+  };
+
+  const handlePointerCancel = () => {
+    pressStartRef.current = null;
   };
 
   return (
@@ -33,31 +54,23 @@ export function MorseKeyer({ onTap, disabled = false, className = "" }: MorseKey
       type="button"
       disabled={disabled}
       aria-label="Morse key — tap for a dot, hold for a dash"
-      onMouseDown={handleStart}
-      onMouseUp={handleEnd}
-      onMouseLeave={() => {
-        pressStartRef.current = null;
-      }}
-      onTouchStart={(event) => {
-        event.preventDefault();
-        handleStart();
-      }}
-      onTouchEnd={(event) => {
-        event.preventDefault();
-        handleEnd();
-      }}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
       onKeyDown={(event) => {
         if ((event.key === " " || event.key === "Enter") && pressStartRef.current === null) {
-          handleStart();
+          event.preventDefault();
+          pressStartRef.current = performance.now();
         }
       }}
       onKeyUp={(event) => {
         if (event.key === " " || event.key === "Enter") {
-          handleEnd();
+          event.preventDefault();
+          finishPress();
         }
       }}
       className={[
-        "min-h-[120px] min-w-[120px] rounded-full select-none",
+        "min-h-[120px] min-w-[120px] rounded-full select-none touch-none",
         "bg-primary-500 active:bg-primary-700 text-neutral-0 text-lg font-semibold",
         "transition-colors motion-reduce:transition-none",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
@@ -65,7 +78,7 @@ export function MorseKeyer({ onTap, disabled = false, className = "" }: MorseKey
         className,
       ].join(" ")}
     >
-      Tap / Hold
+      {label}
     </button>
   );
 }

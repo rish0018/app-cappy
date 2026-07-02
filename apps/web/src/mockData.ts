@@ -92,20 +92,21 @@ export const mockUserProgress: UserProgress[] = mockLessons.map((lesson, index) 
 });
 
 export const mockLetterMastery: LetterMastery[] = ALL_LETTERS.map((letter, index) => {
-  const masteryScore = Math.max(0, 0.95 - index * 0.045);
+  // masteryScore is 0-100 (see packages/types/src/progress.ts); accuracy/avgConfidence stay 0-1 fractions.
+  const masteryScore = Math.max(0, 95 - index * 4.5);
   return {
     userId: mockUser.id,
     letter,
-    masteryScore: Number(masteryScore.toFixed(2)),
+    masteryScore: Number(masteryScore.toFixed(0)),
     lastPracticed: index < 8 ? "2026-06-30T09:00:00.000Z" : null,
-    accuracy: Number(Math.max(0.4, masteryScore - 0.05).toFixed(2)),
-    avgConfidence: Number(Math.max(0.35, masteryScore - 0.1).toFixed(2)),
+    accuracy: Number(Math.max(0.4, masteryScore / 100 - 0.05).toFixed(2)),
+    avgConfidence: Number(Math.max(0.35, masteryScore / 100 - 0.1).toFixed(2)),
     practiceCount: Math.max(0, 12 - index),
   };
 });
 
 export const mockWeakLetters: Letter[] = mockLetterMastery
-  .filter((entry) => entry.masteryScore < 0.6)
+  .filter((entry) => entry.masteryScore < 60)
   .slice(0, 5)
   .map((entry) => entry.letter);
 

@@ -13,10 +13,11 @@ import {
   mockWeeklyMinutes,
 } from "../mockData";
 
+/** Returns 0-1: average of the group's 0-100 masteryScore values, normalized for ProgressBar. */
 function groupMasteryAverage(letters: string[]): number {
   const scores = mockLetterMastery.filter((m) => letters.includes(m.letter));
   if (scores.length === 0) return 0;
-  return scores.reduce((sum, m) => sum + m.masteryScore, 0) / scores.length;
+  return scores.reduce((sum, m) => sum + m.masteryScore, 0) / scores.length / 100;
 }
 
 function groupState(avgMastery: number, isNext: boolean): "locked" | "active" | "completed" {

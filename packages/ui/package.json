@@ -9,6 +9,7 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
+    "@cappy/core": "workspace:*",
     "@cappy/types": "workspace:*"
   },
   "devDependencies": {

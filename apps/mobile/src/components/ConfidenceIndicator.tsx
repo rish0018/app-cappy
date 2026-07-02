@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import type { ConfidenceTier } from "@cappy/core";
+import { colors } from "@cappy/ui/src/tokens/colors";
 import React from "react";
 import { Text, View } from "react-native";
 
@@ -17,9 +18,9 @@ export interface ConfidenceIndicatorProps {
 // Never rely on color alone (PROJECT_BIBLE accessibility principle): every
 // tier pairs a distinct icon and text label with its color.
 const TIER_CONFIG: Record<ConfidenceTier, { icon: keyof typeof Ionicons.glyphMap; label: string; bg: string; fg: string; iconColor: string }> = {
-  high: { icon: "checkmark-circle", label: "Looking great", bg: "bg-success-100", fg: "text-success-700", iconColor: "#357139" },
-  medium: { icon: "alert-circle", label: "Almost there", bg: "bg-warning-100", fg: "text-warning-700", iconColor: "#a97b26" },
-  low: { icon: "refresh-circle", label: "Let's look again", bg: "bg-neutral-200", fg: "text-neutral-600", iconColor: "#655c4e" },
+  high: { icon: "checkmark-circle", label: "Looking great", bg: "bg-success-100", fg: "text-success-700", iconColor: colors.success[700] },
+  medium: { icon: "alert-circle", label: "Almost there", bg: "bg-warning-100", fg: "text-warning-700", iconColor: colors.warning[700] },
+  low: { icon: "refresh-circle", label: "Let's look again", bg: "bg-neutral-200", fg: "text-neutral-600", iconColor: colors.neutral[600] },
 };
 
 /** Shows model confidence as color + icon + text, never color alone. */
