@@ -52,6 +52,19 @@ context-for-ui/maison-des-compagnes/
 Thumbs.db
 node_modules
 
+# ==========================
+# Env files
+# ==========================
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ==========================
+# Turborepo / build caches
+# ==========================
+.turbo/
+**/.turbo/
 
 # Expo
 apps/mobile/.expo/
@@ -62,3 +75,16 @@ apps/mobile/.metro/
 # Build outputs
 dist/
 build/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# Editor
+.vscode/
+.idea/
+
+# Package manager logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*

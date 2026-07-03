@@ -22,25 +22,35 @@ git --version
 ### For mobile development, also install:
 | Tool | Why |
 |---|---|
-| **Expo Go app** (iOS App Store / Google Play) | Easiest way to run the mobile app on your own phone — scan a QR code, no build step |
-| **Xcode** (Mac only, optional) | Only needed for the iOS Simulator instead of a physical device |
-| **Android Studio** (optional) | Only needed for the Android Emulator instead of a physical device |
+| **Android Studio** | Provides the Android SDK, `adb`, and the Android Emulator — required to run the app as a standalone (non–Expo Go) build |
+| **Xcode** (Mac only) | Provides the iOS Simulator — required for the equivalent iOS flow |
+| **EAS CLI** (`npm install -g eas-cli`) | Used to log in to Expo/EAS and trigger cloud builds (`eas build`) |
+| **Expo account** (free, https://expo.dev) | Needed to run `eas login` / `eas init` and to build/publish through EAS |
 
-You do **not** need Xcode/Android Studio to get started — Expo Go on your phone is the fastest path.
+We've moved off the Expo Go app for day-to-day development. The mobile app uses **`expo-dev-client`**, which builds a standalone native app once and installs it on the emulator/device directly — no scanning a QR code into a generic Expo Go client.
 
 ---
 
 ## 2. First-time setup
 
-From the repo root (`d:\app-cappy`):
+> **Note on pnpm + Expo:** this repo ships a root `.npmrc` with `node-linker=hoisted`. This is required — pnpm's default strict/symlinked `node_modules` layout is not fully compatible with Expo's Gradle autolinking scripts (a known pnpm + Expo/React Native issue) and native Android builds will fail with a `Plugin [id: 'expo-module-gradle-plugin'] was not found` error without it. Don't delete or "fix" this `.npmrc` — it's intentional. It's already committed, so a fresh `git clone` + `pnpm install` picks it up automatically; nothing extra to do here.
 
+From the repo root (`d:\app-cappy`), one command sets up everything (JS workspace **and** the Python training pipeline):
+
+```bash
+pnpm setup
+```
+
+This runs `pnpm install` (installs dependencies for every package/app in the monorepo — `apps/*`, `packages/*` — in one shot via pnpm's workspace linking) followed by `pip install -r apps/training/requirements.txt` (the Python deps for `apps/training`, see §8). You need Python + `pip` on your `PATH` for the second half to succeed; if you don't plan to touch `apps/training`, `pnpm install` alone is enough for web/mobile work.
+
+If you only want the JS side:
 ```bash
 pnpm install
 ```
 
-This installs dependencies for every package/app in the monorepo (`apps/*`, `packages/*`) in one shot, using pnpm's workspace linking — you never need to `cd` into a package and install separately.
+If you ever see workspace/dependency-resolution errors after pulling new changes, re-run `pnpm setup` (or `pnpm install`) from the root first.
 
-If you ever see workspace/dependency-resolution errors after pulling new changes, re-run `pnpm install` from the root first.
+> **Note on `.gitignore`:** build-only artifacts that aren't needed to run or ship the app — `dist/`/`build/` output, `*.tsbuildinfo` incremental-build caches, `coverage/` from test runs, editor folders (`.vscode/`, `.idea/`), and package-manager debug logs — are all gitignored. If any of these show up as untracked/modified in `git status`, that's expected; they're regenerated locally and shouldn't be committed.
 
 ---
 
@@ -71,27 +81,64 @@ pnpm --filter @cappy/web typecheck
 
 ## 4. Running the mobile app
 
+The mobile app runs as a standalone native app (via `expo-dev-client`), not inside the generic Expo Go client. There's a one-time native build step, then fast iteration afterwards via the Metro bundler.
+
+### 4.1 One-time EAS setup
+
 ```bash
-pnpm dev:mobile
-```
+eas login          # log in with your Expo account
 cd apps/mobile
-npx expo install @expo/metro-runtime
-or directly:
-```bash
-pnpm --filter @cappy/mobile start
+eas init            # links this project to EAS, fills in the real projectId in app.json
 ```
 
-This starts the Expo dev server and prints a QR code in the terminal.
+`app.json` has a placeholder `extra.eas.projectId` — `eas init` replaces it with the real one. You only need to do this once per machine/checkout.
 
-- **On your phone:** open the Expo Go app and scan the QR code (same Wi-Fi network as your computer).
-- **iOS Simulator (Mac only):** press `i` in the terminal once the dev server is running.
-- **Android Emulator:** press `a` in the terminal (emulator must already be running via Android Studio).
-- **Web preview of the mobile app** (useful for a quick layout check without a device): press `w`, or run `pnpm --filter @cappy/mobile web`.
+### 4.2 Run on the Android Emulator
 
-**Typecheck only:**
+1. Start an emulator from Android Studio (Device Manager), or from the CLI: `emulator -avd <your_avd_name>`.
+2. From the repo root:
+   ```bash
+   pnpm --filter @cappy/mobile android
+   ```
+   This runs `expo run:android`, which does a native Gradle build, installs the dev-client app on the running emulator, and starts Metro automatically. The **first run takes a few minutes** (native build); subsequent runs are much faster. This also regenerates the `android/` folder — it's gitignored (build artifact, not source), so it's normal for it not to exist right after a fresh clone.
+3. Once installed, for day-to-day work you can just restart the bundler without rebuilding natively:
+   ```bash
+   pnpm --filter @cappy/mobile start
+   ```
+   This runs `expo start --dev-client` — open the already-installed dev-client app on the emulator and it connects automatically.
+
+### 4.3 Run on iOS Simulator (Mac only)
+
+```bash
+pnpm --filter @cappy/mobile ios
+```
+Same idea as Android: one native build via `expo run:ios`, then `pnpm --filter @cappy/mobile start` for subsequent bundler-only runs.
+
+### 4.4 Web preview of the mobile app
+
+Still available for a quick layout check without a device:
+```bash
+pnpm --filter @cappy/mobile web
+```
+
+### 4.5 Typecheck only
+
 ```bash
 pnpm --filter @cappy/mobile typecheck
 ```
+
+### 4.6 Creating an EAS build (once you're confident in a change)
+
+Instead of (or in addition to) running locally, you can build installable artifacts via EAS's cloud build service:
+
+```bash
+cd apps/mobile
+pnpm build:dev       # development build (has the dev-client + debug menu, connects to Metro)
+pnpm build:preview   # standalone release-like APK — install and use with no dev server, good for sharing with testers
+pnpm build:prod      # production Android App Bundle — for the Play Store
+```
+
+Each of these runs `eas build --platform android` under the hood with the matching profile from `apps/mobile/eas.json`. EAS builds in the cloud and gives you a download link/QR code for the resulting APK/AAB.
 
 ---
 
@@ -142,11 +189,11 @@ To run any script scoped to one package/app: `pnpm --filter <name> <script>`, wh
 
 ## 8. `apps/training` (Python ML pipeline) — separate toolchain
 
-This is **not** part of the pnpm/Node workspace — it's a standalone Python project. See `apps/training/README.md` for details, but at a glance:
+This is **not** part of the pnpm/Node workspace — it's a standalone Python project, though `pnpm setup` (§2) already installs its `requirements.txt` for you. See `apps/training/README.md` for details, but at a glance:
 
 ```bash
 cd apps/training
-pip install -r requirements.txt
+pip install -r requirements.txt   # already done if you ran `pnpm setup`
 python scripts/download_dataset.py
 python scripts/inspect_dataset.py
 ```
@@ -161,6 +208,11 @@ You mentioned training the model separately — once you have exported weights (
 |---|---|
 | `pnpm: command not found` | Install pnpm globally (see §1), or use `corepack enable` |
 | Workspace package not found / stale types after editing `packages/*` | Re-run `pnpm install` from root; restart your editor's TS server |
-| Expo Go can't connect / QR code doesn't load | Ensure your phone and computer are on the **same Wi-Fi network**; corporate/guest networks often block this — try a personal hotspot |
 | Port `5173` already in use (web) | Vite will auto-pick the next free port — check the terminal output for the actual URL |
 | Metro bundler cache issues (mobile) | `pnpm --filter @cappy/mobile start -- --clear` |
+| `expo run:android` fails with `Plugin [id: 'expo-module-gradle-plugin'] was not found` | Almost always a pnpm node_modules layout issue. Confirm the root `.npmrc` has `node-linker=hoisted` (see §2), then delete `apps/mobile/android/`, re-run `pnpm install` from the repo root, and re-run `pnpm --filter @cappy/mobile android`. |
+| `expo run:android` / Metro pulls in a wrong, way-too-new version of `expo-constants` or `expo-linking` (e.g. `57.x` when the rest of the app is on Expo SDK 51) | `expo-router` declares these as unconstrained peer dependencies (`"*"`), so pnpm can resolve them to whatever's newest instead of the SDK-51-correct version. They're pinned explicitly in `apps/mobile/package.json` (`expo-constants: ~16.0.2`, `expo-linking: ~6.3.1`) to prevent this — if you see it recur (e.g. after upgrading `expo-router`), re-pin to the versions that match your installed `expo` SDK and re-run `pnpm install`. |
+| `expo run:android` fails / can't find a device | Make sure an emulator is running first (`adb devices` should list it), or an Android Studio AVD exists (Device Manager) |
+| `eas build`/`eas init` asks to log in or fails with "no project" | Run `eas login`, then `eas init` from `apps/mobile` once per machine |
+| Dev-client app on emulator shows "can't connect to Metro" | Make sure `pnpm --filter @cappy/mobile start` is running and the emulator/device has network access to your machine; shake the device / press `r` in the terminal to reload |
+| Native code changed but app didn't update (e.g. new native dependency added) | Re-run `pnpm --filter @cappy/mobile android` to rebuild the native dev-client; plain `start` only refreshes JS |
