@@ -7,6 +7,8 @@
   },
   "packageManager": "pnpm@9.0.0",
   "scripts": {
+    "setup": "pnpm install && pnpm run setup:training",
+    "setup:training": "pip install -r apps/training/requirements.txt",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=@cappy/web",
     "dev:mobile": "turbo run dev --filter=@cappy/mobile",

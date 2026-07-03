@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Button, Card, ProgressBar } from "@cappy/ui";
 import { ALL_LETTERS, type Letter } from "@cappy/types";
 import { mockLessonById } from "../mockData";
+import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../components/motion";
 
 function pickChoices(answer: Letter): Letter[] {
   const others = ALL_LETTERS.filter((letter) => letter !== answer).slice(0, 3);
@@ -16,7 +18,11 @@ export function LessonQuiz() {
   const lesson = id ? mockLessonById[id] : undefined;
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [secondsLeft, setSecondsLeft] = React.useState(15);
+  const [feedback, setFeedback] = React.useState<"correct" | "incorrect" | null>(null);
   const totalQuestions = 5;
+  const reduced = useReducedMotion();
+  const fade = reduced ? fadeUpReduced : fadeUp;
+  const scale = reduced ? scaleInReduced : scaleIn;
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
@@ -31,7 +37,8 @@ export function LessonQuiz() {
   const answer = lesson.title.replace("The Letter ", "") as Letter;
   const choices = React.useMemo(() => pickChoices(answer), [answer, questionIndex]);
 
-  const handleAnswer = () => {
+  const advance = () => {
+    setFeedback(null);
     if (questionIndex + 1 >= totalQuestions) {
       navigate(`/lessons/${lesson.id}/review`);
       return;
@@ -40,11 +47,26 @@ export function LessonQuiz() {
     setSecondsLeft(15);
   };
 
+  const handleAnswer = (choice: Letter) => {
+    if (feedback) return;
+    const isCorrect = choice === answer;
+    setFeedback(isCorrect ? "correct" : "incorrect");
+    window.setTimeout(advance, isCorrect ? 700 : 500);
+  };
+
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-xl">
-      <ProgressBar value={0.75} label="Lesson steps" />
+      <motion.div initial="hidden" animate="visible" variants={fade}>
+        <ProgressBar value={0.75} label="Lesson steps" />
+      </motion.div>
 
-      <div className="flex items-center justify-between">
+      <motion.div
+        className="flex items-center justify-between"
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+        transition={{ delay: 0.04 }}
+      >
         <span className="text-sm font-semibold text-neutral-600">
           Question {questionIndex + 1} of {totalQuestions}
         </span>
@@ -55,29 +77,63 @@ export function LessonQuiz() {
         >
           <span aria-hidden="true">⏱</span> {secondsLeft}s
         </span>
-      </div>
+      </motion.div>
       <ProgressBar value={(questionIndex + 1) / totalQuestions} label="Quiz progress" />
 
-      <Card className="flex flex-col items-center gap-lg text-center py-2xl">
-        <h1 className="font-display text-2xl font-bold text-neutral-800">Which letter is this sign?</h1>
-        <div
-          role="img"
-          aria-label="Sign to identify"
-          className="w-48 h-48 rounded-lg bg-neutral-800 flex items-center justify-center"
-        >
-          <span className="text-7xl text-neutral-0" aria-hidden="true">
-            🤟
-          </span>
-        </div>
+      <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>
+        <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
+          <h1 className="font-display text-2xl font-bold text-neutral-800">Which letter is this sign?</h1>
+          <div
+            role="img"
+            aria-label="Sign to identify"
+            className="w-48 h-48 rounded-lg bg-neutral-800 flex items-center justify-center"
+          >
+            <span className="text-7xl text-neutral-0" aria-hidden="true">
+              🤟
+            </span>
+          </div>
 
-        <div className="grid grid-cols-2 gap-sm w-full max-w-xs">
-          {choices.map((choice) => (
-            <Button key={choice} variant="secondary" onClick={handleAnswer}>
-              {choice}
-            </Button>
-          ))}
-        </div>
-      </Card>
+          <div className="grid grid-cols-2 gap-sm w-full max-w-xs">
+            {choices.map((choice) => (
+              <Button
+                key={choice}
+                variant="secondary"
+                disabled={feedback !== null}
+                onClick={() => handleAnswer(choice)}
+              >
+                {choice}
+              </Button>
+            ))}
+          </div>
+
+          <div className="h-8" aria-live="polite">
+            <AnimatePresence mode="wait">
+              {feedback === "correct" ? (
+                <motion.p
+                  key="correct"
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0 }}
+                  variants={scale}
+                  className="font-semibold text-success-700"
+                >
+                  Correct! Nicely done.
+                </motion.p>
+              ) : feedback === "incorrect" ? (
+                <motion.p
+                  key="incorrect"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                  exit={{ opacity: 0 }}
+                  className="font-semibold text-error-700"
+                >
+                  Not quite — the answer was "{answer}".
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
+          </div>
+        </Card>
+      </motion.div>
     </div>
   );
 }

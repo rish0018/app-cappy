@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ConfidenceIndicator, MorseKeyer, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
 import { validateSendAttempt, type TapEvent } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
+import { fadeUp, fadeUpReduced } from "../../components/motion";
 
 const SEND_COPY = {
   high: { text: "Sent perfectly!", icon: "✓" },
@@ -11,6 +13,11 @@ const SEND_COPY = {
   low: { text: "Let's try that pattern again.", icon: "↻" },
 };
 
+/**
+ * Live tapping surface — the Card below deliberately has no entrance
+ * animation. Any delay on the interactive element itself would feel like
+ * input lag during a timing-sensitive task; only the header settles in.
+ */
 export function MorseSend() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -18,6 +25,8 @@ export function MorseSend() {
   const [charIndex, setCharIndex] = React.useState(0);
   const [taps, setTaps] = React.useState<TapEvent[]>([]);
   const [result, setResult] = React.useState<ReturnType<typeof validateSendAttempt> | null>(null);
+  const reduced = useReducedMotion();
+  const fade = reduced ? fadeUpReduced : fadeUp;
 
   if (!lesson) {
     return <p className="text-neutral-600">Lesson not found.</p>;
@@ -47,10 +56,16 @@ export function MorseSend() {
 
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-xl">
-      <Card className="flex flex-col items-center gap-lg text-center py-2xl">
-        <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-          Character {charIndex + 1} of {lesson.characters.length} — Sending
-        </span>
+      <motion.span
+        className="text-xs font-semibold uppercase tracking-wide text-primary-600 text-center block"
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+      >
+        Character {charIndex + 1} of {lesson.characters.length} — Sending
+      </motion.span>
+
+      <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
         <h1 className="font-display text-3xl font-bold text-neutral-800">Send: {character}</h1>
 
         <MorseSequenceDisplay pattern={taps.length > 0 ? taps.map(() => "•").join("") : ""} />

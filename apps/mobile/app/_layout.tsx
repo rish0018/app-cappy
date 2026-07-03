@@ -1,9 +1,37 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Loader } from "../src/components/Loader";
+
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// Module-level flag: resets on full app relaunch, mirroring the web app's
+// sessionStorage-gated one-time intro.
+let introShownThisSession = false;
 
 export default function RootLayout() {
+  const [introDone, setIntroDone] = useState(introShownThisSession);
+
+  useEffect(() => {
+    SplashScreen.hideAsync().catch(() => {});
+  }, []);
+
+  if (!introDone) {
+    return (
+      <SafeAreaProvider>
+        <StatusBar style="light" />
+        <Loader
+          onDone={() => {
+            introShownThisSession = true;
+            setIntroDone(true);
+          }}
+        />
+      </SafeAreaProvider>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />

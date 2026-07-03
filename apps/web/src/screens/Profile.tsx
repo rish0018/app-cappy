@@ -1,7 +1,16 @@
 import * as React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Card, ProgressBar, StreakBadge, XPBadge } from "@cappy/ui";
 import { ALL_LETTERS } from "@cappy/types";
 import { mockLetterMastery, mockStreak, mockUser } from "../mockData";
+import {
+  fadeUp,
+  fadeUpReduced,
+  staggerChildren,
+  staggerChildrenReduced,
+  staggerItem,
+  staggerItemReduced,
+} from "../components/motion";
 
 function Toggle({ label, description, defaultChecked = false }: { label: string; description: string; defaultChecked?: boolean }) {
   const [checked, setChecked] = React.useState(defaultChecked);
@@ -34,10 +43,30 @@ function Toggle({ label, description, defaultChecked = false }: { label: string;
   );
 }
 
+const PROFILE_STATS = (letterCount: number, repCount: number) => [
+  { value: mockStreak.longestStreak, label: "Longest streak" },
+  { value: mockUser.totalXp, label: "Total XP" },
+  { value: letterCount, label: "Letters mastered" },
+  { value: repCount, label: "Practice reps" },
+  {
+    value: new Date(mockUser.createdAt).toLocaleDateString(undefined, { month: "short", year: "numeric" }),
+    label: "Member since",
+  },
+];
+
 export function Profile() {
+  const reduced = useReducedMotion();
+  const fade = reduced ? fadeUpReduced : fadeUp;
+  const stagger = reduced ? staggerChildrenReduced : staggerChildren;
+  const item = reduced ? staggerItemReduced : staggerItem;
+
+  const letterCount = mockLetterMastery.filter((m) => m.masteryScore >= 0.85).length;
+  const repCount = mockLetterMastery.reduce((sum, m) => sum + m.practiceCount, 0);
+  const stats = PROFILE_STATS(letterCount, repCount);
+
   return (
     <div className="flex flex-col gap-2xl">
-      <div className="flex items-center gap-lg">
+      <motion.div className="flex items-center gap-lg" initial="hidden" animate="visible" variants={fade}>
         <span
           aria-hidden="true"
           className="flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 text-primary-700 font-display font-bold text-2xl"
@@ -48,39 +77,38 @@ export function Profile() {
           <h1 className="font-display text-2xl font-bold text-neutral-800">{mockUser.displayName}</h1>
           <p className="text-neutral-500 text-sm">{mockUser.email}</p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex gap-sm">
+      <motion.div className="flex gap-sm" initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.06 }}>
         <StreakBadge streakDays={mockStreak.currentStreak} />
         <XPBadge xp={mockUser.totalXp} />
-      </div>
+      </motion.div>
 
-      <Card className="grid grid-cols-2 sm:grid-cols-4 gap-lg text-center">
-        <div>
-          <p className="text-2xl font-display font-bold text-primary-700">{mockStreak.longestStreak}</p>
-          <p className="text-sm text-neutral-500">Longest streak</p>
-        </div>
-        <div>
-          <p className="text-2xl font-display font-bold text-primary-700">{mockUser.totalXp}</p>
-          <p className="text-sm text-neutral-500">Total XP</p>
-        </div>
-        <div>
-          <p className="text-2xl font-display font-bold text-primary-700">
-            {mockLetterMastery.filter((m) => m.masteryScore >= 0.85).length}
-          </p>
-          <p className="text-sm text-neutral-500">Letters mastered</p>
-        </div>
-        <div>
-          <p className="text-2xl font-display font-bold text-primary-700">
-            {mockLetterMastery.reduce((sum, m) => sum + m.practiceCount, 0)}
-          </p>
-          <p className="text-sm text-neutral-500">Practice reps</p>
-        </div>
-      </Card>
+      <motion.div
+        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-md"
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+        transition={{ delayChildren: 0.12 }}
+      >
+        {stats.map((stat, i) => (
+          <motion.div key={stat.label} custom={i} variants={item}>
+            <Card variant="stat" className="text-center">
+              <p className="text-2xl font-display font-bold text-primary-700">{stat.value}</p>
+              <p className="text-sm text-neutral-500">{stat.label}</p>
+            </Card>
+          </motion.div>
+        ))}
+      </motion.div>
 
-      <section>
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={fade}
+      >
         <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Letter mastery detail</h2>
-        <Card className="grid grid-cols-1 sm:grid-cols-2 gap-md">
+        <Card variant="surface" className="grid grid-cols-1 sm:grid-cols-2 gap-md">
           {ALL_LETTERS.map((letter) => {
             const mastery = mockLetterMastery.find((m) => m.letter === letter);
             return (
@@ -92,11 +120,16 @@ export function Profile() {
             );
           })}
         </Card>
-      </section>
+      </motion.section>
 
-      <section>
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={fade}
+      >
         <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Accessibility settings</h2>
-        <Card className="divide-y divide-neutral-200">
+        <Card variant="outline" className="divide-y divide-neutral-200">
           <Toggle
             label="Reduce motion"
             description="Turns off non-essential animations and transitions throughout Cappy."
@@ -110,7 +143,7 @@ export function Profile() {
             description="Increases the base text size across the app."
           />
         </Card>
-      </section>
+      </motion.section>
     </div>
   );
 }
