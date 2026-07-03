@@ -6,6 +6,7 @@
 /docs/*.tmp
 /docs/*.bak
 /docs/*.log
+/context-for-ui/
 
 # ==========================
 # Python Virtual Environment
@@ -51,3 +52,13 @@
 .DS_Store
 Thumbs.db
 node_modules
+
+# ==========================
+# Expo / Mobile native builds
+# ==========================
+/apps/mobile/android/
+/apps/mobile/ios/
+/apps/mobile/.expo/
+*.apk
+*.aab
+*.ipa
