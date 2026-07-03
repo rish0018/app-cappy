@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, MascotMoment } from "@cappy/ui";
+import logoMark from "../assets/logo-mark-circular.png";
 
 /** Welcome screen. Calm, unhurried tone per docs/VISION.md. */
 export function Onboarding() {
@@ -10,6 +11,7 @@ export function Onboarding() {
     <div className="min-h-screen flex items-center justify-center bg-primary-50 px-lg">
       <div className="max-w-xl w-full bg-neutral-0 rounded-xl shadow-md p-2xl flex flex-col gap-xl">
         <div className="text-center">
+          <img src={logoMark} alt="" aria-hidden="true" className="h-16 w-16 rounded-full mx-auto mb-lg" />
           <h1 className="font-display text-3xl font-bold text-primary-700 mb-sm">
             Welcome to Cappy
           </h1>
@@ -20,6 +22,7 @@ export function Onboarding() {
 
         <MascotMoment
           context="onboarding"
+          icon={<img src={logoMark} alt="" aria-hidden="true" className="h-9 w-9 rounded-full flex-shrink-0" />}
           message="Hi, I'm Cappy! We'll take this at your pace — there's no clock running and no wrong way to learn. Ready to sign your first letter?"
         />
 
@@ -38,7 +41,7 @@ export function Onboarding() {
         <Button
           variant="primary"
           className="w-full text-base"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/dashboard")}
         >
           Let's get started
         </Button>

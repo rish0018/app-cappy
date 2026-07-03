@@ -81,25 +81,9 @@ eas login          # log in with your Expo account
 cd apps/mobile
 eas init            # links this project to EAS, fills in the real projectId in app.json
 ```
-
-`app.json` currently has a placeholder `extra.eas.projectId` — `eas init` replaces it with the real one. You only need to do this once per machine/checkout.
-
-### 4.2 Run on the Android Emulator
-
-1. Start an emulator from Android Studio (Device Manager), or from the CLI: `emulator -avd <your_avd_name>`.
-2. From the repo root:
-   ```bash
-   pnpm --filter @cappy/mobile android
-   ```
-   This runs `expo run:android`, which does a native Gradle build, installs the dev-client app on the running emulator, and starts Metro automatically. The **first run takes a few minutes** (native build); subsequent runs are much faster.
-3. Once installed, for day-to-day work you can just restart the bundler without rebuilding natively:
-   ```bash
-   pnpm --filter @cappy/mobile start
-   ```
-   This runs `expo start --dev-client` — open the already-installed dev-client app on the emulator and it connects automatically.
-
-### 4.3 Run on iOS Simulator (Mac only)
-
+cd apps/mobile
+npx expo install @expo/metro-runtime
+or directly:
 ```bash
 pnpm --filter @cappy/mobile ios
 ```

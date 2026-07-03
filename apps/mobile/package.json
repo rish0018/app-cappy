@@ -4,6 +4,7 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
+    "start": "expo start",
     "start": "expo start --dev-client",
     "start:expo-go": "expo start",
     "android": "expo run:android",
@@ -19,6 +20,7 @@
     "@cappy/api": "workspace:*",
     "@cappy/core": "workspace:*",
     "@cappy/types": "workspace:*",
+    "@expo/metro-runtime": "~3.2.3",
     "@expo/vector-icons": "^14.0.2",
     "expo": "~51.0.28",
     "expo-camera": "~15.0.16",
