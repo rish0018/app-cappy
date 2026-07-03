@@ -6,7 +6,7 @@
 /docs/*.tmp
 /docs/*.bak
 /docs/*.log
-
+context-for-ui/maison-des-compagnes/
 # ==========================
 # Python Virtual Environment
 # ==========================

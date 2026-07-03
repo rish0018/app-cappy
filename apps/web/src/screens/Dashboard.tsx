@@ -12,6 +12,7 @@ import {
   mockWeeklyLabels,
   mockWeeklyMinutes,
 } from "../mockData";
+import { Reveal } from "../components/Reveal";
 
 function groupMasteryAverage(letters: string[]): number {
   const scores = mockLetterMastery.filter((m) => letters.includes(m.letter));
@@ -36,77 +37,85 @@ export function Dashboard() {
 
   return (
     <div className="flex flex-col gap-2xl">
-      <section>
-        <h1 className="font-display text-2xl font-bold text-neutral-800 mb-xs">
-          Welcome back, {mockUser.displayName}
-        </h1>
-        <p className="text-neutral-600">Here's where you left off.</p>
-        <div className="flex gap-sm mt-md md:hidden">
-          <StreakBadge streakDays={mockStreak.currentStreak} />
-          <XPBadge xp={mockUser.totalXp} />
-        </div>
-      </section>
-
-      <Card className="flex flex-col md:flex-row items-start md:items-center justify-between gap-lg">
-        <div>
-          <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">
-            Continue lesson
-          </span>
-          <h2 className="font-display text-xl font-bold text-neutral-800">{activeLesson.title}</h2>
-          <p className="text-sm text-neutral-600 mt-xs max-w-md">{activeLesson.description}</p>
-          <div className="mt-md max-w-xs">
-            <ProgressBar
-              value={(activeProgress?.completionPercentage ?? 0) / 100}
-              label="Lesson progress"
-            />
+      <Reveal>
+        <section>
+          <h1 className="font-display text-2xl font-bold text-neutral-800 mb-xs">
+            Welcome back, {mockUser.displayName}
+          </h1>
+          <p className="text-neutral-600">Here's where you left off.</p>
+          <div className="flex gap-sm mt-md md:hidden">
+            <StreakBadge streakDays={mockStreak.currentStreak} />
+            <XPBadge xp={mockUser.totalXp} />
           </div>
-        </div>
-        <Button variant="primary" onClick={() => navigate(`/lessons/${activeLesson.id}/demo`)}>
-          Continue
-        </Button>
-      </Card>
+        </section>
+      </Reveal>
 
-      <Card>
-        <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">This week</h2>
-        <div className="flex items-end gap-md h-32">
-          {mockWeeklyMinutes.map((minutes, index) => (
-            <div key={mockWeeklyLabels[index]} className="flex-1 flex flex-col items-center gap-xs">
-              <div
-                className="w-full rounded-md bg-primary-300 motion-reduce:transition-none"
-                style={{ height: `${Math.max(4, (minutes / maxMinutes) * 100)}%` }}
-                aria-hidden="true"
+      <Reveal delay={80}>
+        <Card className="flex flex-col md:flex-row items-start md:items-center justify-between gap-lg">
+          <div>
+            <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">
+              Continue lesson
+            </span>
+            <h2 className="font-display text-xl font-bold text-neutral-800">{activeLesson.title}</h2>
+            <p className="text-sm text-neutral-600 mt-xs max-w-md">{activeLesson.description}</p>
+            <div className="mt-md max-w-xs">
+              <ProgressBar
+                value={(activeProgress?.completionPercentage ?? 0) / 100}
+                label="Lesson progress"
               />
-              <span className="text-xs text-neutral-500">{mockWeeklyLabels[index]}</span>
             </div>
-          ))}
-        </div>
-        <p className="text-sm text-neutral-600 mt-md">
-          {weekTotal} minutes practiced this week — nice consistency.
-        </p>
-      </Card>
+          </div>
+          <Button variant="primary" onClick={() => navigate(`/lessons/${activeLesson.id}/demo`)}>
+            Continue
+          </Button>
+        </Card>
+      </Reveal>
 
-      <section>
-        <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md">
-          {LETTER_GROUPS.map((group) => {
-            const avg = groupMasteryAverage(group.letters as unknown as string[]);
-            const isNext = !firstIncompleteFound && avg < 0.85;
-            if (isNext) firstIncompleteFound = true;
-            const state = groupState(avg, isNext);
-
-            return (
-              <Card key={group.id} className="flex flex-col items-center gap-sm text-center">
-                <LessonTile
-                  title={`Letters ${group.label}`}
-                  state={state}
-                  onSelect={() => navigate("/lessons")}
+      <Reveal delay={160}>
+        <Card>
+          <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">This week</h2>
+          <div className="flex items-end gap-md h-32">
+            {mockWeeklyMinutes.map((minutes, index) => (
+              <div key={mockWeeklyLabels[index]} className="flex-1 flex flex-col items-center gap-xs">
+                <div
+                  className="w-full rounded-md bg-primary-300 motion-reduce:transition-none"
+                  style={{ height: `${Math.max(4, (minutes / maxMinutes) * 100)}%` }}
+                  aria-hidden="true"
                 />
-                <ProgressBar value={avg} label="Mastery" className="w-full" />
-              </Card>
-            );
-          })}
-        </div>
-      </section>
+                <span className="text-xs text-neutral-500">{mockWeeklyLabels[index]}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-neutral-600 mt-md">
+            {weekTotal} minutes practiced this week — nice consistency.
+          </p>
+        </Card>
+      </Reveal>
+
+      <Reveal delay={240}>
+        <section>
+          <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md">
+            {LETTER_GROUPS.map((group) => {
+              const avg = groupMasteryAverage(group.letters as unknown as string[]);
+              const isNext = !firstIncompleteFound && avg < 0.85;
+              if (isNext) firstIncompleteFound = true;
+              const state = groupState(avg, isNext);
+
+              return (
+                <Card key={group.id} className="flex flex-col items-center gap-sm text-center">
+                  <LessonTile
+                    title={`Letters ${group.label}`}
+                    state={state}
+                    onSelect={() => navigate("/lessons")}
+                  />
+                  <ProgressBar value={avg} label="Mastery" className="w-full" />
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+      </Reveal>
     </div>
   );
 }

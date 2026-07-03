@@ -2,9 +2,10 @@ import * as React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { StreakBadge, XPBadge } from "@cappy/ui";
 import { mockStreak, mockUser } from "../mockData";
+import logoMark from "../assets/logo-mark-circular.png";
 
 const NAV_ITEMS = [
-  { to: "/", label: "Dashboard", end: true },
+  { to: "/dashboard", label: "Dashboard", end: true },
   { to: "/lessons", label: "Lessons" },
   { to: "/morse", label: "Morse" },
   { to: "/achievements", label: "Achievements" },
@@ -32,9 +33,7 @@ export function NavLayout() {
       <header className="border-b border-neutral-200 bg-neutral-0">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-md px-lg py-md">
           <div className="flex items-center gap-md">
-            <span aria-hidden="true" className="text-2xl">
-              🐹
-            </span>
+            <img src={logoMark} alt="" aria-hidden="true" className="h-9 w-9 rounded-full" />
             <span className="font-display text-lg font-bold text-primary-700">Cappy</span>
           </div>
           <nav aria-label="Primary" className="flex items-center gap-xs">

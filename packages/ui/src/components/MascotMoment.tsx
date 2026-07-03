@@ -6,6 +6,8 @@ export interface MascotMomentProps {
   context: MascotContext;
   message: string;
   className?: string;
+  /** Optional real mascot artwork; falls back to the emoji placeholder when omitted. */
+  icon?: React.ReactNode;
 }
 
 /**
@@ -14,8 +16,6 @@ export interface MascotMomentProps {
  * This component only renders for a small allow-list of contexts
  * (onboarding, milestone celebrations, mistake explanations). Any other
  * context renders nothing.
- *
- * This is a placeholder (emoji only) — no real mascot asset yet.
  */
 const ALLOWED_CONTEXTS: readonly MascotContext[] = [
   "onboarding",
@@ -23,7 +23,7 @@ const ALLOWED_CONTEXTS: readonly MascotContext[] = [
   "mistake-explanation",
 ];
 
-export function MascotMoment({ context, message, className = "" }: MascotMomentProps) {
+export function MascotMoment({ context, message, className = "", icon }: MascotMomentProps) {
   if (!ALLOWED_CONTEXTS.includes(context)) {
     return null;
   }
@@ -36,9 +36,11 @@ export function MascotMoment({ context, message, className = "" }: MascotMomentP
         className,
       ].join(" ")}
     >
-      <span aria-hidden="true" className="text-3xl leading-none">
-        🐹
-      </span>
+      {icon ?? (
+        <span aria-hidden="true" className="text-3xl leading-none">
+          🐹
+        </span>
+      )}
       <p className="text-base">{message}</p>
     </div>
   );

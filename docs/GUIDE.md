@@ -74,7 +74,8 @@ pnpm --filter @cappy/web typecheck
 ```bash
 pnpm dev:mobile
 ```
-
+cd apps/mobile
+npx expo install @expo/metro-runtime
 or directly:
 ```bash
 pnpm --filter @cappy/mobile start

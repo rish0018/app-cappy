@@ -6,11 +6,21 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-native",
-    "lib": ["ES2022"],
-    "types": ["react", "nativewind/types"],
+    "lib": [
+      "ES2022"
+    ],
+    "types": [
+      "react",
+      "nativewind/types"
+    ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["app", "src", "expo-env.d.ts"]
+  "include": [
+    "app",
+    "src"
+  ]
 }
