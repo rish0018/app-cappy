@@ -51,7 +51,7 @@ export function LessonReview() {
         })}
       </div>
 
-      <Button variant="primary" className="w-full" onClick={() => navigate("/")}>
+      <Button variant="primary" className="w-full" onClick={() => navigate("/dashboard")}>
         Back to dashboard
       </Button>
     </div>
