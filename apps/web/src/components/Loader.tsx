@@ -1,9 +1,9 @@
 import * as React from "react";
-import heroCoffee from "../assets/hero-coffee.jpg";
+import logoMark from "../assets/logo-mark-circular.png";
 import heroLibrary from "../assets/hero-library.jpg";
 import heroMusic from "../assets/hero-music.jpg";
 import heroSpace from "../assets/hero-space.jpg";
-import logoMark from "../assets/logo-mark-circular.png";
+import heroCoffee from "../assets/hero-coffee.jpg";
 
 const SLIDES = [heroLibrary, heroMusic, heroSpace, heroCoffee];
 const DURATION_MS = 3200;

@@ -1,21 +1,30 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, MorseAudioPlayer } from "@cappy/ui";
 import { MORSE_MAP, type MorseCharacter } from "@cappy/types";
 import { patternToAudioTimeline, validateReceiveAttempt } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
+import { fadeUp, fadeUpReduced } from "../../components/motion";
 
 function buildOptions(correct: MorseCharacter, pool: MorseCharacter[]): MorseCharacter[] {
   const distractors = pool.filter((c) => c !== correct).slice(0, 3);
   return [correct, ...distractors].sort(() => 0.5 - Math.random());
 }
 
+/**
+ * Live listening surface — the Card below deliberately has no entrance
+ * animation, per the same "no lag" rule as MorseSend; only the header
+ * chrome settles in.
+ */
 export function MorseReceive() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const lesson = id ? mockMorseLessonById[id] : undefined;
   const [charIndex, setCharIndex] = React.useState(0);
   const [selected, setSelected] = React.useState<MorseCharacter | null>(null);
+  const reduced = useReducedMotion();
+  const fade = reduced ? fadeUpReduced : fadeUp;
 
   const options = React.useMemo(() => {
     if (!lesson) return [];
@@ -44,10 +53,16 @@ export function MorseReceive() {
 
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-xl">
-      <Card className="flex flex-col items-center gap-lg text-center py-2xl">
-        <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-          Character {charIndex + 1} of {lesson.characters.length} — Receiving
-        </span>
+      <motion.span
+        className="text-xs font-semibold uppercase tracking-wide text-primary-600 text-center block"
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+      >
+        Character {charIndex + 1} of {lesson.characters.length} — Receiving
+      </motion.span>
+
+      <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
         <h1 className="font-display text-2xl font-bold text-neutral-800">Which character did you hear?</h1>
 
         <MorseAudioPlayer timeline={timeline} />

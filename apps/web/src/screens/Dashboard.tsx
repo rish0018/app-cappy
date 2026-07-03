@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, LessonTile, ProgressBar, StreakBadge, XPBadge } from "@cappy/ui";
+import { motion, useReducedMotion } from "framer-motion";
+import { StreakBadge, XPBadge } from "@cappy/ui";
 import { LETTER_GROUPS } from "@cappy/types";
 import {
   mockActiveLessonId,
@@ -12,7 +13,17 @@ import {
   mockWeeklyLabels,
   mockWeeklyMinutes,
 } from "../mockData";
-import { Reveal } from "../components/Reveal";
+import {
+  fadeUp,
+  fadeUpReduced,
+  staggerChildren,
+  staggerChildrenReduced,
+  staggerItem,
+  staggerItemReduced,
+} from "../components/motion";
+import { ContinueLessonCard } from "../components/dashboard/ContinueLessonCard";
+import { WeeklyActivityChart } from "../components/dashboard/WeeklyActivityChart";
+import { MasteryTile } from "../components/dashboard/MasteryTile";
 
 function groupMasteryAverage(letters: string[]): number {
   const scores = mockLetterMastery.filter((m) => letters.includes(m.letter));
@@ -26,96 +37,92 @@ function groupState(avgMastery: number, isNext: boolean): "locked" | "active" | 
   return "locked";
 }
 
+/** Today is the last day in the mock week (Sunday). Adjust when wiring real data. */
+const TODAY_INDEX = mockWeeklyLabels.length - 1;
+const DAILY_GOAL_MINUTES = 20;
+
 export function Dashboard() {
   const navigate = useNavigate();
+  const reduced = useReducedMotion();
   const activeLesson = mockLessonById[mockActiveLessonId]!;
   const activeProgress = mockUserProgress.find((p) => p.lessonId === activeLesson.id);
   const weekTotal = mockWeeklyMinutes.reduce((a, b) => a + b, 0);
-  const maxMinutes = Math.max(...mockWeeklyMinutes, 1);
+
+  const fade = reduced ? fadeUpReduced : fadeUp;
+  const stagger = reduced ? staggerChildrenReduced : staggerChildren;
+  const item = reduced ? staggerItemReduced : staggerItem;
 
   let firstIncompleteFound = false;
 
   return (
     <div className="flex flex-col gap-2xl">
-      <Reveal>
-        <section>
-          <h1 className="font-display text-2xl font-bold text-neutral-800 mb-xs">
-            Welcome back, {mockUser.displayName}
-          </h1>
-          <p className="text-neutral-600">Here's where you left off.</p>
-          <div className="flex gap-sm mt-md md:hidden">
-            <StreakBadge streakDays={mockStreak.currentStreak} />
-            <XPBadge xp={mockUser.totalXp} />
-          </div>
-        </section>
-      </Reveal>
+      <motion.section initial="hidden" animate="visible" variants={fade}>
+        <h1 className="font-display text-2xl font-bold text-neutral-800 mb-xs">
+          Welcome back, {mockUser.displayName}
+        </h1>
+        <p className="text-neutral-600">Here's where you left off.</p>
+        <div className="flex gap-sm mt-md md:hidden">
+          <StreakBadge streakDays={mockStreak.currentStreak} />
+          <XPBadge xp={mockUser.totalXp} />
+        </div>
+      </motion.section>
 
-      <Reveal delay={80}>
-        <Card className="flex flex-col md:flex-row items-start md:items-center justify-between gap-lg">
-          <div>
-            <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">
-              Continue lesson
-            </span>
-            <h2 className="font-display text-xl font-bold text-neutral-800">{activeLesson.title}</h2>
-            <p className="text-sm text-neutral-600 mt-xs max-w-md">{activeLesson.description}</p>
-            <div className="mt-md max-w-xs">
-              <ProgressBar
-                value={(activeProgress?.completionPercentage ?? 0) / 100}
-                label="Lesson progress"
-              />
-            </div>
-          </div>
-          <Button variant="primary" onClick={() => navigate(`/lessons/${activeLesson.id}/demo`)}>
-            Continue
-          </Button>
-        </Card>
-      </Reveal>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-lg items-start">
+        <div className="lg:col-span-3">
+          <ContinueLessonCard
+            title={activeLesson.title}
+            description={activeLesson.description}
+            progress={(activeProgress?.completionPercentage ?? 0) / 100}
+            onContinue={() => navigate(`/lessons/${activeLesson.id}/demo`)}
+          />
+        </div>
 
-      <Reveal delay={160}>
-        <Card>
-          <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">This week</h2>
-          <div className="flex items-end gap-md h-32">
-            {mockWeeklyMinutes.map((minutes, index) => (
-              <div key={mockWeeklyLabels[index]} className="flex-1 flex flex-col items-center gap-xs">
-                <div
-                  className="w-full rounded-md bg-primary-300 motion-reduce:transition-none"
-                  style={{ height: `${Math.max(4, (minutes / maxMinutes) * 100)}%` }}
-                  aria-hidden="true"
-                />
-                <span className="text-xs text-neutral-500">{mockWeeklyLabels[index]}</span>
-              </div>
-            ))}
-          </div>
+        <motion.div
+          className="lg:col-span-2"
+          initial="hidden"
+          animate="visible"
+          variants={fade}
+          transition={{ delay: 0.12 }}
+        >
+          <WeeklyActivityChart
+            minutes={mockWeeklyMinutes}
+            labels={mockWeeklyLabels}
+            todayIndex={TODAY_INDEX}
+            goalMinutes={DAILY_GOAL_MINUTES}
+          />
           <p className="text-sm text-neutral-600 mt-md">
             {weekTotal} minutes practiced this week — nice consistency.
           </p>
-        </Card>
-      </Reveal>
+        </motion.div>
+      </div>
 
-      <Reveal delay={240}>
-        <section>
-          <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md">
-            {LETTER_GROUPS.map((group) => {
-              const avg = groupMasteryAverage(group.letters as unknown as string[]);
-              const isNext = !firstIncompleteFound && avg < 0.85;
-              if (isNext) firstIncompleteFound = true;
-              const state = groupState(avg, isNext);
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+        transition={{ delayChildren: 0.24 }}
+      >
+        <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md">
+          {LETTER_GROUPS.map((group, i) => {
+            const avg = groupMasteryAverage(group.letters as unknown as string[]);
+            const isNext = !firstIncompleteFound && avg < 0.85;
+            if (isNext) firstIncompleteFound = true;
+            const state = groupState(avg, isNext);
 
-              return (
-                <Card key={group.id} className="flex flex-col items-center gap-sm text-center">
-                  <LessonTile
-                    title={`Letters ${group.label}`}
-                    state={state}
-                    onSelect={() => navigate("/lessons")}
-                  />
-                  <ProgressBar value={avg} label="Mastery" className="w-full" />
-                </Card>
-              );
-            })}
-          </div>
-        </section>
-      </Reveal>
+            return (
+              <motion.div key={group.id} custom={i} variants={item}>
+                <MasteryTile
+                  label={group.label}
+                  mastery={avg}
+                  state={state}
+                  onSelect={() => navigate("/lessons")}
+                />
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.section>
     </div>
   );
 }

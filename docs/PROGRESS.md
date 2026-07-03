@@ -1,7 +1,7 @@
 # Progress — Cappy
 
-**Last updated:** 2026-07-02
-**Status:** UI structure scaffolded across web + mobile. No backend, no ML wiring yet.
+**Last updated:** 2026-07-03
+**Status:** UI structure scaffolded across web + mobile, mobile build now runs end-to-end on Android (pnpm+Expo native build issues resolved). No backend, no ML wiring yet.
 
 ---
 
@@ -57,6 +57,7 @@ Same 9 screens ported to native, mirroring web's visual language:
 - Practice screen scaffolds `expo-camera`'s `CameraView` as the viewport placeholder, with a `TODO` marking exactly where `HandPosePredictor` inference plugs in later.
 - Depends only on `@cappy/types`, `@cappy/core`, `@cappy/api` (not `@cappy/ui`, since that package is React DOM only).
 - **Verified:** `pnpm --filter @cappy/mobile typecheck` passes cleanly.
+- **Verified (2026-07-03):** `expo run:android` builds and runs the dev-client successfully on an emulator, following the fixes documented in `docs/GUIDE.md` §9 (pnpm `node-linker=hoisted`, pinned `expo-constants`/`expo-linking`, Metro config adjustments). New real app icon/splash/adaptive-icon assets and a real logo mark are now wired in (`app.json`, `app/_layout.tsx`), replacing placeholders.
 
 ---
 
@@ -68,6 +69,8 @@ Same 9 screens ported to native, mirroring web's visual language:
 - Row-Level Security policies on every user-data table.
 - Wiring `packages/api` repository stubs to real Supabase calls.
 - Auth flows (email/password + Google OAuth) in both apps — currently no login screen exists in either app.
+- **Confidence this is buildable as scoped:** 90% (schema shape is already fully derived from `packages/types`, and Supabase's tooling — CLI, migrations, generated types, RLS — is mature and well-documented; the risk is entirely in careful RLS policy writing, not in unknowns).
+- **Estimated effort, one person, normal work pace:** ~14–20 hours end-to-end (provisioning + schema + RLS + seed data + wiring `packages/api` + smoke-testing both apps against it). See `docs/DB_SETUP_GUIDE.md` for the step-by-step breakdown and per-step hour estimates.
 
 ### ML (explicitly deferred — you're training separately)
 - Actual MediaPipe landmark extraction + classifier training (`apps/training`).

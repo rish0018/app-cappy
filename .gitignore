@@ -54,11 +54,38 @@ Thumbs.db
 node_modules
 
 # ==========================
-# Expo / Mobile native builds
+# Env files
 # ==========================
-/apps/mobile/android/
-/apps/mobile/ios/
-/apps/mobile/.expo/
-*.apk
-*.aab
-*.ipa
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ==========================
+# Turborepo / build caches
+# ==========================
+.turbo/
+**/.turbo/
+
+# Expo
+apps/mobile/.expo/
+
+# Metro
+apps/mobile/.metro/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# Editor
+.vscode/
+.idea/
+
+# Package manager logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
