@@ -1,11 +1,11 @@
 import * as React from "react";
-import heroCoffee from "../assets/hero-coffee.jpg";
-import heroLibrary from "../assets/hero-library.jpg";
-import heroMusic from "../assets/hero-music.jpg";
-import heroSpace from "../assets/hero-space.jpg";
 import logoMark from "../assets/logo-mark-circular.png";
+import { HeroScene } from "../assets/illustrations/HeroScene";
+import { BrailleStepIcon } from "../assets/illustrations/BrailleStepIcon";
+import { AslStepIcon } from "../assets/illustrations/AslStepIcon";
+import { MorseStepIcon } from "../assets/illustrations/MorseStepIcon";
 
-const SLIDES = [heroLibrary, heroMusic, heroSpace, heroCoffee];
+const SLIDES = [HeroScene, BrailleStepIcon, AslStepIcon, MorseStepIcon];
 const DURATION_MS = 3200;
 
 export interface LoaderProps {
@@ -56,14 +56,12 @@ export function Loader({ onDone }: LoaderProps) {
         exiting ? "opacity-0 pointer-events-none" : "opacity-100",
       ].join(" ")}
     >
-      {SLIDES.map((src, i) => (
-        <img
-          key={src}
-          src={src}
-          alt=""
+      {SLIDES.map((Slide, i) => (
+        <Slide
+          key={i}
           aria-hidden="true"
           className={[
-            "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none",
+            "absolute inset-0 h-full w-full transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none",
             i === activeIndex ? "opacity-30" : "opacity-0",
           ].join(" ")}
           style={{

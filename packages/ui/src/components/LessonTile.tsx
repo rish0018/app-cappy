@@ -1,4 +1,5 @@
 import * as React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 export type LessonTileState = "locked" | "active" | "completed";
 
@@ -21,17 +22,31 @@ const STATE_ICON: Record<LessonTileState, string> = {
   completed: "✓",
 };
 
-/** A single lesson node within the lesson path, per PROJECT_BIBLE §158 ("Lesson Experience"). */
+/**
+ * A single lesson node within the lesson path, per PROJECT_BIBLE §158
+ * ("Lesson Experience"). Locked tiles get NO hover transform (only a
+ * subtle opacity pulse) so locked/unlocked states feel structurally
+ * different, not just grayed out.
+ */
 export function LessonTile({ title, state, onSelect, className = "" }: LessonTileProps) {
   const isLocked = state === "locked";
+  const reduced = useReducedMotion();
 
   return (
-    <button
+    <motion.button
       type="button"
       disabled={isLocked}
       onClick={onSelect}
       aria-label={`${title} — ${state}`}
       aria-disabled={isLocked}
+      whileHover={!isLocked && !reduced ? { y: -4, boxShadow: "0 6px 14px rgba(0,0,0,0.14)" } : undefined}
+      whileTap={!isLocked && !reduced ? { scale: 0.98 } : undefined}
+      animate={isLocked && !reduced ? { opacity: [1, 0.7, 1] } : { opacity: 1 }}
+      transition={
+        isLocked
+          ? { duration: 2.4, repeat: reduced ? 0 : Infinity, ease: "easeInOut" }
+          : { duration: 0.18, ease: "easeOut" }
+      }
       className={[
         "flex flex-col items-center justify-center gap-xs min-h-[44px] min-w-[44px] p-md rounded-lg font-medium",
         "transition-colors motion-reduce:transition-none",
@@ -45,6 +60,6 @@ export function LessonTile({ title, state, onSelect, className = "" }: LessonTil
         {STATE_ICON[state]}
       </span>
       <span className="text-sm">{title}</span>
-    </button>
+    </motion.button>
   );
 }

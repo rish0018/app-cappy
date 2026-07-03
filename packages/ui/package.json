@@ -9,7 +9,8 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
-    "@cappy/types": "workspace:*"
+    "@cappy/types": "workspace:*",
+    "framer-motion": "^12.42.2"
   },
   "devDependencies": {
     "@cappy/config": "workspace:*",

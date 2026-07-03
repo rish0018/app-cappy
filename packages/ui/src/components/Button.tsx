@@ -1,8 +1,9 @@
 import * as React from "react";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends HTMLMotionProps<"button"> {
   variant?: ButtonVariant;
 }
 
@@ -15,15 +16,24 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
     "bg-transparent text-primary-600 hover:bg-primary-50 active:bg-primary-100",
 };
 
-/** Primary/secondary/ghost button. Meets 44x44 touch target and visible focus ring. */
+/**
+ * Primary/secondary/ghost button. Meets 44x44 touch target and visible focus
+ * ring. Every interactive state gets a transform (scale/shadow lift), not
+ * just a color tint, per the Quiet Signals micro-interaction spec.
+ */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "primary", className = "", children, ...rest }, ref) => {
+    const reduced = useReducedMotion();
+
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileHover={reduced ? undefined : { scale: 1.02, boxShadow: "0 4px 10px rgba(0,0,0,0.12)" }}
+        whileTap={reduced ? undefined : { scale: 0.97 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
         className={[
           "inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-lg py-sm",
-          "rounded-md font-base text-base font-medium",
+          "rounded-md font-base text-base font-medium shadow-sm",
           "transition-colors motion-reduce:transition-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
           "disabled:opacity-50 disabled:cursor-not-allowed",
@@ -33,7 +43,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...rest}
       >
         {children}
-      </button>
+      </motion.button>
     );
   },
 );
