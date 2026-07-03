@@ -15,28 +15,27 @@ import {
   defaultViewport,
 } from "../components/motion";
 import logoMark from "../assets/logo-mark-circular.png";
-import { HeroScene } from "../assets/illustrations/HeroScene";
-import { BrailleStepIcon } from "../assets/illustrations/BrailleStepIcon";
-import { AslStepIcon } from "../assets/illustrations/AslStepIcon";
-import { MorseStepIcon } from "../assets/illustrations/MorseStepIcon";
-import { MascotMomentIllustration } from "../assets/illustrations/MascotMoment";
+import heroLibrary from "../assets/hero-library.jpg";
+import heroMusic from "../assets/hero-music.jpg";
+import heroSpace from "../assets/hero-space.jpg";
+import heroExplorer from "../assets/hero-explorer.jpg";
 
 const HOW_IT_WORKS = [
   {
     step: "01",
-    Icon: BrailleStepIcon,
+    image: heroLibrary,
     title: "Feel it out",
     body: "Short, clear demos show you exactly how each sign, tap, or pattern works — no rush, no timer.",
   },
   {
     step: "02",
-    Icon: AslStepIcon,
+    image: heroMusic,
     title: "Try it yourself",
     body: "Practice with your camera or keyboard. Cappy gives gentle, specific feedback along the way.",
   },
   {
     step: "03",
-    Icon: MorseStepIcon,
+    image: heroSpace,
     title: "Keep a quiet streak",
     body: "Build a calm streak of daily practice across Braille, Morse code, and ASL — progress over perfection.",
   },
@@ -172,7 +171,12 @@ export function Landing() {
                   }
             }
           >
-            <HeroScene className="w-full max-w-md mx-auto" />
+            <img
+              src={heroExplorer}
+              alt=""
+              aria-hidden="true"
+              className="w-full max-w-md mx-auto rounded-2xl shadow-lg object-cover aspect-[4/3]"
+            />
           </motion.div>
         </div>
       </section>
@@ -260,13 +264,20 @@ export function Landing() {
           />
           {HOW_IT_WORKS.map((step, i) => (
             <motion.div key={step.title} custom={i} variants={item} className="relative">
-              <Card variant="feature" className="h-full flex flex-col gap-md items-start">
-                <span className="inline-flex items-center justify-center h-8 w-8 rounded-tl-lg rounded-br-lg rounded-tr-sm rounded-bl-sm border-l-[3px] border-l-primary-400 bg-neutral-0 text-xs font-semibold text-primary-700 shadow-sm">
-                  {step.step}
-                </span>
-                <step.Icon className="h-16 w-16" />
-                <h3 className="font-display text-lg font-semibold text-primary-700">{step.title}</h3>
-                <p className="text-sm text-neutral-600">{step.body}</p>
+              <Card variant="feature" className="h-full flex flex-col gap-md items-start overflow-hidden p-0">
+                <img
+                  src={step.image}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-40 w-full object-cover"
+                />
+                <div className="flex flex-col gap-sm p-lg">
+                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-tl-lg rounded-br-lg rounded-tr-sm rounded-bl-sm border-l-[3px] border-l-primary-400 bg-neutral-0 text-xs font-semibold text-primary-700 shadow-sm">
+                    {step.step}
+                  </span>
+                  <h3 className="font-display text-lg font-semibold text-primary-700">{step.title}</h3>
+                  <p className="text-sm text-neutral-600">{step.body}</p>
+                </div>
               </Card>
             </motion.div>
           ))}
@@ -282,7 +293,12 @@ export function Landing() {
           viewport={defaultViewport}
           variants={fade}
         >
-          <MascotMomentIllustration className="w-full max-w-sm mx-auto md:mx-0" />
+          <img
+            src={logoMark}
+            alt=""
+            aria-hidden="true"
+            className="w-full max-w-[220px] mx-auto md:mx-0 rounded-full shadow-lg"
+          />
           <div className="text-center md:text-left relative">
             <p className="font-display text-2xl italic font-semibold text-neutral-800">
               "There's no clock running, and no wrong way to learn."
@@ -316,7 +332,7 @@ export function Landing() {
         >
           <Card variant="feature" className="flex flex-col items-center gap-lg">
             <div className="flex items-center justify-center gap-md">
-              <AslStepIcon className="h-12 w-12 shrink-0" />
+              <img src={logoMark} alt="" aria-hidden="true" className="h-12 w-12 rounded-full shrink-0" />
               <h2 className="font-display text-3xl font-bold text-primary-800 text-left">
                 Ready to sign your first letter?
               </h2>
