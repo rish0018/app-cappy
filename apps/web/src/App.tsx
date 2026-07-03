@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Route, Routes } from "react-router-dom";
 import { NavLayout } from "./components/NavLayout";
+import { Loader } from "./components/Loader";
+import { Landing } from "./screens/Landing";
 import { Onboarding } from "./screens/Onboarding";
 import { Dashboard } from "./screens/Dashboard";
 import { LessonList } from "./screens/LessonList";
@@ -16,12 +18,30 @@ import { MorseSend } from "./screens/morse/MorseSend";
 import { MorseReceive } from "./screens/morse/MorseReceive";
 import { MorseCheckout } from "./screens/morse/MorseCheckout";
 
+const INTRO_SESSION_KEY = "cappy-intro-shown";
+
 export default function App() {
+  const [introDone, setIntroDone] = React.useState(
+    () => sessionStorage.getItem(INTRO_SESSION_KEY) === "1"
+  );
+
+  if (!introDone) {
+    return (
+      <Loader
+        onDone={() => {
+          sessionStorage.setItem(INTRO_SESSION_KEY, "1");
+          setIntroDone(true);
+        }}
+      />
+    );
+  }
+
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route element={<NavLayout />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id/demo" element={<LessonDemo />} />
         <Route path="/lessons/:id/practice" element={<LessonPractice />} />
