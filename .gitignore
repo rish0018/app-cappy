@@ -1,0 +1,64 @@
+# ==========================
+# Documentation
+# ==========================
+/CONTEXT.md
+/docs/AI_project_bible.md
+/docs/*.tmp
+/docs/*.bak
+/docs/*.log
+/context-for-ui/
+
+# ==========================
+# Python Virtual Environment
+# ==========================
+/apps/training/.venv/
+
+# ==========================
+# Python Cache
+# ==========================
+**/__pycache__/
+*.py[cod]
+*.pyo
+
+# ==========================
+# Jupyter
+# ==========================
+**/.ipynb_checkpoints/
+
+# ==========================
+# Datasets
+# ==========================
+/apps/training/datasets/raw/
+/apps/training/datasets/processed/
+/apps/training/datasets/csv/
+
+# ==========================
+# Model Exports
+# ==========================
+/apps/training/exports/tensorflow/
+/apps/training/exports/tensorflowjs/
+/apps/training/exports/tflite/
+
+# ==========================
+# Reports
+# ==========================
+/apps/training/reports/*.png
+/apps/training/reports/*.jpg
+/apps/training/reports/*.pdf
+
+# ==========================
+# Operating System
+# ==========================
+.DS_Store
+Thumbs.db
+node_modules
+
+# ==========================
+# Expo / Mobile native builds
+# ==========================
+/apps/mobile/android/
+/apps/mobile/ios/
+/apps/mobile/.expo/
+*.apk
+*.aab
+*.ipa

@@ -1,0 +1,19 @@
+# Core Data Science
+numpy
+pandas
+scikit-learn
+matplotlib
+
+# Computer Vision
+opencv-python
+mediapipe
+
+# Deep Learning
+tensorflow
+tensorflowjs
+
+# Utilities
+tqdm
+jupyter
+notebook
+ipykernel
