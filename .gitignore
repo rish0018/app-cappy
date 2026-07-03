@@ -51,3 +51,14 @@ context-for-ui/maison-des-compagnes/
 .DS_Store
 Thumbs.db
 node_modules
+
+
+# Expo
+apps/mobile/.expo/
+
+# Metro
+apps/mobile/.metro/
+
+# Build outputs
+dist/
+build/
