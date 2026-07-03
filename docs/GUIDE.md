@@ -22,11 +22,12 @@ git --version
 ### For mobile development, also install:
 | Tool | Why |
 |---|---|
-| **Expo Go app** (iOS App Store / Google Play) | Easiest way to run the mobile app on your own phone — scan a QR code, no build step |
-| **Xcode** (Mac only, optional) | Only needed for the iOS Simulator instead of a physical device |
-| **Android Studio** (optional) | Only needed for the Android Emulator instead of a physical device |
+| **Android Studio** | Provides the Android SDK, `adb`, and the Android Emulator — required to run the app as a standalone (non–Expo Go) build |
+| **Xcode** (Mac only) | Provides the iOS Simulator — required for the equivalent iOS flow |
+| **EAS CLI** (`npm install -g eas-cli`) | Used to log in to Expo/EAS and trigger cloud builds (`eas build`) |
+| **Expo account** (free, https://expo.dev) | Needed to run `eas login` / `eas init` and to build/publish through EAS |
 
-You do **not** need Xcode/Android Studio to get started — Expo Go on your phone is the fastest path.
+We've moved off the Expo Go app for day-to-day development. The mobile app now uses **`expo-dev-client`**, which builds a standalone native app once and installs it on the emulator/device directly — no scanning a QR code into a generic Expo Go client, no Expo Go feature limitations.
 
 ---
 
@@ -71,26 +72,64 @@ pnpm --filter @cappy/web typecheck
 
 ## 4. Running the mobile app
 
+The mobile app runs as a standalone native app (via `expo-dev-client`), not inside the generic Expo Go client. This means there's a one-time native build step, then fast iteration afterwards via the Metro bundler.
+
+### 4.1 One-time EAS setup
+
 ```bash
-pnpm dev:mobile
+eas login          # log in with your Expo account
+cd apps/mobile
+eas init            # links this project to EAS, fills in the real projectId in app.json
 ```
 
-or directly:
+`app.json` currently has a placeholder `extra.eas.projectId` — `eas init` replaces it with the real one. You only need to do this once per machine/checkout.
+
+### 4.2 Run on the Android Emulator
+
+1. Start an emulator from Android Studio (Device Manager), or from the CLI: `emulator -avd <your_avd_name>`.
+2. From the repo root:
+   ```bash
+   pnpm --filter @cappy/mobile android
+   ```
+   This runs `expo run:android`, which does a native Gradle build, installs the dev-client app on the running emulator, and starts Metro automatically. The **first run takes a few minutes** (native build); subsequent runs are much faster.
+3. Once installed, for day-to-day work you can just restart the bundler without rebuilding natively:
+   ```bash
+   pnpm --filter @cappy/mobile start
+   ```
+   This runs `expo start --dev-client` — open the already-installed dev-client app on the emulator and it connects automatically.
+
+### 4.3 Run on iOS Simulator (Mac only)
+
 ```bash
-pnpm --filter @cappy/mobile start
+pnpm --filter @cappy/mobile ios
+```
+Same idea as Android: one native build via `expo run:ios`, then `pnpm --filter @cappy/mobile start` for subsequent bundler-only runs.
+
+### 4.4 Web preview of the mobile app
+
+Still available for a quick layout check without a device:
+```bash
+pnpm --filter @cappy/mobile web
 ```
 
-This starts the Expo dev server and prints a QR code in the terminal.
+### 4.5 Typecheck only
 
-- **On your phone:** open the Expo Go app and scan the QR code (same Wi-Fi network as your computer).
-- **iOS Simulator (Mac only):** press `i` in the terminal once the dev server is running.
-- **Android Emulator:** press `a` in the terminal (emulator must already be running via Android Studio).
-- **Web preview of the mobile app** (useful for a quick layout check without a device): press `w`, or run `pnpm --filter @cappy/mobile web`.
-
-**Typecheck only:**
 ```bash
 pnpm --filter @cappy/mobile typecheck
 ```
+
+### 4.6 Creating an EAS build (once you're confident in a change)
+
+Instead of (or in addition to) running locally, you can build installable artifacts via EAS's cloud build service:
+
+```bash
+cd apps/mobile
+pnpm build:dev       # development build (has the dev-client + debug menu, connects to Metro)
+pnpm build:preview   # standalone release-like APK — install and use with no dev server, good for sharing with testers
+pnpm build:prod      # production Android App Bundle — for the Play Store
+```
+
+Each of these runs `eas build --platform android` under the hood with the matching profile from `apps/mobile/eas.json`. EAS builds in the cloud and gives you a download link/QR code for the resulting APK/AAB.
 
 ---
 
@@ -160,6 +199,9 @@ You mentioned training the model separately — once you have exported weights (
 |---|---|
 | `pnpm: command not found` | Install pnpm globally (see §1), or use `corepack enable` |
 | Workspace package not found / stale types after editing `packages/*` | Re-run `pnpm install` from root; restart your editor's TS server |
-| Expo Go can't connect / QR code doesn't load | Ensure your phone and computer are on the **same Wi-Fi network**; corporate/guest networks often block this — try a personal hotspot |
 | Port `5173` already in use (web) | Vite will auto-pick the next free port — check the terminal output for the actual URL |
 | Metro bundler cache issues (mobile) | `pnpm --filter @cappy/mobile start -- --clear` |
+| `expo run:android` fails / can't find a device | Make sure an emulator is running first (`adb devices` should list it), or an Android Studio AVD exists (Device Manager) |
+| `eas build`/`eas init` asks to log in or fails with "no project" | Run `eas login`, then `eas init` from `apps/mobile` once per machine |
+| Dev-client app on emulator shows "can't connect to Metro" | Make sure `pnpm --filter @cappy/mobile start` is running and the emulator/device has network access to your machine; shake the device / press `r` in the terminal to reload |
+| Native code changed but app didn't update (e.g. new native dependency added) | Re-run `pnpm --filter @cappy/mobile android` to rebuild the native dev-client, plain `start` only refreshes JS |
