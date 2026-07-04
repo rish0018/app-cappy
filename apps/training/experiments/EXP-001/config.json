@@ -1,0 +1,4 @@
+{
+    "model": "RandomForest",
+    "n_estimators": 300
+}

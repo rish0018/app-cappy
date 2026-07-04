@@ -1,19 +1,14 @@
-# Core Data Science
 numpy
 pandas
-scikit-learn
 matplotlib
-
-# Computer Vision
+scikit-learn
 opencv-python
 mediapipe
-
-# Deep Learning
 tensorflow
 tensorflowjs
-
-# Utilities
+Pillow
 tqdm
+joblib
 jupyter
 notebook
 ipykernel

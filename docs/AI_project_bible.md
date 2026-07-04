@@ -19,6 +19,8 @@
 | Deployment | Web-first, Mobile follows | 99% |
 | DB Implementation (schema + RLS + wiring `packages/api`) | Buildable as scoped — see `docs/DB_SETUP_GUIDE.md` | 90% confidence · ~14–20 hrs for one person |
 
+> Training milestone update (2026-07-04): the ML pipeline has completed dataset inspection, landmark extraction, normalization, model training, evaluation, and webcam testing. Remaining work is TensorFlow.js export, React integration, and the educational lesson UX.
+
 ---
 
 ## 1. IDENTITY

@@ -16,3 +16,7 @@ A monorepo for the Cappy accessibility-learning platform, organized for web, mob
 - [docs/DECISIONS.md](docs/DECISIONS.md)
 - [docs/CHANGELOG.md](docs/CHANGELOG.md)
 - [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+
+## Current Training Status
+- The training pipeline has completed dataset inspection, landmark extraction, normalization, training, evaluation, and webcam testing.
+- The remaining work is TensorFlow.js export, web integration, and the lesson UX layer in the product app.

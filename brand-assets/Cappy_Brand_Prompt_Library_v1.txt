@@ -1,0 +1,154 @@
+CAPPY BRAND ASSET PROMPT LIBRARY v1.0
+
+Purpose
+
+This document contains a reusable prompt library for generating a
+consistent visual identity for Cappy.
+
+=====================================================================
+GLOBAL BRAND ART DIRECTION (Append this to EVERY prompt)
+=====================================================================
+
+Art Direction: Maintain a consistent visual identity for the Cappy
+brand.
+
+Color Palette - Primary Blue: #4F7EA8 - Warm Sand: #D9AA78 - Soft Beige:
+#CEC1AE - Sage Green: #8AB8AE - Deep Teal: #3E948C - Warm Walnut Brown:
+#7A5438 - Cream White: #F8F4EE
+
+Color Ratios 50% Warm Cream / Beige 20% Soft Blue 15% Natural Wood
+Browns 10% Sage Green 5% Brass / Copper
+
+Lighting Warm morning or golden-hour sunlight. Soft ambient lighting. No
+harsh shadows. No neon. No cyberpunk.
+
+Materials Natural oak wood Matte ceramic Leather journals Brass accents
+Linen Paper textures Soft wool Indoor plants
+
+Environment Scandinavian-inspired educational interiors. Minimal
+clutter. Natural textures. Calm and welcoming.
+
+Illustration Style Premium editorial illustration. Semi-realistic
+painterly rendering. Pixar-quality character design. Rounded forms. Soft
+expressions. High detail. Never photorealistic.
+
+Mood Calm Encouraging Thoughtful Curious Optimistic Peaceful
+
+Avoid Neon colors Plastic materials Corporate stock illustration Visual
+clutter Comic-book outlines Anime styling Overly childish expressions
+
+Final Style Anchor “The final artwork should feel like it belongs to a
+premium accessibility education brand, combining the calm warmth of
+Headspace, the craftsmanship of Studio Ghibli backgrounds, the polish of
+Apple’s editorial illustrations, and the welcoming friendliness of
+Pixar—while remaining entirely original and visually consistent across
+the Cappy ecosystem.”
+
+=====================================================================
+SCENE PROMPTS
+=====================================================================
+
+1.  Learning Workshop Purpose: Hero illustration, homepage, onboarding.
+    Filename: scene_learning_workshop_v1 Prompt: Create a warm editorial
+    illustration of Cappy’s learning workshop with ASL flashcards,
+    Braille sheets, Morse notes, webcam, notebook, coffee mug, pencils,
+    indoor plants, Scandinavian furniture and warm sunlight. Premium
+    educational atmosphere. [Append Global Brand Art Direction]
+
+2.  Progress Journey Purpose: Progress page, onboarding, roadmap.
+    Filename: scene_progress_journey_v1 Prompt: Create a winding wooden
+    learning path with engraved accessibility symbols, soft greenery and
+    Cappy walking toward the sunrise. Symbolize growth through learning.
+    [Append Global Brand Art Direction]
+
+3.  Communication Bridge Purpose: About page, mission section. Filename:
+    scene_communication_bridge_v1 Prompt: Create a peaceful bridge
+    connecting communication and accessibility with subtle ASL, Braille
+    and Morse integrated into nature. Cappy welcomes learners. [Append
+    Global Brand Art Direction]
+
+4.  Curiosity Desk Purpose: Blog hero, documentation. Filename:
+    scene_curiosity_desk_v1 Prompt: Create a beautifully organized
+    educational workspace with Braille tools, ASL cards, notebooks,
+    camera, coffee and natural materials. No mascot. [Append Global
+    Brand Art Direction]
+
+5.  Learning Forest Purpose: Lesson map. Filename:
+    scene_learning_forest_v1 Prompt: Create a peaceful forest where each
+    path represents an accessibility learning journey with carved wooden
+    signs for ASL, Braille and Morse. [Append Global Brand Art
+    Direction]
+
+6.  Accessibility Constellations Purpose: Splash screens, wallpapers.
+    Filename: scene_accessibility_constellations_v1 Prompt: Create a
+    night sky where ASL, Braille and Morse become elegant constellations
+    above a quiet observatory. [Append Global Brand Art Direction]
+
+7.  Human Connection Purpose: Marketing, About page. Filename:
+    scene_human_connection_v1 Prompt: Create diverse people
+    communicating using accessibility methods while Cappy observes
+    proudly. Focus on inclusion and empathy. [Append Global Brand Art
+    Direction]
+
+8.  Blueprint of Communication Purpose: Engineering, technical docs.
+    Filename: scene_blueprint_communication_v1 Prompt: Create elegant
+    communication blueprints showing ASL diagrams, Braille cells and
+    Morse studies on a wooden drafting desk. [Append Global Brand Art
+    Direction]
+
+9.  Discovery Wall Purpose: Roadmap, company story. Filename:
+    scene_discovery_wall_v1 Prompt: Create a creative wall filled with
+    sketches, diagrams, accessibility studies and learning milestones
+    connected by thread. [Append Global Brand Art Direction]
+
+10. Cappy Universe Purpose: Main flagship artwork. Filename:
+    scene_cappy_universe_v1 Prompt: Create the complete world of Cappy
+    including workshop, library, observatory, classroom, forest paths
+    and communication bridge connected into one beautiful educational
+    world. [Append Global Brand Art Direction]
+
+=====================================================================
+CHARACTER PROMPTS
+=====================================================================
+
+11. Mentor Cappy Purpose: Onboarding, hints, tutorials. Filename:
+    character_mentor_cappy_v1 Prompt: Create Cappy as a warm educator
+    wearing a knitted cardigan, carrying a notebook and pencil with a
+    calm encouraging smile. [Append Global Brand Art Direction]
+
+12. Practice Cappy Purpose: Camera validation, exercises. Filename:
+    character_practice_cappy_v1 Prompt: Create Cappy as a supportive
+    learning coach with ASL flashcards and a stopwatch, encouraging
+    persistence without competition. [Append Global Brand Art Direction]
+
+13. Celebration Cappy Purpose: Achievements, streaks, lesson completion.
+    Filename: character_celebration_cappy_v1 Prompt: Create Cappy
+    celebrating with subtle confetti and golden sparkles, joyful but
+    calm. [Append Global Brand Art Direction]
+
+14. Curious Cappy Purpose: Explore page, new modules. Filename:
+    character_curious_cappy_v1 Prompt: Create Cappy exploring with a
+    satchel, journal, compass and magnifying glass, looking toward new
+    discoveries. [Append Global Brand Art Direction]
+
+15. Thinking Cappy Purpose: Loading states, AI feedback, processing.
+    Filename: character_thinking_cappy_v1 Prompt: Create Cappy sitting
+    thoughtfully with an open notebook while ASL, Braille and Morse
+    symbols gently float nearby. Calm reflective expression. [Append
+    Global Brand Art Direction]
+
+=====================================================================
+RECOMMENDED FOLDER STRUCTURE
+=====================================================================
+
+assets/ branding/ scenes/ characters/ icons/ patterns/ backgrounds/
+illustrations/ social/ marketing/
+
+Naming Convention category_subject_variant_version
+
+Examples scene_learning_workshop_v1.png scene_cappy_universe_v1.png
+character_mentor_cappy_v1.png character_thinking_cappy_v1.png
+background_constellations_v1.png pattern_braille_texture_v1.png
+
+This keeps every asset searchable and reusable across Web, Mobile,
+Documentation and Marketing.

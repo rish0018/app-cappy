@@ -1,7 +1,7 @@
 # Progress — Cappy
 
-**Last updated:** 2026-07-03
-**Status:** UI structure scaffolded across web + mobile, mobile build now runs end-to-end on Android (pnpm+Expo native build issues resolved). No backend, no ML wiring yet.
+**Last updated:** 2026-07-04
+**Status:** UI structure scaffolded across web + mobile, mobile build runs end-to-end on Android, and the training pipeline has completed its core ML milestones. Backend and browser integration remain the next major work items.
 
 ---
 

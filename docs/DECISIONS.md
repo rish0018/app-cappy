@@ -4,6 +4,8 @@
 - Use a Turborepo monorepo with pnpm for shared packages and app coordination.
 - Use Supabase for authentication, storage, and database needs.
 - Use MediaPipe for hand landmark extraction and a lightweight classifier for on-device inference.
+- Normalize landmarks by wrist-relative translation and max-distance scaling before training and inference so the model sees the same feature distribution in both contexts.
+- Use a top-5 acceptance policy for lesson practice so ambiguous letter pairs can be accepted as close matches rather than rejected too aggressively.
 - Build the web experience first, then port to mobile with Expo.
 - Keep the MVP focused on ASL alphabet learning rather than broader translation or social features.
 

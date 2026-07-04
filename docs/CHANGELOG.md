@@ -4,6 +4,7 @@
 - Expanded the documentation set to reflect the broader project bible context.
 - Added a root project context file with explicit guardrails for truthful, clear documentation.
 - Added documentation guidance for keeping future decisions explicit and traceable.
+- Updated the training and product documentation to reflect the completed ML milestones: dataset inspection, landmark extraction, normalization, training, evaluation, and webcam testing.
 
 ## 0.1.0
 - Created initial documentation structure for the monorepo.

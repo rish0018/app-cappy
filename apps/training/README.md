@@ -2,6 +2,24 @@
 activate python env .venv\Scripts\activate.bat for cmd 
 for powershell .\.venv\Scripts\Activate.ps1
 
+## Current Status — 2026-07-04
+
+The training pipeline is now materially complete through live webcam validation. The current state is:
+
+| Phase | Status | Notes |
+| ----- | ------ | ----- |
+| Dataset inspection | ✅ Complete | 87,000 images and 29 classes verified |
+| Landmark extraction | ✅ Complete | Resume-safe pipeline with per-class logging |
+| Normalization | ✅ Complete | Wrist-relative + max-norm scaling matches inference |
+| Model training | ✅ Complete | Random Forest baseline reached 98.9% validation accuracy |
+| Evaluation | ✅ Complete | Per-class metrics, confusion matrix, and misclassification report generated |
+| Webcam testing | ✅ Complete | Top-5 panel, smoothed confidence, and live bounding box are in place |
+| TensorFlow.js export | ⬜ Pending | Required before web integration |
+| React integration | ⬜ Pending | Depends on the export step |
+| Educational layer | ⬜ Pending | Lesson UX and acceptance flow remain to be built |
+
+The detailed implementation notes, decisions, and acceptance policy live in [datasets/README.md](datasets/README.md).
+
 ## Version 1.0 — Machine Learning Roadmap
 
 > **Location**
