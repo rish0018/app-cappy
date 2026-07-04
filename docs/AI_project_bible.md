@@ -1,5 +1,5 @@
 # PROJECT_BIBLE — Cappy
-**Version:** 1.0 (Planning Edition) | **Author:** Rishit Kohli | **Updated:** June 2026
+**Version:** 1.1 (Planning Edition) | **Author:** Rishit Kohli | **Updated:** 2026-07-03
 **Status:** Living document. Update alongside implementation.
 
 ---
@@ -17,6 +17,7 @@
 | ML Framework | TensorFlow (.js + Lite) | 95% |
 | Auth | Email/Password + Google OAuth | 99% |
 | Deployment | Web-first, Mobile follows | 99% |
+| DB Implementation (schema + RLS + wiring `packages/api`) | Buildable as scoped — see `docs/DB_SETUP_GUIDE.md` | 90% confidence · ~14–20 hrs for one person |
 
 ---
 
@@ -203,6 +204,8 @@ v2+:  Community-assisted (opt-in, consented)
 ---
 
 ## 9. BACKEND (Supabase)
+
+> **Setup walkthrough:** See `docs/DB_SETUP_GUIDE.md` for the step-by-step provisioning, schema, RLS, and `packages/api` wiring guide (with confidence score and effort estimate).
 
 ### Why Supabase
 PostgreSQL + Auth + RLS + Storage + Migrations + Type generation — everything v1 needs, with minimal maintenance overhead for a solo developer.
@@ -453,6 +456,7 @@ Date: YYYY-MM-DD
 |---|---|
 | 0.1 | Initial planning document |
 | 1.0 | Planning edition completed |
+| 1.1 | Mobile app running end-to-end on Android; added `docs/DB_SETUP_GUIDE.md` and DB confidence/effort estimate (2026-07-03) |
 | 1.x | Update with implementation findings |
 | 2.x | Update with production learnings |
 
