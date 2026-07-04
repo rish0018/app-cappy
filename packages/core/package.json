@@ -1,0 +1,15 @@
+{
+  "name": "@cappy/core",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@cappy/shared": "workspace:*",
+    "@cappy/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@cappy/config": "workspace:*",
+    "typescript": "^5.5.4"
+  }
+}

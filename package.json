@@ -1,0 +1,23 @@
+{
+  "name": "cappy",
+  "private": true,
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "setup": "pnpm install && pnpm run setup:training",
+    "setup:training": "pip install -r apps/training/requirements.txt",
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@cappy/web",
+    "dev:mobile": "turbo run dev --filter=@cappy/mobile",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.0",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "extends": "@cappy/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-native",
+    "lib": [
+      "ES2022"
+    ],
+    "types": [
+      "react",
+      "nativewind/types"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "app",
+    "src"
+  ]
+}
