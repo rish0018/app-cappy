@@ -89,3 +89,12 @@ coverage/
 npm-debug.log*
 pnpm-debug.log*
 yarn-error.log*
+
+
+# ML models
+apps/training/models/
+*.pkl
+*.joblib
+*.h5
+*.keras
+*.tflite
