@@ -140,15 +140,3 @@ CHARACTER PROMPTS
 =====================================================================
 RECOMMENDED FOLDER STRUCTURE
 =====================================================================
-
-assets/ branding/ scenes/ characters/ icons/ patterns/ backgrounds/
-illustrations/ social/ marketing/
-
-Naming Convention category_subject_variant_version
-
-Examples scene_learning_workshop_v1.png scene_cappy_universe_v1.png
-character_mentor_cappy_v1.png character_thinking_cappy_v1.png
-background_constellations_v1.png pattern_braille_texture_v1.png
-
-This keeps every asset searchable and reusable across Web, Mobile,
-Documentation and Marketing.

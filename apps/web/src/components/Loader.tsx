@@ -1,11 +1,12 @@
 import * as React from "react";
-import logoMark from "../assets/logo-mark-circular.png";
-import heroLibrary from "../assets/hero-library.jpg";
-import heroMusic from "../assets/hero-music.jpg";
-import heroSpace from "../assets/hero-space.jpg";
-import heroCoffee from "../assets/hero-coffee.jpg";
+import logoMark from "../assets/cappy logo.png";
+import scene1 from "../assets/scene_cappy_universe.jpg";
+import scene2 from "../assets/scene_curiosity_desk.jpg";
+import scene3 from "../assets/scene_human_connection.jpg";
+import scene4 from "../assets/scene_learning_workshop.jpg";
+import scene5 from "../assets/scene_communication_bridge.jpg";
 
-const SLIDES = [heroLibrary, heroMusic, heroSpace, heroCoffee];
+const SLIDES = [scene1, scene2, scene3, scene4, scene5];
 const DURATION_MS = 3200;
 
 export interface LoaderProps {
