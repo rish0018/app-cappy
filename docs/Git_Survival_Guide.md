@@ -8,7 +8,8 @@ A practical guide for day-to-day development.
 git branch
 git status
 ```
-
+To make sure you push with PR into develop
+- git push -u origin feature/<task-name>
 Example:
 
 ``` text
