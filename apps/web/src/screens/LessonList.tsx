@@ -66,7 +66,7 @@ export function LessonList() {
               </div>
               <ProgressBar value={completedCount / lessons.length} label={`${unit.title} progress`} />
               <motion.div
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-md"
+                className="relative mx-auto flex w-full max-w-sm flex-col sm:max-w-md"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.15 }}
@@ -74,16 +74,53 @@ export function LessonList() {
               >
                 {lessons.map((lesson, i) => {
                   const state = stateFor(lesson.id);
+                  const even = i % 2 === 0; // even -> left, odd -> right (desktop)
+                  // connector BEFORE node i joins node i-1 (opposite parity) to node i
+                  const dPath = even
+                    ? "M85 0 C 85 55, 15 45, 15 100" // prev(right) -> this(left)
+                    : "M15 0 C 15 55, 85 45, 85 100"; // prev(left)  -> this(right)
+
                   return (
-                    <motion.div key={lesson.id} custom={i} variants={item}>
-                      <LessonTile
-                        title={lesson.title.replace("The Letter ", "")}
-                        state={state}
-                        onSelect={
-                          state === "locked" ? undefined : () => navigate(`/lessons/${lesson.id}/demo`)
-                        }
-                      />
-                    </motion.div>
+                    <React.Fragment key={lesson.id}>
+                      {i > 0 && (
+                        <div aria-hidden className="-my-1 h-12 sm:h-14">
+                          {/* mobile: straight spine (Landing.tsx dashed-border technique, vertical) */}
+                          <div className="mx-auto h-full w-0 border-l-2 border-dashed border-primary-200 sm:hidden" />
+                          {/* desktop: gentle dashed S-curve */}
+                          <svg
+                            className="hidden h-full w-full sm:block"
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                          >
+                            <path
+                              d={dPath}
+                              className="stroke-primary-200"
+                              strokeWidth={2}
+                              strokeDasharray="5 6"
+                              strokeLinecap="round"
+                              fill="none"
+                              vectorEffect="non-scaling-stroke"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      <motion.div
+                        custom={i}
+                        variants={item}
+                        className={[
+                          "relative z-10 flex",
+                          even ? "justify-center sm:justify-start" : "justify-center sm:justify-end",
+                        ].join(" ")}
+                      >
+                        <LessonTile
+                          title={lesson.title.replace("The Letter ", "")}
+                          state={state}
+                          onSelect={
+                            state === "locked" ? undefined : () => navigate(`/lessons/${lesson.id}/demo`)
+                          }
+                        />
+                      </motion.div>
+                    </React.Fragment>
                   );
                 })}
               </motion.div>

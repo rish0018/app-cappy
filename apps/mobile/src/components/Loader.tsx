@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Animated, Easing, Image, StyleSheet, Text, View } from "react-native";
 
 const SLIDES = [
-  require("../../assets/hero-library.jpg"),
-  require("../../assets/hero-music.jpg"),
-  require("../../assets/hero-space.jpg"),
-  require("../../assets/hero-coffee.jpg"),
+  require("../../assets/scene_cappy_universe.png"),
+  require("../../assets/scene_curiosity_desk.png"),
+  require("../../assets/scene_human_connection.png"),
+  require("../../assets/scene_learning_workshop.png"),
+  require("../../assets/scene_communication_bridge.png"),
 ];
 
-const LOGO = require("../../assets/logo-mark-circular.png");
+const LOGO = require("../../assets/cappy-logo.png");
 
 const SLIDE_DURATION_MS = 800;
 const FADE_DURATION_MS = 700;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Button, Card, LessonTile, ProgressBar, XPBadge } from "@cappy/ui";
+import { Button, Card, LessonTile, MascotFigure, ProgressBar, XPBadge } from "@cappy/ui";
 import {
   fadeUp,
   fadeUpReduced,
@@ -15,10 +15,10 @@ import {
   defaultViewport,
 } from "../components/motion";
 import logoMark from "../assets/logo-mark-circular.png";
-import heroLibrary from "../assets/hero-library.jpg";
-import heroMusic from "../assets/hero-music.jpg";
-import heroSpace from "../assets/hero-space.jpg";
-import heroExplorer from "../assets/hero-explorer.jpg";
+import heroLibrary from "../assets/library.png";
+import heroMusic from "../assets/scene_learning_workshop.png";
+import heroSpace from "../assets/scene_communication_bridge.png";
+import sceneDiscoveryWall from "../assets/scene_discovery_wall.png";
 
 const HOW_IT_WORKS = [
   {
@@ -171,12 +171,18 @@ export function Landing() {
                   }
             }
           >
-            <img
-              src={heroExplorer}
-              alt=""
-              aria-hidden="true"
-              className="w-full max-w-md mx-auto rounded-2xl shadow-lg object-cover aspect-[4/3]"
-            />
+            <div className="relative w-full max-w-md mx-auto flex justify-center">
+              {/* grounding shadow */}
+              <div
+                aria-hidden="true"
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 h-8 w-40 rounded-full blur-md"
+                style={{
+                  background:
+                    "radial-gradient(closest-side, rgba(0,0,0,0.35), rgba(0,0,0,0) 70%)",
+                }}
+              />
+              <MascotFigure pose="mentor" size="xl" />
+            </div>
           </motion.div>
         </div>
       </section>
@@ -294,10 +300,10 @@ export function Landing() {
           variants={fade}
         >
           <img
-            src={logoMark}
+            src={sceneDiscoveryWall}
             alt=""
             aria-hidden="true"
-            className="w-full max-w-[220px] mx-auto md:mx-0 rounded-full shadow-lg"
+            className="w-full max-w-md md:max-w-none rounded-3xl shadow-lg object-cover aspect-[4/3] mx-auto md:mx-0"
           />
           <div className="text-center md:text-left relative">
             <p className="font-display text-2xl italic font-semibold text-neutral-800">

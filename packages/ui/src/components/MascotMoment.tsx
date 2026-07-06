@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export type MascotContext = "onboarding" | "milestone" | "mistake-explanation";
+export type MascotContext = "onboarding" | "milestone" | "mistake-explanation" | "explore";
 
 export interface MascotMomentProps {
   context: MascotContext;
@@ -21,6 +21,7 @@ const ALLOWED_CONTEXTS: readonly MascotContext[] = [
   "onboarding",
   "milestone",
   "mistake-explanation",
+  "explore",
 ];
 
 export function MascotMoment({ context, message, className = "", icon }: MascotMomentProps) {

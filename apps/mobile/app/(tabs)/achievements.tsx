@@ -17,6 +17,7 @@ export default function AchievementsScreen() {
             <MascotMoment
               message={`You unlocked "${mostRecentAchievement.name}"!`}
               subMessage={mostRecentAchievement.description}
+              iconSource={require("../../assets/characters/character_celebration_cappy.png")}
             />
           </View>
         ) : null}

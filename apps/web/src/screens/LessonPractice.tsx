@@ -2,6 +2,8 @@ import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ConfidenceIndicator, ProgressBar } from "@cappy/ui";
+import practiceCappy from "../assets/characters/character_practice_cappy.png";
+import thinkingCappy from "../assets/characters/character_thinking_cappy.png";
 import { mockLessonById } from "../mockData";
 import { fadeUp, fadeUpReduced } from "../components/motion";
 
@@ -35,6 +37,12 @@ export function LessonPractice() {
 
       <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>
         <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
+          <img
+            src={thinkingCappy}
+            alt=""
+            aria-hidden="true"
+            className="h-14 w-14 rounded-full"
+          />
           <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
             Step 2 of 3 — Practice
           </span>
@@ -48,9 +56,7 @@ export function LessonPractice() {
             aria-label="Camera preview"
             className="w-full aspect-video rounded-lg bg-neutral-800 flex flex-col items-center justify-center gap-sm border-2 border-dashed border-neutral-600"
           >
-            <span className="text-6xl" aria-hidden="true">
-              📷
-            </span>
+            <img src={practiceCappy} alt="" aria-hidden="true" className="h-20 w-20 rounded-full" />
             <span className="text-neutral-300 text-sm">Camera preview will appear here</span>
           </div>
 

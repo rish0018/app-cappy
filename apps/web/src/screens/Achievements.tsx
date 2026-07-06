@@ -1,6 +1,6 @@
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { AchievementBadge, MascotMoment } from "@cappy/ui";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { AchievementBadge, MascotFigure, MascotMoment, OVERSHOOT_EASE } from "@cappy/ui";
 import { mockAchievements, mockRecentAchievementId, mockUserAchievements } from "../mockData";
 import {
   fadeUp,
@@ -12,11 +12,32 @@ import {
   staggerItem,
   staggerItemReduced,
 } from "../components/motion";
+import { reactTo } from "../mascot/mascotStore";
+
+/** Spring-like pop-in (scale + translateY overshoot) for the mascot figure. */
+const figurePopIn: Variants = {
+  hidden: { opacity: 0, scale: 0.5, y: 24 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: OVERSHOOT_EASE },
+  },
+};
+
+const figurePopInReduced: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.01 } },
+};
 
 export function Achievements() {
   const unlockedIds = new Set(mockUserAchievements.map((a) => a.achievementId));
   const recent = mockAchievements.find((a) => a.id === mockRecentAchievementId);
   const reduced = useReducedMotion();
+
+  React.useEffect(() => {
+    if (recent) reactTo("unitComplete");
+  }, [recent]);
 
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
@@ -35,6 +56,16 @@ export function Achievements() {
         <motion.div initial="hidden" animate="visible" variants={scale}>
           <MascotMoment
             context="milestone"
+            icon={
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={reduced ? figurePopInReduced : figurePopIn}
+                className="flex-shrink-0"
+              >
+                <MascotFigure pose="celebration" size="md" />
+              </motion.div>
+            }
             message={`You just earned "${recent.name}"! ${recent.description} Keep going — you're building something real.`}
           />
         </motion.div>

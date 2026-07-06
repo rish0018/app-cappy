@@ -1,9 +1,25 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, useReducedMotion } from "framer-motion";
-import { Button, Card, MascotMoment } from "@cappy/ui";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { Button, Card, MascotFigure, MascotMoment, OVERSHOOT_EASE } from "@cappy/ui";
 import logoMark from "../assets/logo-mark-circular.png";
 import { scaleIn, scaleInReduced } from "../components/motion";
+
+/** Spring-like pop-in (scale + translateY overshoot) for the mascot figure. */
+const figurePopIn: Variants = {
+  hidden: { opacity: 0, scale: 0.5, y: 24 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: OVERSHOOT_EASE },
+  },
+};
+
+const figurePopInReduced: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.01 } },
+};
 
 /** Welcome screen. Calm, unhurried tone per docs/VISION.md. */
 export function Onboarding() {
@@ -32,7 +48,16 @@ export function Onboarding() {
 
           <MascotMoment
             context="onboarding"
-            icon={<img src={logoMark} alt="" aria-hidden="true" className="h-9 w-9 rounded-full flex-shrink-0" />}
+            icon={
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={reduced ? figurePopInReduced : figurePopIn}
+                className="flex-shrink-0"
+              >
+                <MascotFigure pose="mentor" size="md" />
+              </motion.div>
+            }
             message="Hi, I'm Cappy! We'll take this at your pace — there's no clock running and no wrong way to learn. Ready to sign your first letter?"
           />
 

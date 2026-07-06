@@ -19,6 +19,7 @@ export default function LessonReviewScreen() {
           <MascotMoment
             message="Nice work finishing this lesson!"
             subMessage="A quick review of earlier letters keeps everything fresh."
+            iconSource={require("../../../assets/characters/character_celebration_cappy.png")}
           />
         </View>
 

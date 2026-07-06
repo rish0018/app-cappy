@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Card, type CardVariant, type LessonTileState } from "@cappy/ui";
+import { Card, type CardVariant, type LessonTileState, CATCH_EASE, OVERSHOOT_EASE } from "@cappy/ui";
 
 export interface MasteryTileProps {
   label: string;
@@ -8,9 +8,6 @@ export interface MasteryTileProps {
   state: LessonTileState;
   onSelect?: () => void;
 }
-
-const CATCH_EASE = [0.16, 1, 0.3, 1] as const;
-const OVERSHOOT_EASE = [0.34, 1.56, 0.64, 1] as const;
 
 const RADIUS = 26;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;

@@ -4,6 +4,8 @@ import { Image, Text, View } from "react-native";
 export interface MascotMomentProps {
   message: string;
   subMessage?: string;
+  /** Optional posed artwork; falls back to the bundled logo (or emoji) when omitted. */
+  iconSource?: number;
 }
 
 // The brand logo is bundled at build time; if it's ever missing (e.g. a
@@ -17,9 +19,10 @@ try {
 }
 
 /** Mascot callout used sparingly — celebrations, welcomes, and gentle explanations. */
-export function MascotMoment({ message, subMessage }: MascotMomentProps) {
+export function MascotMoment({ message, subMessage, iconSource }: MascotMomentProps) {
   const [imageFailed, setImageFailed] = useState(false);
-  const showImage = logoSource !== null && !imageFailed;
+  const source = iconSource ?? logoSource;
+  const showImage = source !== null && !imageFailed;
 
   return (
     <View
@@ -29,7 +32,7 @@ export function MascotMoment({ message, subMessage }: MascotMomentProps) {
     >
       {showImage ? (
         <Image
-          source={logoSource as number}
+          source={source as number}
           onError={() => setImageFailed(true)}
           className="mr-md h-14 w-14 rounded-full"
           accessibilityIgnoresInvertColors

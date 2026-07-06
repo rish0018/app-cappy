@@ -1,4 +1,5 @@
 import type { Variants } from "framer-motion";
+import { OVERSHOOT_EASE, CATCH_EASE } from "@cappy/ui";
 
 /**
  * Quiet Signals motion module — three named variant families that replace
@@ -10,11 +11,8 @@ import type { Variants } from "framer-motion";
  * gate on it before choosing a variant.
  */
 
-/** Decelerate/"catch" cubic-bezier used for all structural entrances. */
-export const CATCH_EASE = [0.16, 1, 0.3, 1] as const;
-
-/** Slight overshoot/spring-like bezier reserved for celebratory moments. */
-export const OVERSHOOT_EASE = [0.34, 1.56, 0.64, 1] as const;
+/** Re-exported from @cappy/ui so there is one source of truth for both eases. */
+export { OVERSHOOT_EASE, CATCH_EASE };
 
 /** Default page/section entry. Use with whileInView + viewport once:true. */
 export const fadeUp: Variants = {

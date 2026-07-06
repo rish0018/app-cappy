@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion, useAnimationControls, useReducedMotion, type Variants } from "framer-motion";
+import { OVERSHOOT_EASE } from "../motion";
 
 export interface XPBadgeProps {
   xp: number;
@@ -8,7 +9,7 @@ export interface XPBadgeProps {
 
 const SCALE_IN: Variants = {
   hidden: { opacity: 0, scale: 0.92 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] } },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: OVERSHOOT_EASE } },
 };
 
 /**

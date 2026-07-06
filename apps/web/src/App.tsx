@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Route, Routes } from "react-router-dom";
 import { NavLayout } from "./components/NavLayout";
+import { MascotLayer } from "./mascot/MascotLayer";
 import { Loader } from "./components/Loader";
 import { Landing } from "./screens/Landing";
 import { Onboarding } from "./screens/Onboarding";
@@ -37,24 +38,27 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/onboarding" element={<Onboarding />} />
-      <Route element={<NavLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/lessons" element={<LessonList />} />
-        <Route path="/lessons/:id/demo" element={<LessonDemo />} />
-        <Route path="/lessons/:id/practice" element={<LessonPractice />} />
-        <Route path="/lessons/:id/quiz" element={<LessonQuiz />} />
-        <Route path="/lessons/:id/review" element={<LessonReview />} />
-        <Route path="/morse" element={<MorseDashboard />} />
-        <Route path="/morse/levels" element={<MorseLevelList />} />
-        <Route path="/morse/levels/:id/send" element={<MorseSend />} />
-        <Route path="/morse/levels/:id/receive" element={<MorseReceive />} />
-        <Route path="/morse/levels/:id/checkout" element={<MorseCheckout />} />
-        <Route path="/achievements" element={<Achievements />} />
-        <Route path="/profile" element={<Profile />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route element={<NavLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/lessons" element={<LessonList />} />
+          <Route path="/lessons/:id/demo" element={<LessonDemo />} />
+          <Route path="/lessons/:id/practice" element={<LessonPractice />} />
+          <Route path="/lessons/:id/quiz" element={<LessonQuiz />} />
+          <Route path="/lessons/:id/review" element={<LessonReview />} />
+          <Route path="/morse" element={<MorseDashboard />} />
+          <Route path="/morse/levels" element={<MorseLevelList />} />
+          <Route path="/morse/levels/:id/send" element={<MorseSend />} />
+          <Route path="/morse/levels/:id/receive" element={<MorseReceive />} />
+          <Route path="/morse/levels/:id/checkout" element={<MorseCheckout />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+      </Routes>
+      <MascotLayer />
+    </>
   );
 }
