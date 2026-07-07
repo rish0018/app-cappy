@@ -1,101 +1,104 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Button, Card, LessonTile, ProgressBar, XPBadge } from "@cappy/ui";
+import { Button, Card, MascotFigure } from "@cappy/ui";
 import {
   fadeUp,
   fadeUpReduced,
-  scaleIn,
-  scaleInReduced,
   staggerChildren,
   staggerChildrenReduced,
   staggerItem,
   staggerItemReduced,
-  CATCH_EASE,
   defaultViewport,
 } from "../components/motion";
+import { FlowingMenu } from "../components/FlowingMenu";
+import { TargetCursor } from "../components/TargetCursor";
+import { LearnPracticeRemember } from "../components/LearnPracticeRemember";
 import logoMark from "../assets/logo-mark-circular.png";
-import heroLibrary from "../assets/hero-library.jpg";
-import heroMusic from "../assets/hero-music.jpg";
-import heroSpace from "../assets/hero-space.jpg";
-import heroExplorer from "../assets/hero-explorer.jpg";
+import sceneDiscoveryWall from "../assets/scene_discovery_wall.png";
+import sceneForest from "../assets/scene_forest.png";
+import sceneBlueprint from "../assets/scene_blueprint_communication.png";
+import sceneConstellations from "../assets/scene_accessibility_constellations.png";
+import sceneCappyUniverse from "../assets/scene_cappy_universe.png";
+import characterCelebration from "../assets/character_celebration_cappy.png";
+import characterCurious from "../assets/character_curious_cappy.png";
+import characterMentor from "../assets/character_mentor_cappy.png";
 
-const HOW_IT_WORKS = [
+const EDITORIAL_BLOCKS = [
   {
-    step: "01",
-    image: heroLibrary,
-    title: "Feel it out",
-    body: "Short, clear demos show you exactly how each sign, tap, or pattern works — no rush, no timer.",
+    eyebrow: "01 · Learn",
+    title: "See it before you try it",
+    body: "Every sign, tap, or cell starts with a short, unhurried demo — so you always know exactly what you're aiming for before you attempt it yourself.",
+    highlight: "Braille, Morse code, and ASL — one system at a time.",
   },
   {
-    step: "02",
-    image: heroMusic,
-    title: "Try it yourself",
-    body: "Practice with your camera or keyboard. Cappy gives gentle, specific feedback along the way.",
+    eyebrow: "02 · Practice",
+    title: "Learn with your hands, not just your eyes",
+    body: "Use your camera, your voice, or just a keyboard — Cappy gives gentle, specific feedback the moment you try, so mistakes feel like part of the process.",
+    highlight: "Your camera, your voice, your pace.",
   },
   {
-    step: "03",
-    image: heroSpace,
-    title: "Keep a quiet streak",
-    body: "Build a calm streak of daily practice across Braille, Morse code, and ASL — progress over perfection.",
+    eyebrow: "03 · Remember",
+    title: "Small steps, kept for good",
+    body: "Calm daily streaks turn short practice into lasting memory — no cramming, no countdowns, just steady progress you can feel building.",
+    highlight: "No cramming. Just steady, quiet repetition.",
   },
 ];
 
-const PRODUCT_CLAIMS = [
-  "One tap starts a lesson — no menus to hunt through.",
-  "See your progress fill in as you go, letter by letter.",
-  "Small wins add up to XP you can actually feel good about.",
+const MASCOT_MOMENTS = [
+  {
+    image: characterCurious,
+    label: "Curious",
+    caption: "Every lesson starts with a question, not a quiz.",
+  },
+  {
+    image: characterMentor,
+    label: "Steady",
+    caption: "Cappy paces each step so nothing ever feels rushed.",
+  },
+  {
+    image: characterCelebration,
+    label: "Proud",
+    caption: "Small wins get noticed — every single time.",
+  },
 ];
 
-/**
- * Slide-in-from-left variant for the product mock card. Reuses the same
- * decelerate "catch" easing as fadeUp, but animates x instead of y so this
- * section reads as distinct from the fadeUp blocks used elsewhere.
- */
-const slideFromLeft = {
-  hidden: { opacity: 0, x: -32 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.55, ease: CATCH_EASE },
+const EXPLORE_SKILLS = [
+  {
+    text: "Braille",
+    caption: "Read the world by touch, one cell at a time.",
+    image: sceneBlueprint,
   },
-};
-const slideFromLeftReduced = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.01 } },
-};
+  {
+    text: "Morse Code",
+    caption: "Turn taps and tones into full sentences.",
+    image: sceneForest,
+  },
+  {
+    text: "ASL",
+    caption: "Sign your way through everyday conversation.",
+    image: sceneConstellations,
+  },
+  {
+    text: "Explore Cappy's world",
+    caption: "See every skill's path, side by side.",
+    image: sceneCappyUniverse,
+  },
+];
 
 export function Landing() {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
-  const heroRef = React.useRef<HTMLDivElement>(null);
-  const [heroTilt, setHeroTilt] = React.useState({ rotate: 0, x: 0, y: 0 });
 
   const fade = reduced ? fadeUpReduced : fadeUp;
-  const scale = reduced ? scaleInReduced : scaleIn;
-  const slide = reduced ? slideFromLeftReduced : slideFromLeft;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
   const item = reduced ? staggerItemReduced : staggerItem;
 
-  const handleHeroPointerMove = React.useCallback(
-    (event: React.PointerEvent<HTMLDivElement>) => {
-      if (reduced || event.pointerType !== "mouse" || !heroRef.current) return;
-      const rect = heroRef.current.getBoundingClientRect();
-      const px = (event.clientX - rect.left) / rect.width - 0.5;
-      const py = (event.clientY - rect.top) / rect.height - 0.5;
-      setHeroTilt({ rotate: px * 4, x: px * 6, y: py * 6 });
-    },
-    [reduced],
-  );
-
-  const handleHeroPointerLeave = React.useCallback(() => {
-    setHeroTilt({ rotate: 0, x: 0, y: 0 });
-  }, []);
-
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-800">
+      <TargetCursor targetSelector=".cursor-target" cursorColorOnTarget="#B497CF" />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 to-primary-800 text-neutral-0">
+      <section className="relative overflow-hidden bg-primary-900 text-neutral-0">
         {/* faint oversized morse-dash texture bleeding off the right edge */}
         <svg
           aria-hidden="true"
@@ -114,7 +117,7 @@ export function Landing() {
           ))}
         </svg>
 
-        <div className="relative max-w-6xl mx-auto px-lg py-4xl grid gap-2xl md:grid-cols-2 items-center">
+        <div className="relative max-w-6xl mx-auto px-lg pt-4xl pb-40 sm:pb-48 md:pb-56 grid gap-2xl md:grid-cols-2 items-center">
           <motion.div
             className="flex flex-col items-start text-left gap-lg order-2 md:order-1"
             initial="hidden"
@@ -128,17 +131,20 @@ export function Landing() {
             >
               Braille&nbsp;&#8226;&nbsp;Morse&nbsp;Code&nbsp;&#8226;&nbsp;ASL
             </motion.p>
-            <motion.h1 variants={item} className="font-display text-4xl sm:text-5xl font-bold leading-tight">
-              Many ways to say the same thing — learn them at capybara pace
+            <motion.h1
+              variants={item}
+              className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.98] tracking-tight"
+            >
+              Meet Cappy — your calm guide to Braille, Morse code, and ASL
             </motion.h1>
             <motion.p variants={item} className="max-w-xl text-base text-neutral-200">
-              Cappy helps you learn Braille, Morse code, and American Sign Language one small,
-              unhurried step at a time — with a calm, unbothered guide cheering you on.
+              Watch a sign, try it yourself, then keep a quiet streak going — no clocks, no pressure,
+              just steady progress you can see.
             </motion.p>
             <motion.div variants={item}>
               <Button
                 variant="primary"
-                className="text-base bg-accent-500 hover:bg-accent-700 active:bg-accent-700"
+                className="cursor-target text-base bg-accent-500 hover:bg-accent-700 active:bg-accent-700"
                 onClick={() => navigate("/onboarding")}
               >
                 Let's get started
@@ -147,177 +153,135 @@ export function Landing() {
           </motion.div>
 
           <motion.div
-            ref={heroRef}
             className="order-1 md:order-2"
-            onPointerMove={handleHeroPointerMove}
-            onPointerLeave={handleHeroPointerLeave}
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              rotate: heroTilt.rotate,
-              x: heroTilt.x,
-              y: heroTilt.y,
-            }}
-            transition={
-              reduced
-                ? { duration: 0.01 }
-                : {
-                    opacity: { duration: 0.6, ease: CATCH_EASE },
-                    scale: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] },
-                    rotate: { type: "spring", stiffness: 80, damping: 14 },
-                    x: { type: "spring", stiffness: 80, damping: 14 },
-                    y: { type: "spring", stiffness: 80, damping: 14 },
-                  }
-            }
+            animate={{ opacity: 1, scale: 1 }}
+            transition={reduced ? { duration: 0.01 } : { duration: 0.6, ease: "easeOut" }}
           >
-            <img
-              src={heroExplorer}
-              alt=""
-              aria-hidden="true"
-              className="w-full max-w-md mx-auto rounded-2xl shadow-lg object-cover aspect-[4/3]"
-            />
+            <div className="relative w-full max-w-md mx-auto flex justify-center">
+              <div
+                aria-hidden="true"
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 h-8 w-40 rounded-full blur-md"
+                style={{ background: "radial-gradient(closest-side, rgba(0,0,0,0.35), rgba(0,0,0,0) 70%)" }}
+              />
+              <MascotFigure pose="mentor" size="xl" />
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* See it in action — product mock, offset-left */}
-      <section className="bg-primary-50">
-        <div className="max-w-6xl mx-auto px-lg py-4xl grid gap-2xl md:grid-cols-[1.1fr_1fr] items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            variants={slide}
-            className="order-2 md:order-1"
-          >
-            <Card variant="surface" className="p-0 overflow-hidden max-w-md mx-auto md:mx-0">
-              {/* browser-chrome header */}
-              <div className="flex items-center gap-xs px-md py-sm border-b border-neutral-200 bg-neutral-50">
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-              </div>
-              <div className="p-lg flex flex-col gap-md">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">
-                    Lesson 3 &middot; ASL
-                  </span>
-                  <XPBadge xp={120} />
-                </div>
-                <ProgressBar value={0.6} label="Letter mastery" />
-                <div className="grid grid-cols-3 gap-sm">
-                  <LessonTile title="A" state="completed" />
-                  <LessonTile title="B" state="active" />
-                  <LessonTile title="C" state="locked" />
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+      {/* Learn / Practice / Remember — the centerpiece: a sticky phone that
+          advances through its story as this copy scrolls past beside it */}
+      <LearnPracticeRemember blocks={EDITORIAL_BLOCKS} />
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            variants={fade}
-            className="order-1 md:order-2 text-center md:text-left"
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-600 mb-sm">
-              What practice feels like
-            </p>
-            <h2 className="font-display text-3xl font-bold text-primary-800 mb-lg">
-              One tap. One tiny win. Repeat.
-            </h2>
-            <ul className="flex flex-col gap-sm text-sm text-neutral-600">
-              {PRODUCT_CLAIMS.map((claim) => (
-                <li key={claim} className="flex items-start gap-sm">
-                  <span aria-hidden="true" className="mt-1 h-1.5 w-1.5 rounded-full bg-primary-400 shrink-0" />
-                  {claim}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="max-w-6xl mx-auto px-lg py-4xl">
-        <motion.div initial="hidden" whileInView="visible" viewport={defaultViewport} variants={fade}>
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-primary-600 mb-sm">
-            How it works
-          </p>
-          <h2 className="text-center font-display text-3xl font-bold text-primary-800 mb-2xl">
-            No clock, no wrong way — just quiet signals
-          </h2>
-        </motion.div>
+      {/* Explore the three skills — hover/tap-reveal flowing menu */}
+      <section className="bg-neutral-900">
         <motion.div
-          className="relative grid gap-xl sm:grid-cols-3"
-          initial="hidden"
-          whileInView="visible"
-          viewport={defaultViewport}
-          variants={stagger}
-        >
-          {/* signal-path connector, desktop only */}
-          <div
-            aria-hidden="true"
-            className="hidden sm:block absolute left-[16.5%] right-[16.5%] top-10 border-t-2 border-dashed border-primary-200"
-          />
-          {HOW_IT_WORKS.map((step, i) => (
-            <motion.div key={step.title} custom={i} variants={item} className="relative">
-              <Card variant="feature" className="h-full flex flex-col gap-md items-start overflow-hidden p-0">
-                <img
-                  src={step.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-40 w-full object-cover"
-                />
-                <div className="flex flex-col gap-sm p-lg">
-                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-tl-lg rounded-br-lg rounded-tr-sm rounded-bl-sm border-l-[3px] border-l-primary-400 bg-neutral-0 text-xs font-semibold text-primary-700 shadow-sm">
-                    {step.step}
-                  </span>
-                  <h3 className="font-display text-lg font-semibold text-primary-700">{step.title}</h3>
-                  <p className="text-sm text-neutral-600">{step.body}</p>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Mascot moment / philosophy — asymmetric offset layout */}
-      <section className="bg-tan-100 relative">
-        <motion.div
-          className="max-w-5xl mx-auto px-lg py-4xl grid gap-xl md:grid-cols-[1fr_1.2fr] items-center relative"
+          className="max-w-6xl mx-auto px-lg py-4xl"
           initial="hidden"
           whileInView="visible"
           viewport={defaultViewport}
           variants={fade}
         >
-          <img
-            src={logoMark}
-            alt=""
-            aria-hidden="true"
-            className="w-full max-w-[220px] mx-auto md:mx-0 rounded-full shadow-lg"
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-accent-300 mb-sm">
+            Pick your path
+          </p>
+          <h2 className="text-center font-display text-3xl font-bold text-neutral-0 mb-2xl">
+            Three ways to be understood
+          </h2>
+          <FlowingMenu
+            items={EXPLORE_SKILLS.map((skill) => ({
+              text: skill.text,
+              caption: skill.caption,
+              image: skill.image,
+              onActivate: () => navigate("/onboarding"),
+            }))}
+            bgColor="transparent"
+            textColor="#F5F1E8"
+            marqueeBgColor="#F5F1E8"
+            marqueeTextColor="#1F1B2E"
+            borderColor="rgba(245,241,232,0.15)"
           />
-          <div className="text-center md:text-left relative">
+        </motion.div>
+      </section>
+
+      {/* Mascot moment / philosophy — full-bleed image with a floating card */}
+      <section className="relative bg-neutral-900 overflow-hidden">
+        <img
+          src={sceneDiscoveryWall}
+          alt=""
+          aria-hidden="true"
+          className="w-full h-[24rem] sm:h-[30rem] object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-neutral-900/75 via-neutral-900/10 to-transparent"
+        />
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={fade}
+          className="absolute inset-0 flex items-end sm:items-center justify-center px-lg pb-xl sm:pb-0"
+        >
+          <Card
+            variant="surface"
+            className="max-w-lg w-full text-center border border-neutral-200 shadow-xl"
+          >
             <p className="font-display text-2xl italic font-semibold text-neutral-800">
               "There's no clock running, and no wrong way to learn."
             </p>
-            <p className="mt-md text-sm text-neutral-600">— Cappy</p>
+            <p className="mt-sm text-sm text-neutral-500">— Cappy</p>
+            <div className="mt-lg pt-lg border-t border-neutral-200 flex items-baseline justify-center gap-xs">
+              <span className="text-2xl font-display font-bold text-primary-700">12,000+</span>
+              <span className="text-xs uppercase tracking-[0.15em] text-neutral-500">
+                quiet minutes practiced
+              </span>
+            </div>
+          </Card>
+        </motion.div>
+      </section>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              variants={scale}
-              className="mt-xl md:mt-2xl md:absolute md:-bottom-2xl md:right-0 inline-block"
-            >
-              <Card variant="stat" className="inline-block text-left">
-                <p className="text-2xl font-display font-bold text-primary-700">12,000+</p>
-                <p className="text-xs text-neutral-500">quiet minutes practiced (first draft)</p>
-              </Card>
-            </motion.div>
-          </div>
+      {/* Mascot personality — circular vignettes on light canvas */}
+      <section className="bg-tan-100">
+        <motion.div
+          className="max-w-5xl mx-auto px-lg py-4xl"
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={fade}
+        >
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-primary-600 mb-sm">
+            Meet your guide
+          </p>
+          <h2 className="text-center font-display text-3xl font-bold text-primary-800 mb-2xl">
+            Cappy shows up the same way, every time
+          </h2>
+          <motion.div
+            className="grid gap-2xl sm:grid-cols-3"
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            variants={stagger}
+          >
+            {MASCOT_MOMENTS.map((moment, i) => (
+              <motion.div
+                key={moment.label}
+                custom={i}
+                variants={item}
+                className="flex flex-col items-center text-center gap-md"
+              >
+                <img
+                  src={moment.image}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-40 w-40 rounded-full object-cover border border-neutral-0 shadow-md"
+                />
+                <h3 className="font-display text-lg font-semibold text-primary-800">{moment.label}</h3>
+                <p className="text-sm text-neutral-600 max-w-[16rem]">{moment.caption}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
       </section>
 
@@ -340,7 +304,11 @@ export function Landing() {
             <p className="text-base text-neutral-600">
               It takes less than a minute to get started — no pressure, just progress.
             </p>
-            <Button variant="primary" className="text-base" onClick={() => navigate("/onboarding")}>
+            <Button
+              variant="primary"
+              className="cursor-target text-base"
+              onClick={() => navigate("/onboarding")}
+            >
               Start learning
             </Button>
           </Card>

@@ -5,6 +5,7 @@ import { Button, Card, ProgressBar } from "@cappy/ui";
 import { ALL_LETTERS, type Letter } from "@cappy/types";
 import { mockLessonById } from "../mockData";
 import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../components/motion";
+import { useMascotReaction } from "../mascot/mascotStore";
 
 function pickChoices(answer: Letter): Letter[] {
   const others = ALL_LETTERS.filter((letter) => letter !== answer).slice(0, 3);
@@ -23,6 +24,7 @@ export function LessonQuiz() {
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
+  const react = useMascotReaction();
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
@@ -51,6 +53,7 @@ export function LessonQuiz() {
     if (feedback) return;
     const isCorrect = choice === answer;
     setFeedback(isCorrect ? "correct" : "incorrect");
+    react(isCorrect ? "correct" : "wrong");
     window.setTimeout(advance, isCorrect ? 700 : 500);
   };
 

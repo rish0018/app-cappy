@@ -1,10 +1,13 @@
 import * as React from "react";
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { OVERSHOOT_EASE } from "../motion";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 
 export interface ButtonProps extends HTMLMotionProps<"button"> {
   variant?: ButtonVariant;
+  /** Opt-in overshoot feel for primary reward/completion CTAs only. */
+  reward?: boolean;
 }
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
@@ -22,15 +25,21 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
  * just a color tint, per the Quiet Signals micro-interaction spec.
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "primary", className = "", children, ...rest }, ref) => {
+  ({ variant = "primary", reward = false, className = "", children, ...rest }, ref) => {
     const reduced = useReducedMotion();
 
     return (
       <motion.button
         ref={ref}
-        whileHover={reduced ? undefined : { scale: 1.02, boxShadow: "0 4px 10px rgba(0,0,0,0.12)" }}
-        whileTap={reduced ? undefined : { scale: 0.97 }}
-        transition={{ duration: 0.15, ease: "easeOut" }}
+        whileHover={
+          reduced
+            ? undefined
+            : reward
+              ? { scale: 1.04, boxShadow: "0 6px 16px rgba(0,0,0,0.16)" }
+              : { scale: 1.02, boxShadow: "0 4px 10px rgba(0,0,0,0.12)" }
+        }
+        whileTap={reduced ? undefined : { scale: reward ? 0.95 : 0.97 }}
+        transition={reward ? { duration: 0.34, ease: OVERSHOOT_EASE } : { duration: 0.15, ease: "easeOut" }}
         className={[
           "inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-lg py-sm",
           "rounded-md font-base text-base font-medium shadow-sm",

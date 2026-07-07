@@ -1,5 +1,6 @@
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
+import { OVERSHOOT_EASE } from "../motion";
 
 export type LessonTileState = "locked" | "active" | "completed";
 
@@ -31,6 +32,15 @@ const STATE_ICON: Record<LessonTileState, string> = {
 export function LessonTile({ title, state, onSelect, className = "" }: LessonTileProps) {
   const isLocked = state === "locked";
   const reduced = useReducedMotion();
+  const controls = useAnimationControls();
+  const prevState = React.useRef(state);
+
+  React.useEffect(() => {
+    if (prevState.current !== "completed" && state === "completed" && !reduced) {
+      controls.start({ scale: [1, 1.08, 1], transition: { duration: 0.42, ease: OVERSHOOT_EASE } });
+    }
+    prevState.current = state;
+  }, [state, controls, reduced]);
 
   return (
     <motion.button
@@ -41,7 +51,15 @@ export function LessonTile({ title, state, onSelect, className = "" }: LessonTil
       aria-disabled={isLocked}
       whileHover={!isLocked && !reduced ? { y: -4, boxShadow: "0 6px 14px rgba(0,0,0,0.14)" } : undefined}
       whileTap={!isLocked && !reduced ? { scale: 0.98 } : undefined}
-      animate={isLocked && !reduced ? { opacity: [1, 0.7, 1] } : { opacity: 1 }}
+      animate={
+        isLocked
+          ? !reduced
+            ? { opacity: [1, 0.7, 1] }
+            : { opacity: 1 }
+          : state === "completed"
+            ? controls
+            : { opacity: 1 }
+      }
       transition={
         isLocked
           ? { duration: 2.4, repeat: reduced ? 0 : Infinity, ease: "easeInOut" }

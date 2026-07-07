@@ -13,6 +13,7 @@
  */
 
 export * from "./tokens";
+export * from "./motion";
 
 export * from "./components/Button";
 export * from "./components/Card";
@@ -22,6 +23,7 @@ export * from "./components/XPBadge";
 export * from "./components/LessonTile";
 export * from "./components/AchievementBadge";
 export * from "./components/MascotMoment";
+export * from "./components/MascotFigure";
 export * from "./components/ConfidenceIndicator";
 export * from "./components/MorseKeyer";
 export * from "./components/MorseAudioPlayer";

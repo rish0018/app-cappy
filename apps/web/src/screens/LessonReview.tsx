@@ -138,7 +138,7 @@ export function LessonReview() {
         })}
       </motion.div>
 
-      <Button variant="primary" className="w-full" onClick={() => navigate("/dashboard")}>
+      <Button variant="primary" reward className="w-full" onClick={() => navigate("/dashboard")}>
         Back to dashboard
       </Button>
     </div>

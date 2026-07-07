@@ -2,11 +2,14 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import type { ConfidenceTier } from "@cappy/core";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../../../src/components/Button";
 import { ConfidenceIndicator } from "../../../src/components/ConfidenceIndicator";
 import { mockLessons } from "../../../src/mockData";
+
+const thinkingCappy = require("../../../assets/characters/character_thinking_cappy.png");
+const practiceCappy = require("../../../assets/characters/character_practice_cappy.png");
 
 // Approved encouragement copy per docs/PROJECT_BIBLE.md §151 ("Voice & Tone")
 // — never a bare "Incorrect"/"Wrong" message.
@@ -39,9 +42,12 @@ export default function LessonPracticeScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900" edges={["bottom"]}>
-      <View className="px-lg pt-md">
-        <Text className="text-lg font-bold text-white">{lesson.title}</Text>
-        <Text className="text-sm text-neutral-300">Hold the sign steady inside the frame.</Text>
+      <View className="flex-row items-center gap-sm px-lg pt-md">
+        <Image source={thinkingCappy} className="h-9 w-9 rounded-full" accessibilityIgnoresInvertColors />
+        <View>
+          <Text className="text-lg font-bold text-white">{lesson.title}</Text>
+          <Text className="text-sm text-neutral-300">Hold the sign steady inside the frame.</Text>
+        </View>
       </View>
 
       <View className="mx-lg my-lg flex-1 overflow-hidden rounded-lg bg-black">
@@ -49,6 +55,11 @@ export default function LessonPracticeScreen() {
           <CameraView style={{ flex: 1 }} facing="front" />
         ) : (
           <View className="flex-1 items-center justify-center px-xl">
+            <Image
+              source={practiceCappy}
+              className="mb-md h-20 w-20 rounded-full"
+              accessibilityIgnoresInvertColors
+            />
             <Text className="mb-md text-center text-base text-white">
               Cappy needs camera access to check your hand shape.
             </Text>

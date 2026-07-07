@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, MascotMoment, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
+import celebrationCappy from "../../assets/characters/character_celebration_cappy.png";
 import { mockMorseLessonById } from "../../morseMockData";
 import {
   fadeUp,
@@ -14,6 +15,7 @@ import {
   staggerItem,
   staggerItemReduced,
 } from "../../components/motion";
+import { reactTo } from "../../mascot/mascotStore";
 
 const CHECKOUT_XP = 30;
 const CHECKOUT_ACCURACY = 92;
@@ -114,12 +116,20 @@ export function MorseCheckout() {
               <motion.div initial="hidden" animate="visible" variants={scale}>
                 <MascotMoment
                   context="milestone"
+                  icon={<img src={celebrationCappy} alt="" aria-hidden="true" className="h-14 w-14 rounded-full flex-shrink-0" />}
                   message={`Level complete! You've mastered ${lesson.characters.join(", ")}.`}
                 />
               </motion.div>
             </>
           ) : (
-            <Button variant="primary" onClick={() => setCompleted(true)}>
+            <Button
+              variant="primary"
+              reward
+              onClick={() => {
+                setCompleted(true);
+                reactTo("unitComplete");
+              }}
+            >
               Mark level complete
             </Button>
           )}

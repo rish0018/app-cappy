@@ -1,13 +1,13 @@
 import * as React from "react";
-import logoMark from "../assets/cappy logo.png";
-import scene1 from "../assets/scene_cappy_universe.jpg";
-import scene2 from "../assets/scene_curiosity_desk.jpg";
-import scene3 from "../assets/scene_human_connection.jpg";
-import scene4 from "../assets/scene_learning_workshop.jpg";
-import scene5 from "../assets/scene_communication_bridge.jpg";
+import thinkingCappy from "../assets/character_thinking_cappy.png";
+import scene1 from "../assets/scene_cappy_universe.png";
+import scene2 from "../assets/scene_curiosity_desk.png";
+import scene3 from "../assets/scene_human_connection.png";
+import scene4 from "../assets/scene_learning_workshop.png";
+import scene5 from "../assets/scene_communication_bridge.png";
 
 const SLIDES = [scene1, scene2, scene3, scene4, scene5];
-const DURATION_MS = 3200;
+const DURATION_MS = 5000;
 
 export interface LoaderProps {
   onDone: () => void;
@@ -78,10 +78,10 @@ export function Loader({ onDone }: LoaderProps) {
 
       <div className="relative flex flex-col items-center gap-lg px-lg text-center">
         <img
-          src={logoMark}
+          src={thinkingCappy}
           alt="Cappy"
           className={[
-            "h-24 w-24 rounded-full shadow-lg transition-all duration-700 motion-reduce:transition-none",
+            "h-40 w-auto object-contain drop-shadow-lg transition-all duration-700 motion-reduce:transition-none",
             showLogo ? "opacity-100 scale-100" : "opacity-0 scale-90",
           ].join(" ")}
         />

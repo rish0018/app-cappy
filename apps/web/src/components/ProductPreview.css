@@ -1,0 +1,28 @@
+.cappy-preview-viewport {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.cappy-preview-track {
+  animation: cappy-preview-scroll 42s linear infinite;
+  will-change: transform;
+}
+
+.cappy-preview-wrap:hover .cappy-preview-track {
+  animation-play-state: paused;
+}
+
+@keyframes cappy-preview-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cappy-preview-track {
+    animation: none;
+  }
+}
