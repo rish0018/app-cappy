@@ -12,7 +12,7 @@ const thinkingCappy = require("../../../assets/characters/character_thinking_cap
 const practiceCappy = require("../../../assets/characters/character_practice_cappy.png");
 
 // Approved encouragement copy per docs/PROJECT_BIBLE.md §151 ("Voice & Tone")
-// — never a bare "Incorrect"/"Wrong" message.
+//   never a bare "Incorrect"/"Wrong" message.
 const ENCOURAGEMENT_COPY: Record<ConfidenceTier, string> = {
   high: "Great job! That hand shape is right on target.",
   medium: "Almost there. Try raising your index finger slightly.",
@@ -26,12 +26,12 @@ export default function LessonPracticeScreen() {
   const lesson = mockLessons.find((l) => l.id === id) ?? mockLessons[0]!;
   const [permission, requestPermission] = useCameraPermissions();
 
-  // Mock confidence state — cycles through tiers to preview the UI. Replace
+  // Mock confidence state   cycles through tiers to preview the UI. Replace
   // with the real predictor output once ML inference is wired in.
   const [tierIndex, setTierIndex] = useState(0);
   const tier = MOCK_TIER_CYCLE[tierIndex % MOCK_TIER_CYCLE.length]!;
 
-  // TODO: onFrame inference hook — replace mock with real HandPosePredictor
+  // TODO: onFrame inference hook   replace mock with real HandPosePredictor
   // from @cappy/core. That predictor consumes MediaPipe hand landmarks and
   // returns { letter, confidence }; classifyConfidence() from @cappy/core
   // then maps the score to a ConfidenceTier for ConfidenceIndicator below.

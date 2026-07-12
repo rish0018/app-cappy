@@ -10,7 +10,7 @@ const config = getDefaultConfig(projectRoot);
 // pnpm monorepo: allow Metro to resolve workspace packages hoisted at the root.
 // node-linker=hoisted (see root .npmrc) gives a flat, npm-like node_modules
 // layout, so Metro's normal upward directory walk finds hoisted deps like
-// expo-router on its own — do NOT set disableHierarchicalLookup or a custom
+// expo-router on its own   do NOT set disableHierarchicalLookup or a custom
 // server.unstable_serverRoot here, both break the dev-client's relative entry
 // path resolution against this hoisted layout.
 config.watchFolders = [workspaceRoot];

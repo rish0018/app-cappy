@@ -8,7 +8,7 @@ const CONFETTI = [
   { x: 30, tint: "#3E948C" },
 ];
 
-/** Screen 5 — Success: a drawn checkmark, tiny confetti, quiet celebration copy. */
+/** Screen 5   Success: a drawn checkmark, tiny confetti, quiet celebration copy. */
 export function SuccessScreen() {
   return (
     <div className="relative flex h-full flex-col items-center justify-center gap-5 px-7 text-center">

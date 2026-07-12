@@ -1,5 +1,5 @@
 /**
- * Static mock data for the apps/mobile UI mockups. No live backend calls —
+ * Static mock data for the apps/mobile UI mockups. No live backend calls  
  * screens read from here until @cappy/api is wired to a real Supabase
  * project. Shapes come straight from @cappy/types so swapping this out for
  * real data later is a drop-in change.

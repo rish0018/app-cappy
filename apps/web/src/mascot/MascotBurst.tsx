@@ -122,7 +122,7 @@ export function MascotBurst({ burstId, kind }: MascotBurstProps) {
             marginTop: -p.size / 2,
             borderRadius: p.rounded,
             backgroundColor: p.color,
-            // soft, not glossy — low-contrast edge so it reads "gentle"
+            // soft, not glossy   low-contrast edge so it reads "gentle"
             boxShadow: `0 0 6px ${p.color}55`,
             willChange: "transform, opacity",
           }}

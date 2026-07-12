@@ -2,7 +2,7 @@ import * as React from "react";
 import { AchievementBadge, XPBadge } from "@cappy/ui";
 import { PhoneCard } from "../PhoneCard";
 
-/** Screen 7 — Dashboard: a calm overview, one clear next step. Journey complete, then loop. */
+/** Screen 7   Dashboard: a calm overview, one clear next step. Journey complete, then loop. */
 export function DashboardScreen() {
   return (
     <div className="flex h-full flex-col gap-3 px-6 py-2">

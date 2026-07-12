@@ -13,7 +13,7 @@ function buildOptions(correct: MorseCharacter, pool: MorseCharacter[]): MorseCha
 }
 
 /**
- * Live listening surface — the Card below deliberately has no entrance
+ * Live listening surface   the Card below deliberately has no entrance
  * animation, per the same "no lag" rule as MorseSend; only the header
  * chrome settles in.
  */
@@ -59,7 +59,7 @@ export function MorseReceive() {
         animate="visible"
         variants={fade}
       >
-        Character {charIndex + 1} of {lesson.characters.length} — Receiving
+        Character {charIndex + 1} of {lesson.characters.length}   Receiving
       </motion.span>
 
       <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
@@ -82,7 +82,7 @@ export function MorseReceive() {
 
         {result && (
           <p className={result.correct ? "text-success-700" : "text-neutral-600"}>
-            {result.correct ? "Nice — that's right!" : `Not quite — that was "${character}". Let's keep going.`}
+            {result.correct ? "Nice   that's right!" : `Not quite   that was "${character}". Let's keep going.`}
           </p>
         )}
 

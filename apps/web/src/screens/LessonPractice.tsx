@@ -11,7 +11,7 @@ const MOCK_SCORES = [0.95, 0.78, 0.55];
 
 /**
  * Guided practice / camera validation shell. No real getUserMedia wiring
- * yet — the viewport is structured so a live <video> feed can drop in
+ * yet   the viewport is structured so a live <video> feed can drop in
  * later without restructuring this screen.
  */
 export function LessonPractice() {
@@ -44,13 +44,13 @@ export function LessonPractice() {
             className="h-14 w-14 rounded-full"
           />
           <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-            Step 2 of 3 — Practice
+            Step 2 of 3   Practice
           </span>
           <h1 className="font-display text-2xl font-bold text-neutral-800">
             Show me the sign for "{letter}"
           </h1>
 
-          {/* Camera viewport shell — swap this inner content for a <video> element later. */}
+          {/* Camera viewport shell   swap this inner content for a <video> element later. */}
           <div
             role="group"
             aria-label="Camera preview"
@@ -64,8 +64,8 @@ export function LessonPractice() {
 
           <p className="text-neutral-600 max-w-sm">
             {score >= 0.9
-              ? "Beautiful form — you've got this letter down."
-              : "Nice attempt — try adjusting your hand angle a little and give it another go."}
+              ? "Beautiful form   you've got this letter down."
+              : "Nice attempt   try adjusting your hand angle a little and give it another go."}
           </p>
 
           <div className="flex gap-sm w-full max-w-xs">

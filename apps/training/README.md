@@ -2,7 +2,7 @@
 activate python env .venv\Scripts\activate.bat for cmd 
 for powershell .\.venv\Scripts\Activate.ps1
 
-## Current Status — 2026-07-04
+## Current Status   2026-07-04
 
 The training pipeline is now materially complete through live webcam validation. The current state is:
 
@@ -20,7 +20,7 @@ The training pipeline is now materially complete through live webcam validation.
 
 The detailed implementation notes, decisions, and acceptance policy live in [datasets/README.md](datasets/README.md).
 
-## Version 1.0 — Machine Learning Roadmap
+## Version 1.0   Machine Learning Roadmap
 
 > **Location**
 >
@@ -203,7 +203,7 @@ Advantages:
 
 ---
 
-# Phase 1 — Dataset Research
+# Phase 1   Dataset Research
 
 ## Objective
 
@@ -226,7 +226,7 @@ Understand the dataset before writing ML code.
 
 ---
 
-# Phase 2 — MediaPipe Extraction
+# Phase 2   MediaPipe Extraction
 
 ## Objective
 
@@ -274,7 +274,7 @@ CSV containing:
 
 ---
 
-# Phase 3 — Data Normalization
+# Phase 3   Data Normalization
 
 Raw coordinates should never be used directly.
 
@@ -298,7 +298,7 @@ Normalized CSV dataset.
 
 ---
 
-# Phase 4 — Exploratory Data Analysis
+# Phase 4   Exploratory Data Analysis
 
 Before training.
 
@@ -320,7 +320,7 @@ Only after understanding the data should training begin.
 
 ---
 
-# Phase 5 — Model Training
+# Phase 5   Model Training
 
 Version 1 should begin with a lightweight classifier.
 
@@ -336,7 +336,7 @@ The simplest model that achieves excellent performance is the preferred solution
 
 ---
 
-# Phase 6 — Model Evaluation
+# Phase 6   Model Evaluation
 
 Evaluate using:
 
@@ -359,7 +359,7 @@ If these metrics are not achieved, improve the dataset before changing the model
 
 ---
 
-# Phase 7 — Real Webcam Testing
+# Phase 7   Real Webcam Testing
 
 Testing on validation data is not enough.
 
@@ -381,7 +381,7 @@ The model should perform consistently under realistic conditions.
 
 ---
 
-# Phase 8 — TensorFlow.js Export
+# Phase 8   TensorFlow.js Export
 
 Once the model is approved:
 
@@ -407,7 +407,7 @@ This model will later be consumed by the React application.
 
 ---
 
-# Phase 9 — React Integration
+# Phase 9   React Integration
 
 Only after Phase 8 is complete.
 
@@ -447,7 +447,7 @@ Educational feedback comes later.
 
 ---
 
-# Phase 10 — Educational Layer
+# Phase 10   Educational Layer
 
 Once prediction is reliable.
 
@@ -638,4 +638,4 @@ The outcome of this training pipeline is **not simply an AI model**.
 
 It is a production-ready, browser-compatible ASL alphabet recognition engine that becomes the foundation of Cappy's educational platform.
 
-Once this milestone is achieved, every future feature—including word recognition, sentence recognition, Braille, Morse, adaptive learning, and the AI tutor—will build upon this foundation.
+Once this milestone is achieved, every future feature including word recognition, sentence recognition, Braille, Morse, adaptive learning, and the AI tutor will build upon this foundation.

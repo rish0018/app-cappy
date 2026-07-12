@@ -72,7 +72,7 @@ export function Dashboard() {
           <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">
             Hi, {mockUser.displayName}
           </h1>
-          <p className="text-neutral-600">Here's where you left off — no rush, pick up whenever you're ready.</p>
+          <p className="text-neutral-600">Here's where you left off   no rush, pick up whenever you're ready.</p>
         </div>
         <div className="hidden sm:block absolute -right-4 -bottom-4 opacity-90 pointer-events-none">
           <MascotFigure pose="curious" size="md" />
@@ -103,13 +103,13 @@ export function Dashboard() {
             goalMinutes={DAILY_GOAL_MINUTES}
           />
           <p className="text-sm text-neutral-600 mt-md">
-            {weekTotal} minutes practiced this week — nice consistency.
+            {weekTotal} minutes practiced this week   nice consistency.
           </p>
         </motion.div>
       </div>
 
       {/* Additive second row: daily goal + cross-skill teaser. New components
-          only — ContinueLessonCard/WeeklyActivityChart/MasteryTile untouched. */}
+          only   ContinueLessonCard/WeeklyActivityChart/MasteryTile untouched. */}
       <motion.div
         className="grid grid-cols-1 lg:grid-cols-5 gap-xl items-stretch"
         initial="hidden"

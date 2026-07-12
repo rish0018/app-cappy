@@ -13,7 +13,7 @@ const SCALE_IN: Variants = {
 
 /**
  * Displays the current streak. Per PROJECT_BIBLE §140 ("Streak
- * Philosophy"), streaks motivate rather than punish — a broken streak
+ * Philosophy"), streaks motivate rather than punish   a broken streak
  * (streakDays === 0) is shown neutrally, never as a warning/error color.
  * On increment, plays the scaleIn celebratory spring (distinct from
  * ordinary hover) so gaining a streak day feels like a small win.

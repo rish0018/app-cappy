@@ -13,7 +13,7 @@ export interface MorseAudioPlayerProps {
 
 /**
  * Plays a dot/dash tone timeline using the Web Audio API. Used by
- * "receiving" exercises — the learner listens, then picks the character
+ * "receiving" exercises   the learner listens, then picks the character
  * they heard. No visual pattern is shown while playing (that would give
  * the answer away).
  */

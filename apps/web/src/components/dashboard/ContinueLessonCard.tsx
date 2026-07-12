@@ -14,7 +14,7 @@ export interface ContinueLessonCardProps {
 /**
  * Feature card for "pick up where you left off". Uses Card variant="feature"
  * (gradient bg, roomy padding) and hosts a small reused step-icon
- * illustration scaled absurdly small (~48px) next to a full-size CTA —
+ * illustration scaled absurdly small (~48px) next to a full-size CTA  
  * echoing the capybara/tactile-alphabet scale joke at UI-chrome scale.
  * Gets scaleIn on mount (a welcome-back moment), not fadeUp.
  */

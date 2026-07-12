@@ -41,7 +41,7 @@ export function ExploreMorseCard({ levelOneMastery, onExplore }: ExploreMorseCar
       <p className="text-sm text-neutral-600">
         {started
           ? "Pick up your taps and tones where you left them."
-          : "Say hello in taps and tones — five characters at a time."}
+          : "Say hello in taps and tones   five characters at a time."}
       </p>
 
       <Button variant="secondary" className="mt-auto" onClick={onExplore}>

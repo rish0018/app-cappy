@@ -1,4 +1,4 @@
-/** Typography scale — calm, readable, generous line-height for accessibility. */
+/** Typography scale   calm, readable, generous line-height for accessibility. */
 export const typography = {
   fontFamily: {
     base: "Inter, system-ui, sans-serif",

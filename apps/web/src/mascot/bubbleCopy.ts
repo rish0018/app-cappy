@@ -2,7 +2,7 @@ import type { MascotEvent } from "./mascotStore";
 
 /**
  * Warm/calm copy pools for the mascot speech bubble. No clock references,
- * no loss-framing — every line reads as encouragement, never pressure.
+ * no loss-framing   every line reads as encouragement, never pressure.
  * `xpGained` intentionally has no pool: it never bubbles (see mascotStore).
  */
 export const BUBBLE_COPY: Partial<Record<MascotEvent, readonly string[]>> = {
@@ -13,14 +13,14 @@ export const BUBBLE_COPY: Partial<Record<MascotEvent, readonly string[]>> = {
     "Look at you go.",
   ],
   wrong: [
-    "Almost — give it another look.",
+    "Almost   give it another look.",
     "So close. Try once more?",
-    "No rush — you've got this.",
+    "No rush   you've got this.",
     "Tricky one. That's how it sticks.",
   ],
   streakHit: ["You're really flowing now.", "Streak going strong!"],
   unitComplete: [
-    "You finished the whole set — beautifully done.",
+    "You finished the whole set   beautifully done.",
     "That's a wrap. Wonderful work.",
   ],
 };

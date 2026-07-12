@@ -1,5 +1,5 @@
 // Shared Tailwind preset consumed by apps/web (Tailwind) and apps/mobile (NativeWind).
-// Do not redefine brand colors in app-level tailwind configs — extend this preset instead.
+// Do not redefine brand colors in app-level tailwind configs   extend this preset instead.
 // Values here must stay in sync with ./src/tokens/*.ts (the TS-consumable source of truth).
 
 /** @type {import('tailwindcss').Config} */

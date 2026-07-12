@@ -1,7 +1,7 @@
 /**
  * Morse lesson/character ordering helpers built on MORSE_GROUPS. Mirrors
  * the shape of ../lessons/ordering.ts, but that file operates directly on
- * ASL's LETTER_GROUPS and isn't generic — Morse needs its own version.
+ * ASL's LETTER_GROUPS and isn't generic   Morse needs its own version.
  */
 import { MORSE_GROUPS, type MorseCharacter, type MorseGroup } from "@cappy/types";
 

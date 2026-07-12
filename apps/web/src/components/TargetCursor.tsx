@@ -46,7 +46,7 @@ function getContainingBlockOffset(block: HTMLElement | null): { x: number; y: nu
  * Adapted from 0-ideation/cursor-inside. Approved scope: Landing page only,
  * active only when the device reports a fine pointer (real mouse) via
  * `matchMedia("(pointer: fine)")`, and skipped entirely under
- * prefers-reduced-motion — both gates are live media queries so the cursor
+ * prefers-reduced-motion   both gates are live media queries so the cursor
  * turns itself off/on if the input changes mid-session (e.g. a mouse is
  * unplugged) rather than only checking once on mount.
  */

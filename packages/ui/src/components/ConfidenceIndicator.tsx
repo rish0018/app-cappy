@@ -10,7 +10,7 @@ export interface ConfidenceTierCopy {
 export interface ConfidenceIndicatorProps {
   /** Model confidence score, 0-1. */
   score: number;
-  /** Overrides the default (ASL) copy — e.g. Morse's send/receive screens use their own wording. */
+  /** Overrides the default (ASL) copy   e.g. Morse's send/receive screens use their own wording. */
   copy?: Partial<Record<ConfidenceTier, ConfidenceTierCopy>>;
   className?: string;
 }
@@ -30,8 +30,8 @@ function classify(score: number): ConfidenceTier {
 
 const DEFAULT_TIER_COPY: Record<ConfidenceTier, ConfidenceTierCopy> = {
   high: { text: "Nice! Sign recognized.", icon: "✓" },
-  medium: { text: "Close — hold the sign a little longer.", icon: "⏱" },
-  low: { text: "Not quite — let's see the demo again.", icon: "↻" },
+  medium: { text: "Close   hold the sign a little longer.", icon: "⏱" },
+  low: { text: "Not quite   let's see the demo again.", icon: "↻" },
 };
 
 const TIER_CLASSES: Record<ConfidenceTier, string> = {

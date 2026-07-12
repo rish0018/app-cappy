@@ -9,7 +9,7 @@
 
 ---
 
-# Part I — Foundation
+# Part I   Foundation
 COLOR PALLETE 
 #d9aa78
 #cec1ae
@@ -98,7 +98,7 @@ Enable millions of people to confidently communicate using accessibility-focused
 
 Every engineering decision, product decision, and design decision should align with the following principles.
 
-## Principle 1 — Accessibility Comes First
+## Principle 1   Accessibility Comes First
 
 Accessibility is not a feature.
 
@@ -108,7 +108,7 @@ Every screen, interaction, animation, lesson, and workflow should be evaluated f
 
 ---
 
-## Principle 2 — Education Before Entertainment
+## Principle 2   Education Before Entertainment
 
 Gamification exists to support learning.
 
@@ -118,7 +118,7 @@ Every reward system should reinforce educational progress rather than encourage 
 
 ---
 
-## Principle 3 — Simplicity Wins
+## Principle 3   Simplicity Wins
 
 Whenever multiple technical solutions exist, the simplest maintainable solution should be preferred unless there is a measurable long-term benefit from additional complexity.
 
@@ -126,7 +126,7 @@ Complexity should always have a documented justification.
 
 ---
 
-## Principle 4 — Build for Scale
+## Principle 4   Build for Scale
 
 Although the MVP focuses entirely on American Sign Language, every architectural decision should support future expansion.
 
@@ -138,7 +138,7 @@ This allows Braille, Morse Code, and future communication systems to reuse the s
 
 ---
 
-## Principle 5 — Consistency
+## Principle 5   Consistency
 
 Users should never feel like they are using three separate applications.
 
@@ -296,7 +296,7 @@ The philosophy prioritizes educational value over engagement metrics, which bett
 
 ---
 
-**End of Part I — Foundation**
+**End of Part I   Foundation**
 
 **Next Section:** Executive Summary & Product Requirement Document (PRD)
 
@@ -763,8 +763,8 @@ Expecting perfect sign recognition under every lighting condition.
 
 ---
 
-> **Next Section:** Part II — Product Requirements Document (PRD)
-# Part II — Product Requirements Document (PRD)
+> **Next Section:** Part II   Product Requirements Document (PRD)
+# Part II   Product Requirements Document (PRD)
 
 ---
 
@@ -1504,7 +1504,7 @@ Only after every item above is complete should development move to Version 1.1.
 
 ---
 
-> **Next Section:** Part III — Competitive Analysis & Why Existing Solutions Fall Short
+> **Next Section:** Part III   Competitive Analysis & Why Existing Solutions Fall Short
 
 ---
 
@@ -1580,7 +1580,7 @@ Overall Completion
 
 The next major section will be one of the most important in the entire document:
 
-# Part III — Competitive Analysis
+# Part III   Competitive Analysis
 
 It will include:
 
@@ -1601,7 +1601,7 @@ It will include:
 * Confidence analysis
 
 This section alone will likely be **15–20 pages** of the final Bible.
-# Part III — Competitive Analysis & Market Research
+# Part III   Competitive Analysis & Market Research
 
 ---
 
@@ -2140,7 +2140,7 @@ This single mindset should guide the entire project.
 
 This chapter intentionally focuses on product strategy rather than implementation.
 
-Understanding why existing products succeed—and where they fall short—reduces the risk of building features that users neither need nor value.
+Understanding why existing products succeed and where they fall short reduces the risk of building features that users neither need nor value.
 
 One conclusion becomes especially clear:
 
@@ -2173,7 +2173,7 @@ The next chapter begins the technical foundation of Cappy.
 It transitions from **"Why are we building this?"** to **"How are we going to engineer it?"**
 
 The following sections will define the entire system architecture, repository structure, technology stack, monorepo design, deployment philosophy, and long-term maintainability.
-# Part IV — Technical Architecture
+# Part IV   Technical Architecture
 
 > **Engineering Principle**
 >
@@ -2850,7 +2850,7 @@ The monorepo structure also makes it significantly easier to add Braille, Morse,
 # End of Chapter
 
 The next chapter defines the complete development workflow, including Git strategy, branching model, commit conventions, versioning, documentation standards, and engineering discipline that will govern the project from the first commit onward.
-# Part V — Engineering Workflow & Development Standards
+# Part V   Engineering Workflow & Development Standards
 
 > **Engineering Principle**
 >
@@ -2858,7 +2858,7 @@ The next chapter defines the complete development workflow, including Git strate
 
 This chapter defines the development standards that every future contribution to Cappy should follow.
 
-The goal is to make development predictable, maintainable, and scalable—even as the project grows from a solo effort into a potential team.
+The goal is to make development predictable, maintainable, and scalable even as the project grows from a solo effort into a potential team.
 
 ---
 
@@ -3446,7 +3446,7 @@ These practices remain valuable regardless of how the technology stack evolves.
 
 The next part transitions into the heart of the project:
 
-**Part VI — Machine Learning Research & Computer Vision Architecture**
+**Part VI   Machine Learning Research & Computer Vision Architecture**
 
 This section will define:
 
@@ -3462,7 +3462,7 @@ This section will define:
 * Future transition from letters to words and sentences.
 
 This will become one of the largest and most technically detailed sections of the entire PROJECT_BIBLE.
-# Part VI — Machine Learning Research & Computer Vision Architecture
+# Part VI   Machine Learning Research & Computer Vision Architecture
 
 > **Engineering Principle**
 >
@@ -3476,7 +3476,7 @@ The objective is not to build the largest model.
 
 The objective is to build the smallest reliable model that genuinely improves the learning experience.
 
-Machine learning is a component of Cappy—not the product itself.
+Machine learning is a component of Cappy not the product itself.
 
 ---
 
@@ -3579,7 +3579,7 @@ Reasoning:
 * Easier educational progression.
 * Lower engineering complexity.
 
-This is an engineering decision—not a statement that ASL is more important than other sign languages.
+This is an engineering decision not a statement that ASL is more important than other sign languages.
 
 ---
 
@@ -4160,7 +4160,7 @@ Rather than simply listing Kaggle datasets, it will critically compare:
 * Long-term dataset strategy
 
 The goal is to choose datasets that maximize educational value while minimizing unnecessary training complexity.
-# Part VII — Dataset Research & Data Strategy
+# Part VII   Dataset Research & Data Strategy
 
 > **Engineering Principle**
 >
@@ -4787,11 +4787,11 @@ This chapter will define:
 * Continuous model improvement strategy.
 
 This will serve as the blueprint for every future training cycle in Cappy.
-# Part VIII — Model Architecture, Training Pipeline & Experiment Management
+# Part VIII   Model Architecture, Training Pipeline & Experiment Management
 
 > **Engineering Principle**
 >
-> *"The first production model should be the simplest model that reliably solves the problem—not the most sophisticated model available."*
+> *"The first production model should be the simplest model that reliably solves the problem not the most sophisticated model available."*
 
 This chapter defines how machine learning models will be designed, trained, evaluated, versioned, and deployed throughout the lifetime of Cappy.
 
@@ -5207,7 +5207,7 @@ Track:
 * Model Size
 * Memory Usage
 
-The goal is to optimize the overall system—not just one metric.
+The goal is to optimize the overall system not just one metric.
 
 ---
 
@@ -5404,7 +5404,7 @@ After analyzing the engineering work required, this timeline needs refinement.
 
 Building a **working alphabet classifier** in approximately one month is achievable with disciplined effort.
 
-Building a **production-quality educational system** around that classifier—including lesson design, camera integration, evaluation, UI, progress tracking, deployment, and user testing—will require substantially more work.
+Building a **production-quality educational system** around that classifier including lesson design, camera integration, evaluation, UI, progress tracking, deployment, and user testing will require substantially more work.
 
 The classifier itself is only one component of the product.
 
@@ -5501,7 +5501,7 @@ This separation keeps the PROJECT_BIBLE relevant even as individual models evolv
 
 **Next Section:**
 
-**Part IX — ASL Learning System & Curriculum Architecture**
+**Part IX   ASL Learning System & Curriculum Architecture**
 
 This will define the complete educational framework for Cappy, including:
 
@@ -5517,7 +5517,7 @@ This will define the complete educational framework for Cappy, including:
 * Long-term transition into an AI-powered adaptive learning engine.
 
 This section will connect the machine learning system with the educational experience, making it one of the most important chapters in the entire PROJECT_BIBLE.
-# Part IX — ASL Learning System & Curriculum Architecture
+# Part IX   ASL Learning System & Curriculum Architecture
 
 > **Engineering Principle**
 >
@@ -5525,7 +5525,7 @@ This section will connect the machine learning system with the educational exper
 
 This chapter defines the educational architecture of Cappy.
 
-The machine learning system exists to support learning—not replace it.
+The machine learning system exists to support learning not replace it.
 
 A perfectly accurate model paired with a poor curriculum will still produce a poor learning experience.
 
@@ -5604,7 +5604,7 @@ Every lesson should guide the learner through four stages.
 
 ---
 
-## Stage 1 — Observe
+## Stage 1   Observe
 
 The learner watches.
 
@@ -5619,7 +5619,7 @@ Objectives:
 
 ---
 
-## Stage 2 — Practice
+## Stage 2   Practice
 
 The learner imitates the sign.
 
@@ -5631,7 +5631,7 @@ Immediate correction should be gentle.
 
 ---
 
-## Stage 3 — Validate
+## Stage 3   Validate
 
 The learner performs the sign while the camera evaluates it.
 
@@ -5646,7 +5646,7 @@ Validation should never feel punitive.
 
 ---
 
-## Stage 4 — Recall
+## Stage 4   Recall
 
 The learner performs the sign from memory.
 
@@ -5770,7 +5770,7 @@ ASL Foundations
 
 This scope is intentionally conservative.
 
-The goal is to finish a polished course—not an enormous one.
+The goal is to finish a polished course not an enormous one.
 
 ---
 
@@ -6055,7 +6055,7 @@ This encourages sustainable learning habits.
 
 # 140. Streak Philosophy
 
-Streaks should motivate—not punish.
+Streaks should motivate not punish.
 
 If a learner misses a day,
 
@@ -6266,7 +6266,7 @@ After refining the architecture, the priority becomes:
 
 > **Teach the learner first.**
 
-The machine learning system exists to support the educational experience—not define it.
+The machine learning system exists to support the educational experience not define it.
 
 Every future feature should be evaluated against one question:
 
@@ -6280,7 +6280,7 @@ If the answer is no, the feature should be reconsidered regardless of how techni
 
 **Next Section:**
 
-**Part X — User Experience (UX), Design System & Brand Language**
+**Part X   User Experience (UX), Design System & Brand Language**
 
 This section will define Cappy's visual identity in engineering detail, including:
 
@@ -6297,7 +6297,7 @@ This section will define Cappy's visual identity in engineering detail, includin
 * What to intentionally avoid.
 
 This will become the foundation for every screen designed in both the React Web and Expo Mobile applications.
-# Part X — User Experience (UX), Design System & Brand Language
+# Part X   User Experience (UX), Design System & Brand Language
 
 > **Engineering Principle**
 >
@@ -6595,7 +6595,7 @@ Requirements:
 
 Typography should disappear into the experience.
 
-Users should focus on learning—not on fonts.
+Users should focus on learning not on fonts.
 
 ---
 
@@ -6769,7 +6769,7 @@ Prefer:
 
 > We couldn't access your camera. Please check your permissions and try again.
 
-Technical details belong in logs—not user interfaces.
+Technical details belong in logs not user interfaces.
 
 ---
 
@@ -6812,7 +6812,7 @@ Mobile:
 * Larger touch targets.
 * Native gestures.
 
-Consistency should exist in behavior—not necessarily identical layouts.
+Consistency should exist in behavior not necessarily identical layouts.
 
 ---
 
@@ -6830,7 +6830,7 @@ Minimum standards include:
 * Reduced motion support.
 * Responsive layouts.
 
-Accessibility is a release requirement—not a future enhancement.
+Accessibility is a release requirement not a future enhancement.
 
 ---
 
@@ -6917,7 +6917,7 @@ People should recommend:
 
 > "You should try Cappy."
 
-—not—
+ not 
 
 > "You should try that capybara app."
 
@@ -6931,7 +6931,7 @@ By making the mascot support the brand rather than define it, Cappy gains flexib
 
 **Next Section:**
 
-**Part XI — System Architecture, Backend, Database & Supabase**
+**Part XI   System Architecture, Backend, Database & Supabase**
 
 This chapter will define the complete backend architecture, including:
 
@@ -6950,11 +6950,11 @@ This chapter will define the complete backend architecture, including:
 * Long-term scalability.
 
 This will become the technical backbone of the entire Cappy platform.
-# Part XI — Backend Architecture, Database & Supabase
+# Part XI   Backend Architecture, Database & Supabase
 
 > **Engineering Principle**
 >
-> *"The backend should quietly do its job. Users should notice the learning experience—not the infrastructure."*
+> *"The backend should quietly do its job. Users should notice the learning experience not the infrastructure."*
 
 This chapter defines the backend architecture for Cappy.
 
@@ -7569,7 +7569,7 @@ By thinking of the backend as the learner's long-term educational record rather 
 
 **Next Section:**
 
-**Part XII — Repository Structure, Folder Architecture & Project Organization**
+**Part XII   Repository Structure, Folder Architecture & Project Organization**
 
 This chapter will define the final Turborepo layout in exhaustive detail, including:
 
@@ -7586,7 +7586,7 @@ This chapter will define the final Turborepo layout in exhaustive detail, includ
 * Expo EAS compatibility.
 
 This chapter will serve as the definitive reference for organizing the entire Cappy codebase.
-# Part XII — Repository Structure, Folder Architecture & Project Organization
+# Part XII   Repository Structure, Folder Architecture & Project Organization
 
 > **Engineering Principle**
 >
@@ -7636,13 +7636,13 @@ Good repository organization reduces onboarding time, simplifies navigation, and
 
 The repository follows six principles.
 
-### Principle 1 — Separation of Concerns
+### Principle 1   Separation of Concerns
 
 Applications, packages, documentation, ML, backend, and assets should remain independent.
 
 ---
 
-### Principle 2 — Feature Before Technology
+### Principle 2   Feature Before Technology
 
 When organizing code inside applications, prefer grouping by feature rather than file type.
 
@@ -7680,7 +7680,7 @@ The feature-first approach scales better.
 
 ---
 
-### Principle 3 — Shared Logic Lives Once
+### Principle 3   Shared Logic Lives Once
 
 Business logic should never be duplicated.
 
@@ -7688,7 +7688,7 @@ If Web and Mobile require identical functionality, it belongs inside a shared pa
 
 ---
 
-### Principle 4 — Documentation Lives With the Project
+### Principle 4   Documentation Lives With the Project
 
 Documentation should evolve alongside implementation.
 
@@ -7696,13 +7696,13 @@ Documentation is source code.
 
 ---
 
-### Principle 5 — Reproducibility
+### Principle 5   Reproducibility
 
 Every build, experiment, migration, and deployment should be reproducible.
 
 ---
 
-### Principle 6 — Simplicity
+### Principle 6   Simplicity
 
 Prefer predictable structure over clever organization.
 
@@ -8263,7 +8263,7 @@ The proposed repository structure is intentionally conservative.
 
 It aligns with modern TypeScript monorepo practices while remaining understandable for a solo developer.
 
-The separation between applications, packages, backend, documentation, and ML ensures that future expansion—such as Braille, Morse Code, or additional learning systems—can occur without major structural changes.
+The separation between applications, packages, backend, documentation, and ML ensures that future expansion such as Braille, Morse Code, or additional learning systems can occur without major structural changes.
 
 ---
 
@@ -8304,7 +8304,7 @@ Designing the repository around stable concepts rather than current frameworks i
 
 **Next Section:**
 
-**Part XIII — Git Workflow, Branching Strategy, CI/CD & Release Engineering**
+**Part XIII   Git Workflow, Branching Strategy, CI/CD & Release Engineering**
 
 This chapter will define:
 
@@ -8322,7 +8322,7 @@ This chapter will define:
 * Long-term maintenance practices.
 
 This section will establish the engineering discipline required to keep Cappy stable as it evolves from an MVP into a production platform.
-# Part XIII — Git Workflow, CI/CD & Release Engineering
+# Part XIII   Git Workflow, CI/CD & Release Engineering
 
 > **Engineering Principle**
 >
@@ -9027,7 +9027,7 @@ The goal is to build Cappy in a way that would feel familiar and maintainable to
 
 **Next Section:**
 
-**Part XIV — Development Roadmap, Milestones & 12-Week Execution Plan**
+**Part XIV   Development Roadmap, Milestones & 12-Week Execution Plan**
 
 This is one of the most important chapters in the PROJECT_BIBLE.
 
@@ -9051,11 +9051,11 @@ It will include:
 * Exit criteria for every stage.
 
 This roadmap will serve as the operational guide for building Cappy from idea to Version 1.0.
-# Part XIV — Development Roadmap, Milestones & Execution Plan
+# Part XIV   Development Roadmap, Milestones & Execution Plan
 
 > **Engineering Principle**
 >
-> *"The project succeeds by finishing milestones—not by starting features."*
+> *"The project succeeds by finishing milestones not by starting features."*
 
 This chapter is the operational roadmap for building Cappy.
 
@@ -9234,7 +9234,7 @@ Engineering Note
 
 This phase intentionally does **not** involve model training.
 
-The output is infrastructure—not intelligence.
+The output is infrastructure not intelligence.
 
 ---
 
@@ -9947,7 +9947,7 @@ Whenever you feel tempted to add a new feature, return to one question:
 
 If the answer is no, write the idea down in the backlog and continue with the roadmap.
 
-Consistency—not speed—will determine whether Cappy becomes a real product.
+Consistency not speed will determine whether Cappy becomes a real product.
 
 ---
 
@@ -9955,10 +9955,10 @@ Consistency—not speed—will determine whether Cappy becomes a real product.
 
 **Next Section:**
 
-**Part XV — Risk Analysis, Technical Debt, Long-Term Vision & Scaling Strategy**
+**Part XV   Risk Analysis, Technical Debt, Long-Term Vision & Scaling Strategy**
 
 This section will conclude the strategic planning portion of the PROJECT_BIBLE before transitioning into implementation-specific appendices and future expansion plans.
-# Part XV — Risk Analysis, Technical Debt & Long-Term Strategy
+# Part XV   Risk Analysis, Technical Debt & Long-Term Strategy
 
 > **Engineering Principle**
 >
@@ -9996,7 +9996,7 @@ How likely is it?
 
 What is the mitigation strategy?
 
-Risk should become part of planning—not an afterthought.
+Risk should become part of planning not an afterthought.
 
 ---
 
@@ -10724,10 +10724,10 @@ And remember:
 
 ---
 
-**End of PROJECT_BIBLE — Version 0.1**
+**End of PROJECT_BIBLE   Version 0.1**
 
 **Document Status:** Ready to guide implementation and evolve alongside the project.
-# Appendix A — Guiding Principles, Non-Negotiables & Engineering Laws
+# Appendix A   Guiding Principles, Non-Negotiables & Engineering Laws
 
 > *"Architecture decides how fast you can build tomorrow. Discipline decides whether tomorrow arrives."*
 
@@ -10745,7 +10745,7 @@ These are the non-negotiable engineering laws that govern the project.
 
 ---
 
-## Law 1 — The Learner Comes Before the Technology
+## Law 1   The Learner Comes Before the Technology
 
 Users do not care whether the classifier is built with TensorFlow, PyTorch, or another framework.
 
@@ -10755,7 +10755,7 @@ Whenever there is a conflict between technical elegance and educational value, e
 
 ---
 
-## Law 2 — One Source of Truth
+## Law 2   One Source of Truth
 
 Every important decision must exist in exactly one place.
 
@@ -10771,7 +10771,7 @@ Duplication creates inconsistency.
 
 ---
 
-## Law 3 — Every Feature Must Earn Its Place
+## Law 3   Every Feature Must Earn Its Place
 
 No feature exists simply because it is technically possible.
 
@@ -10786,7 +10786,7 @@ If these questions cannot be answered, the feature returns to the backlog.
 
 ---
 
-## Law 4 — Ship Small, Improve Often
+## Law 4   Ship Small, Improve Often
 
 Large releases increase risk.
 
@@ -10824,7 +10824,7 @@ Unexpected Problems
 
 ---
 
-## Law 5 — Every Feature Must Be Measurable
+## Law 5   Every Feature Must Be Measurable
 
 Examples:
 
@@ -10846,7 +10846,7 @@ Engineering decisions should be supported by measurable outcomes whenever possib
 
 ---
 
-## Law 6 — Version 1 Is Allowed to Be Incomplete
+## Law 6   Version 1 Is Allowed to Be Incomplete
 
 Version 1 is **not** expected to solve every accessibility problem.
 
@@ -10860,7 +10860,7 @@ Everything else comes later.
 
 ---
 
-## Law 7 — Build Platforms, Not Features
+## Law 7   Build Platforms, Not Features
 
 Example
 
@@ -11015,7 +11015,7 @@ Future appendices can include:
 * **Appendix I:** Launch Checklist & Go-Live Runbook
 
 These should remain separate appendices within the same `PROJECT_BIBLE.md` until they become large enough to be extracted into dedicated documents under the `docs/` directory.
-# Appendix B — Product Backlog, Version Roadmap & Future Vision
+# Appendix B   Product Backlog, Version Roadmap & Future Vision
 
 > **Purpose**
 >
@@ -11239,7 +11239,7 @@ Example responsibilities:
 * Answer accessibility questions.
 * Encourage consistency.
 
-The AI should assist the curriculum—not replace it.
+The AI should assist the curriculum not replace it.
 
 ---
 
@@ -11355,7 +11355,7 @@ Internal analytics should answer questions such as:
 * Practice frequency.
 * Device distribution.
 
-Analytics should improve education—not maximize engagement for its own sake.
+Analytics should improve education not maximize engagement for its own sake.
 
 ---
 
@@ -11425,7 +11425,7 @@ A disciplined backlog is one of the strongest defenses against scope creep in lo
 With this appendix, the PROJECT_BIBLE transitions from a planning document into a living product reference.
 
 Future appendices should evolve alongside implementation, allowing Cappy's documentation to grow with the product rather than becoming outdated.
-# Appendix C — AI Strategy, Learning Intelligence & The Future of Cappy
+# Appendix C   AI Strategy, Learning Intelligence & The Future of Cappy
 
 > **Purpose**
 >
@@ -11717,7 +11717,7 @@ Trust is more important than sounding confident.
 
 # C.10 AI Memory
 
-Long-term memory should focus on learning—not personal details.
+Long-term memory should focus on learning not personal details.
 
 Examples of useful memory:
 
@@ -11845,7 +11845,7 @@ The AI strategy intentionally delays sophisticated AI features until they can pr
 
 This approach reduces unnecessary complexity while preserving a clear long-term vision.
 
-The strongest AI products solve real user problems—not merely demonstrate impressive technology.
+The strongest AI products solve real user problems not merely demonstrate impressive technology.
 
 ---
 
@@ -11876,7 +11876,7 @@ Cappy should strive to improve the second far more than the first.
 The PROJECT_BIBLE now contains a complete strategic foundation covering product vision, architecture, machine learning, engineering, roadmap, branding, repository structure, AI strategy, and long-term planning.
 
 From this point onward, new appendices should primarily document implementation details, experiments, design decisions, and lessons learned as the project evolves from blueprint to product.
-# Appendix D — The Founder Playbook
+# Appendix D   The Founder Playbook
 
 > **Purpose**
 >
@@ -12096,7 +12096,7 @@ Examples:
 * Sponsorships.
 * New technologies.
 
-These opportunities should strengthen the mission—not replace it.
+These opportunities should strengthen the mission not replace it.
 
 The mission is accessibility education.
 
@@ -12138,7 +12138,7 @@ They are difficult to rebuild once lost.
 
 # D.14 If Cappy Becomes Successful
 
-If Cappy reaches thousands—or millions—of learners, remember what created that success.
+If Cappy reaches thousands or millions of learners, remember what created that success.
 
 It was not the infrastructure.
 
@@ -12253,7 +12253,7 @@ Future updates should be based on:
 * Real learner feedback.
 
 That evolution will transform this document from a blueprint into the historical record of how Cappy was built.
-# Appendix E — Research Journal, Engineering Log & Living Documentation
+# Appendix E   Research Journal, Engineering Log & Living Documentation
 
 > **Purpose**
 >
@@ -12530,12 +12530,12 @@ Examples:
 | ---------------------- | ------: | ---------: |
 | Open Bugs              |       0 |          0 |
 | Build Success          |    100% |       100% |
-| Test Coverage          |       — | Increasing |
-| Bundle Size            |       — |     Stable |
-| Weekly Commits         |       — | Consistent |
+| Test Coverage          |         | Increasing |
+| Bundle Size            |         |     Stable |
+| Weekly Commits         |         | Consistent |
 | Documentation Coverage |    High |       High |
 
-Metrics should inform decisions—not become goals by themselves.
+Metrics should inform decisions not become goals by themselves.
 
 ---
 
@@ -12705,7 +12705,7 @@ It is now structured to support:
 
 From here onward, every new page should be written based on **evidence** rather than **expectation**.
 
-The quality of the next chapters will come not from planning—but from building.
+The quality of the next chapters will come not from planning but from building.
 
 ---
 
@@ -12714,7 +12714,7 @@ The quality of the next chapters will come not from planning—but from building
 **PROJECT_BIBLE Planning Phase:** Complete.
 
 **Next Phase:** Implementation, experimentation, iteration, and continuous refinement.
-# Appendix F — Architecture Decision Records (ADR)
+# Appendix F   Architecture Decision Records (ADR)
 
 > **Purpose**
 >
@@ -13431,8 +13431,8 @@ That transparency will become increasingly valuable as Cappy evolves from a pers
 
 **PROJECT_BIBLE Version:** 1.0 Planning Edition
 
-**Status:** Living Document — All future architectural changes should begin with an ADR before implementation.
-# Appendix G — The Cappy Design Bible
+**Status:** Living Document   All future architectural changes should begin with an ADR before implementation.
+# Appendix G   The Cappy Design Bible
 
 > **Purpose**
 >
@@ -13502,7 +13502,7 @@ The capybara is the symbol of the brand.
 
 It is not the product.
 
-Its purpose is to create emotional connection—not to entertain continuously.
+Its purpose is to create emotional connection not to entertain continuously.
 
 ### The Mascot Should
 
@@ -13750,7 +13750,7 @@ Good example:
 
 # G.16 Achievement Design
 
-Achievements should celebrate progress—not perfection.
+Achievements should celebrate progress not perfection.
 
 Examples:
 
@@ -13779,13 +13779,13 @@ Minimum standards:
 * Large touch targets.
 * Responsive layouts.
 
-Accessibility is part of the product—not an optional feature.
+Accessibility is part of the product not an optional feature.
 
 ---
 
 # G.18 UX Inspiration
 
-The following products should be studied for specific strengths—not copied.
+The following products should be studied for specific strengths not copied.
 
 | Product                          | Study For             |
 | -------------------------------- | --------------------- |
@@ -13820,7 +13820,7 @@ Not:
 > New Chest!
 > Spin the Wheel!
 
-The experience should leave learners feeling encouraged—not overstimulated.
+The experience should leave learners feeling encouraged not overstimulated.
 
 ---
 
@@ -13855,7 +13855,7 @@ That distinction matters.
 
 Learning still requires effort.
 
-Cappy's responsibility is to remove unnecessary barriers—not meaningful challenge.
+Cappy's responsibility is to remove unnecessary barriers not meaningful challenge.
 
 ---
 
@@ -13889,8 +13889,8 @@ Learning fulfills Cappy's mission.
 
 **End of Appendix G**
 
-**Next Recommended Appendix:** **Appendix H — Complete Database Schema, Entity Relationships & API Contracts**, which will become the implementation reference for the Supabase backend and shared TypeScript models.
-# Appendix H — Database Schema, Entity Relationships & API Blueprint
+**Next Recommended Appendix:** **Appendix H   Complete Database Schema, Entity Relationships & API Contracts**, which will become the implementation reference for the Supabase backend and shared TypeScript models.
+# Appendix H   Database Schema, Entity Relationships & API Blueprint
 
 > **Purpose**
 >
@@ -14577,8 +14577,8 @@ Ultimately, the database should become a model of the learner's journey rather t
 
 # End of Appendix H
 
-**Next Recommended Appendix:** **Appendix I — API Specification & Frontend Integration Guide**, which will define endpoint contracts, request/response models, error handling, caching strategy, offline synchronization, and the interaction between React, Expo, and Supabase.
-# Appendix I — API Specification, Frontend Integration & Offline Architecture
+**Next Recommended Appendix:** **Appendix I   API Specification & Frontend Integration Guide**, which will define endpoint contracts, request/response models, error handling, caching strategy, offline synchronization, and the interaction between React, Expo, and Supabase.
+# Appendix I   API Specification, Frontend Integration & Offline Architecture
 
 > **Purpose**
 >
@@ -15080,14 +15080,14 @@ It thinks in terms of:
 
 This keeps the application language aligned with the learner's experience rather than the underlying database.
 
-Good APIs reflect the domain—not the storage layer.
+Good APIs reflect the domain not the storage layer.
 
 ---
 
 # End of Appendix I
 
-**Next Recommended Appendix:** **Appendix J — Machine Learning Implementation Handbook**, covering the complete training workflow, experiment organization, model export pipeline, inference integration, testing methodology, and deployment of TensorFlow.js and TensorFlow Lite models into Cappy.
-# Appendix J — Machine Learning Implementation Handbook
+**Next Recommended Appendix:** **Appendix J   Machine Learning Implementation Handbook**, covering the complete training workflow, experiment organization, model export pipeline, inference integration, testing methodology, and deployment of TensorFlow.js and TensorFlow Lite models into Cappy.
+# Appendix J   Machine Learning Implementation Handbook
 
 > **Purpose**
 >
@@ -15574,7 +15574,7 @@ This mindset reduces the gap between research and production, allowing Cappy's M
 
 # End of Appendix J
 
-**Recommended Next Appendix:** **Appendix K — UI/UX Screen Specifications & User Flow Maps**
+**Recommended Next Appendix:** **Appendix K   UI/UX Screen Specifications & User Flow Maps**
 
 This appendix should become the definitive reference for every screen in Cappy, including:
 
@@ -15593,7 +15593,7 @@ This appendix should become the definitive reference for every screen in Cappy, 
 * Mobile adaptations.
 
 Unlike previous chapters, it should contain detailed screen-by-screen specifications that developers can implement directly.
-# Appendix K — Complete UI/UX Screen Specifications & User Journey
+# Appendix K   Complete UI/UX Screen Specifications & User Journey
 
 > **Purpose**
 >
@@ -15847,7 +15847,7 @@ Display:
 * Common mistakes.
 * Tips.
 
-The objective is understanding—not testing.
+The objective is understanding not testing.
 
 ---
 
@@ -15885,7 +15885,7 @@ Example feedback:
 
 > Great hand shape. Try straightening your thumb slightly.
 
-The goal is correction—not judgment.
+The goal is correction not judgment.
 
 ---
 
@@ -16052,7 +16052,7 @@ Evening
 
 > You're one lesson away from extending your streak.
 
-Notifications should encourage—not pressure.
+Notifications should encourage not pressure.
 
 ---
 
@@ -16083,7 +16083,7 @@ Every screen should satisfy:
 * Responsive layouts.
 * Reduced motion support.
 
-Accessibility should be validated continuously—not only before release.
+Accessibility should be validated continuously not only before release.
 
 ---
 
@@ -16164,12 +16164,12 @@ It should remain a defining characteristic of the platform.
 
 # End of Appendix K
 
-**Recommended Next Appendix:** **Appendix L — ML Dataset Research, Evaluation & Experiment Plan**
+**Recommended Next Appendix:** **Appendix L   ML Dataset Research, Evaluation & Experiment Plan**
 
 This appendix should catalogue every dataset considered, explain selection criteria, compare alternatives, define evaluation protocols, document preprocessing pipelines, and establish a reproducible research methodology before training begins.
 
 This will become the scientific foundation of Cappy's gesture recognition system.
-# Appendix L — Machine Learning Dataset Research, Evaluation & Scientific Methodology
+# Appendix L   Machine Learning Dataset Research, Evaluation & Scientific Methodology
 
 > **Purpose**
 >
@@ -16633,11 +16633,11 @@ By documenting every assumption, experiment, and improvement, Cappy can continue
 
 # End of Appendix L
 
-**Recommended Next Appendix:** **Appendix M — Educational Curriculum Design, Learning Science & Lesson Authoring Guide**
+**Recommended Next Appendix:** **Appendix M   Educational Curriculum Design, Learning Science & Lesson Authoring Guide**
 
 This appendix should define how lessons are created, how concepts progress from letters to words to sentences, the pedagogical principles behind Cappy, mastery definitions, review scheduling, and guidelines for authoring future accessibility courses such as Braille and Morse without redesigning the learning engine.
 
-# Appendix L — Machine Learning Dataset Research, Evaluation & Scientific Methodology
+# Appendix L   Machine Learning Dataset Research, Evaluation & Scientific Methodology
 
 > **Purpose**
 >
@@ -17101,11 +17101,11 @@ By documenting every assumption, experiment, and improvement, Cappy can continue
 
 # End of Appendix L
 
-**Recommended Next Appendix:** **Appendix M — Educational Curriculum Design, Learning Science & Lesson Authoring Guide**
+**Recommended Next Appendix:** **Appendix M   Educational Curriculum Design, Learning Science & Lesson Authoring Guide**
 
 This appendix should define how lessons are created, how concepts progress from letters to words to sentences, the pedagogical principles behind Cappy, mastery definitions, review scheduling, and guidelines for authoring future accessibility courses such as Braille and Morse without redesigning the learning engine.
 
-# Appendix M — Educational Curriculum Design, Learning Science & Lesson Authoring Guide
+# Appendix M   Educational Curriculum Design, Learning Science & Lesson Authoring Guide
 
 > **Purpose**
 >
@@ -17131,7 +17131,7 @@ Every lesson should answer one question:
 
 > **"Will this learner still remember this sign one week from now?"**
 
-Learning—not completion—is the primary objective.
+Learning not completion is the primary objective.
 
 ---
 
@@ -17613,6 +17613,8 @@ Messages
 Mastery
 ```
 
+In the most recent iteration, each character level now begins with a dedicated Learn lesson: learners see the dot/dash pattern and hear its tone before moving into sending and receiving practice.
+
 Consistency across learning systems strengthens usability.
 
 ---
@@ -17641,7 +17643,7 @@ Evaluate lessons using:
 * Time to mastery.
 * Learner feedback.
 
-Poor-performing lessons should be revised—not simply accepted.
+Poor-performing lessons should be revised not simply accepted.
 
 ---
 
@@ -17707,14 +17709,14 @@ That is the hallmark of a well-designed educational system.
 
 The remaining appendices should focus primarily on implementation references rather than strategic planning, including:
 
-* Appendix N — Testing Strategy & Quality Assurance
-* Appendix O — Deployment, Operations & Monitoring
-* Appendix P — Launch Strategy & Beta Testing
-* Appendix Q — Accessibility Compliance Checklist
-* Appendix R — Future Research Papers & References
+* Appendix N   Testing Strategy & Quality Assurance
+* Appendix O   Deployment, Operations & Monitoring
+* Appendix P   Launch Strategy & Beta Testing
+* Appendix Q   Accessibility Compliance Checklist
+* Appendix R   Future Research Papers & References
 
 These will complete the PROJECT_BIBLE into a comprehensive engineering and product handbook.
-# Appendix N — Testing Strategy, Quality Assurance & Production Readiness
+# Appendix N   Testing Strategy, Quality Assurance & Production Readiness
 
 > **Purpose**
 >
@@ -17889,7 +17891,7 @@ Before every release, manually verify:
 * Offline behavior.
 * Accessibility settings.
 
-Automation complements manual testing—it does not replace it.
+Automation complements manual testing it does not replace it.
 
 ---
 
@@ -18037,7 +18039,7 @@ Suggested metrics:
 * Accessibility issues.
 * ML regression rate.
 
-Quality should improve steadily—not fluctuate dramatically.
+Quality should improve steadily not fluctuate dramatically.
 
 ---
 
@@ -18104,7 +18106,7 @@ In reality, quality emerges from habits.
 
 Small, consistent testing practices throughout development reduce stress, simplify debugging, and build confidence in every release.
 
-For a project centered on education and accessibility, reliability is not merely a technical objective—it is part of the learning experience itself.
+For a project centered on education and accessibility, reliability is not merely a technical objective it is part of the learning experience itself.
 
 ---
 
@@ -18120,7 +18122,7 @@ Remaining appendices will focus on:
 * **Appendix R:** References, Research Papers & Further Reading
 
 These chapters will complete the operational side of the PROJECT_BIBLE before it transitions entirely into a living implementation record.
-# Appendix O — Deployment, Operations, Monitoring & Production Infrastructure
+# Appendix O   Deployment, Operations, Monitoring & Production Infrastructure
 
 > **Purpose**
 >
@@ -18451,7 +18453,7 @@ Avoid excessive logging.
 
 Sensitive information should never appear in logs.
 
-Production logs are for diagnosis—not debugging every implementation detail.
+Production logs are for diagnosis not debugging every implementation detail.
 
 ---
 
@@ -18623,12 +18625,12 @@ That trust becomes one of Cappy's greatest long-term assets.
 
 Remaining appendices:
 
-* **Appendix P — Launch Strategy, Beta Program & Community Building**
-* **Appendix Q — Accessibility Compliance, Ethics & Inclusive Design Audit**
-* **Appendix R — References, Research Papers, Standards & Knowledge Base**
+* **Appendix P   Launch Strategy, Beta Program & Community Building**
+* **Appendix Q   Accessibility Compliance, Ethics & Inclusive Design Audit**
+* **Appendix R   References, Research Papers, Standards & Knowledge Base**
 
 These final chapters will complete the PROJECT_BIBLE and transition it into a living document that evolves through implementation, research, and real-world learning.
-# Appendix P — Launch Strategy, Beta Program, Community Building & Growth
+# Appendix P   Launch Strategy, Beta Program, Community Building & Growth
 
 > **Purpose**
 >
@@ -18684,7 +18686,7 @@ Each stage has a different purpose.
 
 ---
 
-# P.3 Stage One — Internal Testing
+# P.3 Stage One   Internal Testing
 
 **Audience**
 
@@ -18707,7 +18709,7 @@ Each stage has a different purpose.
 
 ---
 
-# P.4 Stage Two — Closed Alpha
+# P.4 Stage Two   Closed Alpha
 
 **Audience**
 
@@ -18729,11 +18731,11 @@ Recommended participants:
 
 Avoid explaining the interface unless absolutely necessary.
 
-If users become confused, improve the design—not the instructions.
+If users become confused, improve the design not the instructions.
 
 ---
 
-# P.5 Stage Three — Public Beta
+# P.5 Stage Three   Public Beta
 
 **Audience**
 
@@ -18750,7 +18752,7 @@ Introduce a simple feedback mechanism directly inside the application.
 
 ---
 
-# P.6 Stage Four — Version 1.0
+# P.6 Stage Four   Version 1.0
 
 Requirements:
 
@@ -19002,7 +19004,7 @@ It is an experiment.
 
 The purpose of releasing Cappy is to discover how real learners interact with the platform.
 
-Every piece of feedback is an opportunity to improve—not a judgment of the work already completed.
+Every piece of feedback is an opportunity to improve not a judgment of the work already completed.
 
 Building continues after launch.
 
@@ -19016,11 +19018,11 @@ Learning accelerates after launch.
 
 Only two foundational appendices remain:
 
-* **Appendix Q — Accessibility Compliance, Ethics & Inclusive Design Audit**
-* **Appendix R — References, Standards, Research Papers & Continuing Education**
+* **Appendix Q   Accessibility Compliance, Ethics & Inclusive Design Audit**
+* **Appendix R   References, Standards, Research Papers & Continuing Education**
 
 These final chapters will complete the PROJECT_BIBLE as a comprehensive engineering, product, research, and operational handbook for Cappy.
-# Appendix Q — Accessibility Compliance, Ethics, Privacy & Inclusive Design Audit
+# Appendix Q   Accessibility Compliance, Ethics, Privacy & Inclusive Design Audit
 
 > **Purpose**
 >
@@ -19396,10 +19398,10 @@ That mission should remain the project's highest priority regardless of how the 
 
 **Final Remaining Appendix:**
 
-* **Appendix R — References, Standards, Research Papers, Educational Resources & Continuing Learning**
+* **Appendix R   References, Standards, Research Papers, Educational Resources & Continuing Learning**
 
 This concluding appendix will transform the PROJECT_BIBLE into a long-term knowledge base by cataloguing the standards, academic references, design resources, engineering documentation, accessibility guidance, and research areas that inform Cappy's future development.
-# Appendix R — References, Standards, Research Foundation & Continuing Learning
+# Appendix R   References, Standards, Research Foundation & Continuing Learning
 
 > **Purpose**
 >
@@ -19809,7 +19811,7 @@ The most valuable next step is not writing another planning document.
 
 It is beginning disciplined implementation.
 
-Treat this PROJECT_BIBLE as a living companion—not a finished book.
+Treat this PROJECT_BIBLE as a living companion not a finished book.
 
 Update it.
 
@@ -19883,7 +19885,7 @@ Together, they ensure that future engineering decisions remain aligned with the 
 
 ---
 
-# End of PROJECT_BIBLE — Planning Edition
+# End of PROJECT_BIBLE   Planning Edition
 
 > **"Teach accessibility. Build with empathy. Engineer with discipline."**
 

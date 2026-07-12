@@ -1,5 +1,5 @@
 // Shared ESLint preset consumed by apps/packages. Kept intentionally minimal
-// at this stage of the project — plugins are not required to resolve yet
+// at this stage of the project   plugins are not required to resolve yet
 // since no app/package runs `lint` against real source in this bootstrap.
 module.exports = {
   root: true,

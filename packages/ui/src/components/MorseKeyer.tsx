@@ -10,7 +10,7 @@ export interface MorseKeyerProps {
 /**
  * A single large press-and-hold button used for "sending" exercises: a
  * short tap records a dot, a longer hold records a dash. Timing
- * classification happens in @cappy/core's classifyTap, not here — this
+ * classification happens in @cappy/core's classifyTap, not here   this
  * component only captures raw press duration.
  */
 export function MorseKeyer({ onTap, disabled = false, className = "" }: MorseKeyerProps) {
@@ -32,7 +32,7 @@ export function MorseKeyer({ onTap, disabled = false, className = "" }: MorseKey
     <button
       type="button"
       disabled={disabled}
-      aria-label="Morse key — tap for a dot, hold for a dash"
+      aria-label="Morse key   tap for a dot, hold for a dash"
       onMouseDown={handleStart}
       onMouseUp={handleEnd}
       onMouseLeave={() => {

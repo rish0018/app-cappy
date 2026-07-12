@@ -17,7 +17,7 @@ const CHART_HEIGHT = 128;
 
 /**
  * Custom inline SVG bar chart for weekly practice minutes. No charting
- * library — bars grow in on mount (staggered, decelerate curve), today's
+ * library   bars grow in on mount (staggered, decelerate curve), today's
  * bar gets a permanent accent ring + dot, and hover reveals a dark
  * tooltip pill with exact minutes. No gridlines/numeric axis; only a
  * dashed goal line if a daily goal exists.

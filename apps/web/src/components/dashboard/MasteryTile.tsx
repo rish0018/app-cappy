@@ -44,7 +44,7 @@ export function MasteryTile({ label, mastery, state, onSelect }: MasteryTileProp
       <motion.button
         type="button"
         onClick={onSelect}
-        aria-label={`Letters ${label} — ${state}, ${percent}% mastered`}
+        aria-label={`Letters ${label}   ${state}, ${percent}% mastered`}
         disabled={state === "locked"}
         whileHover={started && !reduced ? { y: -4, boxShadow: "0 6px 14px rgba(0,0,0,0.14)" } : undefined}
         onHoverStart={() => started && setRetraceKey((k) => k + 1)}

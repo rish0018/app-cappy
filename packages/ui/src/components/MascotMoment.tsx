@@ -11,7 +11,7 @@ export interface MascotMomentProps {
 }
 
 /**
- * Cappy the capybara, shown only in deliberate, sparing moments — per
+ * Cappy the capybara, shown only in deliberate, sparing moments   per
  * PROJECT_BIBLE brand rule: the mascot must NOT appear after every answer.
  * This component only renders for a small allow-list of contexts
  * (onboarding, milestone celebrations, mistake explanations). Any other

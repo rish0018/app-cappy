@@ -2,10 +2,12 @@
 
 ## Unreleased
 
-### Morse Code — words & staged curriculum
+### Morse Code   words & staged curriculum
 - Added word-level Morse logic to `@cappy/core` (`morse/words.ts`): word/phrase → per-letter patterns, full audio timelines with standard 3-unit letter gaps and 7-unit word gaps, gap classification for tap streams, and `validateWordSendAttempt` for scoring word-level sending (shared by web and mobile).
-- Added the word & phrase curriculum to `@cappy/types` (`MORSE_WORD_STAGES`): two active stages (First Words, Everyday Words) and three fully-authored dormant stages (Full Alphabet Words, Short Phrases, On the Air). Dormant stages ship with the app but stay hidden behind a "coming soon" state — flip `status` to `"active"` to release one, no other change needed.
-- New `/morse/words/:stageId` practice screen (listen to a whole word, pick it, pattern revealed per letter after answering), with locked/dormant guard states.
+- Added the word & phrase curriculum to `@cappy/types` (`MORSE_WORD_STAGES`): five active stages (First Words, Everyday Words, Full Alphabet Words, Short Phrases, On the Air). Active stages are now immediately testable.
+- New `/morse/words/:stageId` practice screen (listen to a whole word, pick it, pattern revealed per letter after answering), with the unlock guard simplified so all active stages are accessible during testing.
+- Added a dedicated Morse learn lesson before each practice block so learners can review dot/dash patterns and hear the sounds for every character.
+- Redesigned the Morse learn screen to use a two-column review layout and simplified the action flow to a single Practice button.
 - Redesigned the Morse dashboard: level cards with state chips, first-character pattern previews, and mastery bars; new "Words & phrases" section surfacing the staged curriculum.
 
 ### Dashboard

@@ -1,4 +1,4 @@
-/** Spacing scale — docs/PROJECT_BIBLE.md §11. All margins/padding derive from this. */
+/** Spacing scale   docs/PROJECT_BIBLE.md §11. All margins/padding derive from this. */
 export const spacing = {
   xs: 4,
   sm: 8,

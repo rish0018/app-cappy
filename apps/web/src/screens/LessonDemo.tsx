@@ -28,7 +28,7 @@ export function LessonDemo() {
       <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>
         <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
           <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-            Step 1 of 3 — Watch
+            Step 1 of 3   Watch
           </span>
           <h1 className="font-display text-2xl font-bold text-neutral-800">
             Watch the sign for "{letter}"
@@ -45,7 +45,7 @@ export function LessonDemo() {
           </div>
 
           <p className="text-neutral-600 max-w-sm">
-            Take your time. Watch it as many times as you like — there's no rush.
+            Take your time. Watch it as many times as you like   there's no rush.
           </p>
 
           <Button variant="primary" className="w-full max-w-xs" onClick={() => navigate(`/lessons/${lesson.id}/practice`)}>

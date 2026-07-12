@@ -56,7 +56,7 @@ export function MorseDashboard() {
         </p>
         <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">Morse Code</h1>
         <p className="text-neutral-600">
-          Six character levels, then whole words — five new letters and numbers at a time.
+          Six character levels, then whole words   five new letters and numbers at a time.
         </p>
       </motion.section>
 
@@ -103,7 +103,7 @@ export function MorseDashboard() {
             if (isNext) firstIncompleteFound = true;
             const state = groupState(avg, isNext);
             const chip = STATE_CHIP[state];
-            const [levelName, levelRange] = group.label.split(" — ");
+            const [levelName, levelRange] = group.label.split("   ");
             const previewCharacter = group.characters[0];
 
             return (
@@ -154,7 +154,7 @@ export function MorseDashboard() {
         </div>
       </motion.section>
 
-      {/* Words & phrases — the staged curriculum past single characters.
+      {/* Words & phrases   the staged curriculum past single characters.
           Dormant stages are authored but not yet released; they render as
           "coming soon" and are not navigable. */}
       <motion.section

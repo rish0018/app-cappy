@@ -1,5 +1,5 @@
 /**
- * Motion tokens — animation exists to explain, confirm, celebrate, or
+ * Motion tokens   animation exists to explain, confirm, celebrate, or
  * transition. Never to impress. Always respect prefers-reduced-motion.
  */
 export const motion = {

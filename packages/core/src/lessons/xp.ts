@@ -1,7 +1,7 @@
 /**
  * XP calculation, per docs/PROJECT_BIBLE.md §139 ("XP Philosophy"):
  * "XP measures effort. Not intelligence." Rewards are completion-based,
- * accuracy-based, and streak-based — never per-attempt or speed-based, so
+ * accuracy-based, and streak-based   never per-attempt or speed-based, so
  * repeated attempts/retries never inflate XP.
  */
 
@@ -22,7 +22,7 @@ const STREAK_BONUS_PER_DAY = 0.02;
 const STREAK_BONUS_CAP = 0.3;
 
 /**
- * XP awarded once, on lesson completion — never per attempt or per
+ * XP awarded once, on lesson completion   never per attempt or per
  * question, per PROJECT_BIBLE §141 ("Lesson Completion Criteria").
  */
 export function calculateLessonXp(result: LessonCompletionResult): number {

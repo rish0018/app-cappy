@@ -1,4 +1,4 @@
-# Vision — Cappy
+# Vision   Cappy
 
 ## The short version
 Cappy exists to make accessibility-based communication easier to learn, practice, and remember.

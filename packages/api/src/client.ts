@@ -2,11 +2,11 @@
  * Supabase client factory stub.
  *
  * Per docs/PROJECT_BIBLE.md §167-168, Supabase is the backend of record.
- * This file is the ONLY place a Supabase client is ever constructed —
+ * This file is the ONLY place a Supabase client is ever constructed  
  * apps and other packages must go through @cappy/api's repositories
  * (see src/repositories/*), never instantiate their own client.
  *
- * Expected environment variables (not read yet — stub only):
+ * Expected environment variables (not read yet   stub only):
  *   SUPABASE_URL       - project URL
  *   SUPABASE_ANON_KEY  - public anon key
  *

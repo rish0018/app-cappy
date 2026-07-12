@@ -13,7 +13,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 /**
  * Compact "today" ring for the dashboard: minutes practiced vs. the daily
  * goal, echoing MasteryTile's traced-ring language at a slightly larger
- * scale. Purely presentational — additive to the dashboard, no shared
+ * scale. Purely presentational   additive to the dashboard, no shared
  * component was modified for it.
  */
 export function DailyGoalCard({ minutesToday, goalMinutes }: DailyGoalCardProps) {
@@ -47,7 +47,7 @@ export function DailyGoalCard({ minutesToday, goalMinutes }: DailyGoalCardProps)
       <div>
         <p className="text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">Today's goal</p>
         <p className="font-display text-lg font-bold text-neutral-800">
-          {met ? "Goal met — lovely." : `${Math.max(goalMinutes - minutesToday, 0)} quiet minutes to go`}
+          {met ? "Goal met   lovely." : `${Math.max(goalMinutes - minutesToday, 0)} quiet minutes to go`}
         </p>
         <p className="text-sm text-neutral-600 mt-xs">
           {met

@@ -71,7 +71,7 @@ export function LessonReview() {
       <motion.div className="text-center" initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.06 }}>
         <h1 className="font-display text-2xl font-bold text-neutral-800 mb-xs">Great work today</h1>
         <p className="text-neutral-600">
-          Here are a few letters worth a quick revisit — a little review goes a long way.
+          Here are a few letters worth a quick revisit   a little review goes a long way.
         </p>
       </motion.div>
 

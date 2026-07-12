@@ -28,19 +28,19 @@ const EDITORIAL_BLOCKS = [
   {
     eyebrow: "01 · Learn",
     title: "See it before you try it",
-    body: "Every sign, tap, or cell starts with a short, unhurried demo — so you always know exactly what you're aiming for before you attempt it yourself.",
-    highlight: "Braille, Morse code, and ASL — one system at a time.",
+    body: "Every sign, tap, or cell starts with a short, unhurried demo   so you always know exactly what you're aiming for before you attempt it yourself.",
+    highlight: "Braille, Morse code, and ASL   one system at a time.",
   },
   {
     eyebrow: "02 · Practice",
     title: "Learn with your hands, not just your eyes",
-    body: "Use your camera, your voice, or just a keyboard — Cappy gives gentle, specific feedback the moment you try, so mistakes feel like part of the process.",
+    body: "Use your camera, your voice, or just a keyboard   Cappy gives gentle, specific feedback the moment you try, so mistakes feel like part of the process.",
     highlight: "Your camera, your voice, your pace.",
   },
   {
     eyebrow: "03 · Remember",
     title: "Small steps, kept for good",
-    body: "Calm daily streaks turn short practice into lasting memory — no cramming, no countdowns, just steady progress you can feel building.",
+    body: "Calm daily streaks turn short practice into lasting memory   no cramming, no countdowns, just steady progress you can feel building.",
     highlight: "No cramming. Just steady, quiet repetition.",
   },
 ];
@@ -59,7 +59,7 @@ const MASCOT_MOMENTS = [
   {
     image: characterCelebration,
     label: "Proud",
-    caption: "Small wins get noticed — every single time.",
+    caption: "Small wins get noticed   every single time.",
   },
 ];
 
@@ -97,7 +97,7 @@ export function Landing() {
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-800">
       <TargetCursor targetSelector=".cursor-target" cursorColorOnTarget="#B497CF" />
-      {/* Hero + Learn/Practice/Remember — one continuous centerpiece: a single
+      {/* Hero + Learn/Practice/Remember   one continuous centerpiece: a single
           phone stays pinned from the header all the way to "Pick your path",
           switching screens to match whichever text is in view. */}
       <LearnPracticeRemember
@@ -138,10 +138,10 @@ export function Landing() {
                 variants={item}
                 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.98] tracking-tight"
               >
-                Meet Cappy — your calm guide to Braille, Morse code, and ASL
+                Meet Cappy   your calm guide to Braille, Morse code, and ASL
               </motion.h1>
               <motion.p variants={item} className="max-w-xl text-base text-neutral-200">
-                Watch a sign, try it yourself, then keep a quiet streak going — no clocks, no pressure,
+                Watch a sign, try it yourself, then keep a quiet streak going   no clocks, no pressure,
                 just steady progress you can see.
               </motion.p>
               <motion.div variants={item}>
@@ -159,7 +159,7 @@ export function Landing() {
         blocks={EDITORIAL_BLOCKS}
       />
 
-      {/* Explore the three skills — hover/tap-reveal flowing menu */}
+      {/* Explore the three skills   hover/tap-reveal flowing menu */}
       <section className="bg-neutral-900">
         <motion.div
           className="max-w-6xl mx-auto px-lg py-4xl"
@@ -190,7 +190,7 @@ export function Landing() {
         </motion.div>
       </section>
 
-      {/* Mascot moment / philosophy — full-bleed image with a floating card */}
+      {/* Mascot moment / philosophy   full-bleed image with a floating card */}
       <section className="relative bg-neutral-900 overflow-hidden">
         <img
           src={sceneDiscoveryWall}
@@ -216,7 +216,7 @@ export function Landing() {
             <p className="font-display text-2xl italic font-semibold text-neutral-800">
               "There's no clock running, and no wrong way to learn."
             </p>
-            <p className="mt-sm text-sm text-neutral-500">— Cappy</p>
+            <p className="mt-sm text-sm text-neutral-500">  Cappy</p>
             <div className="mt-lg pt-lg border-t border-neutral-200 flex items-baseline justify-center gap-xs">
               <span className="text-2xl font-display font-bold text-primary-700">12,000+</span>
               <span className="text-xs uppercase tracking-[0.15em] text-neutral-500">
@@ -227,7 +227,7 @@ export function Landing() {
         </motion.div>
       </section>
 
-      {/* Mascot personality — circular vignettes on light canvas */}
+      {/* Mascot personality   circular vignettes on light canvas */}
       <section className="bg-tan-100">
         <motion.div
           className="max-w-5xl mx-auto px-lg py-4xl"
@@ -287,7 +287,7 @@ export function Landing() {
               </h2>
             </div>
             <p className="text-base text-neutral-600">
-              It takes less than a minute to get started — no pressure, just progress.
+              It takes less than a minute to get started   no pressure, just progress.
             </p>
             <Button
               variant="primary"

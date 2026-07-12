@@ -1,5 +1,5 @@
 /**
- * Static mock data for the Morse module — mirrors the pattern in
+ * Static mock data for the Morse module   mirrors the pattern in
  * mockData.ts, but built from MORSE_GROUPS/MORSE_MAP rather than ASL's
  * LETTER_GROUPS, since Morse has its own parallel type set.
  */
@@ -23,7 +23,7 @@ export const mockMorseUnits: MorseUnit[] = MORSE_GROUPS.map((group, index) => ({
   description:
     group.characters.length > 0
       ? `Learn to send and receive ${group.characters.join(", ")}.`
-      : "Bonus prosigns — put everything together.",
+      : "Bonus prosigns   put everything together.",
 }));
 
 export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, groupIndex) => {
@@ -32,54 +32,62 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
 
   return [
     {
-      id: `${group.id}-send`,
+      id: `${group.id}-learn`,
       unitId,
-      title: `${group.label} — Sending`,
-      description: "Tap and hold the key to send each pattern.",
-      exerciseType: "send" as const,
+      title: `${group.label}   Learn`,
+      description: "Review the dot/dash patterns and hear the sounds for these characters.",
+      exerciseType: "learn" as const,
       characters,
+      prosigns: group.prosigns,
       estimatedMinutes: 5,
-      xpReward: 25,
+      xpReward: 20,
       orderIndex: 0,
     },
     {
-      id: `${group.id}-receive`,
+      id: `${group.id}-send`,
       unitId,
-      title: `${group.label} — Receiving`,
-      description: "Listen to the pattern and pick the right character.",
-      exerciseType: "receive" as const,
+      title: `${group.label}   Sending`,
+      description: "Tap and hold the key to send each pattern.",
+      exerciseType: "send" as const,
       characters,
       estimatedMinutes: 5,
       xpReward: 25,
       orderIndex: 1,
     },
     {
+      id: `${group.id}-receive`,
+      unitId,
+      title: `${group.label}   Receiving`,
+      description: "Listen to the pattern and pick the right character.",
+      exerciseType: "receive" as const,
+      characters,
+      estimatedMinutes: 5,
+      xpReward: 25,
+      orderIndex: 2,
+    },
+    {
       id: `${group.id}-checkout`,
       unitId,
-      title: `${group.label} — Checkout`,
+      title: `${group.label}   Checkout`,
       description: "A mixed review to confirm you've got this level down.",
       exerciseType: "checkout" as const,
       characters,
+      prosigns: group.prosigns,
       estimatedMinutes: 8,
       xpReward: 50,
-      orderIndex: 2,
+      orderIndex: 3,
     },
   ];
-}).filter((lesson) => lesson.characters.length > 0 || lesson.exerciseType === "checkout");
+}).filter((lesson) => lesson.characters.length > 0 || lesson.prosigns?.length || lesson.exerciseType === "checkout");
 
 export const mockMorseLessonById: Record<string, MorseLesson> = Object.fromEntries(
   mockMorseLessons.map((lesson) => [lesson.id, lesson]),
 );
 
-export const mockActiveMorseLessonId = mockMorseLessons[1]!.id;
+export const mockActiveMorseLessonId = mockMorseLessons[0]!.id;
 
 export const mockMorseLessonStatusById: Record<string, MorseLessonStatus> = Object.fromEntries(
-  mockMorseLessons.map((lesson, index) => {
-    let status: MorseLessonStatus = "not-started";
-    if (index === 0) status = "completed";
-    else if (lesson.id === mockActiveMorseLessonId) status = "in-progress";
-    return [lesson.id, status];
-  }),
+  mockMorseLessons.map((lesson) => [lesson.id, "in-progress"]),
 );
 
 const ALL_MORSE_CHARACTERS = Object.keys(MORSE_MAP) as MorseCharacter[];
@@ -118,10 +126,5 @@ export const mockMorseWordStageById: Record<string, MorseWordStage> = Object.fro
  * dev the first stage is unlocked and later active stages show as locked.
  */
 export function isWordStageUnlocked(stage: MorseWordStage): boolean {
-  if (stage.status !== "active") return false;
-  return stage.requiredGroupIds.every((groupId) => {
-    const group = MORSE_GROUPS.find((g) => g.id === groupId);
-    if (!group || group.characters.length === 0) return true;
-    return averageMasteryForCharacters([...group.characters]) >= 0.5;
-  });
+  return stage.status === "active";
 }

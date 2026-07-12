@@ -14,7 +14,7 @@ const DOCK_ITEMS = [
 /** Matches an in-progress lesson/level step, e.g. /lessons/a1/demo, /morse/levels/2/send, or /morse/words/words-1. */
 export const LESSON_STEP_PATTERN = /^\/(?:(?:lessons|morse\/levels)\/[^/]+\/.+|morse\/words\/.+)/;
 
-/** Tracks the md breakpoint — the side-dock treatment only makes sense with desktop width to spare. */
+/** Tracks the md breakpoint   the side-dock treatment only makes sense with desktop width to spare. */
 function useIsDesktop(): boolean {
   const [isDesktop, setIsDesktop] = useState(true);
   useEffect(() => {
@@ -32,7 +32,7 @@ function useIsDesktop(): boolean {
  * Floating quick-nav dock shown on the dashboard and every route reached from it.
  * Sits as a horizontal bar at the bottom normally, but switches to a vertical bar
  * pinned to the side while inside a lesson/level step so it stays out of the way
- * of the step content. On mobile it always stays at the bottom — a side dock
+ * of the step content. On mobile it always stays at the bottom   a side dock
  * would eat too much of the viewport width.
  */
 export function DashboardDock() {

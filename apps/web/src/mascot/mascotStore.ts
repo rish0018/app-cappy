@@ -44,7 +44,7 @@ let state: MascotState = {
 const listeners = new Set<() => void>();
 let timer: number | undefined;
 
-// Gating state — internal, not exported.
+// Gating state   internal, not exported.
 let correctStreak = 0;
 let lastBubbleAt = 0;
 let bubbleTimer: number | undefined;
@@ -84,16 +84,16 @@ function shouldBubble(event: MascotEvent, streakBeforeReset: number): boolean {
       return streakBeforeReset >= 1;
     case "xpGained":
     default:
-      return false; // never bubbles — pose-only
+      return false; // never bubbles   pose-only
   }
 }
 
-/** Particle burst fires ONLY on genuine milestones — never routine correct answers. */
+/** Particle burst fires ONLY on genuine milestones   never routine correct answers. */
 function shouldBurst(event: MascotEvent): boolean {
   return event === "unitComplete" || event === "streakHit";
 }
 
-/** Imperative — callable from anywhere (handlers, effects). */
+/** Imperative   callable from anywhere (handlers, effects). */
 export function reactTo(event: MascotEvent): void {
   const cfg = REACTIONS[event];
   if (timer) window.clearTimeout(timer);

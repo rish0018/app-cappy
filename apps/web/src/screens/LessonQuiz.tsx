@@ -130,7 +130,7 @@ export function LessonQuiz() {
                   exit={{ opacity: 0 }}
                   className="font-semibold text-error-700"
                 >
-                  Not quite — the answer was "{answer}".
+                  Not quite   the answer was "{answer}".
                 </motion.p>
               ) : null}
             </AnimatePresence>

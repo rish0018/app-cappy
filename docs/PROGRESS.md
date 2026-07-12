@@ -1,4 +1,4 @@
-# Progress — Cappy
+# Progress   Cappy
 
 **Last updated:** 2026-07-04
 **Status:** UI structure scaffolded across web + mobile, mobile build runs end-to-end on Android, and the training pipeline has completed its core ML milestones. Backend and browser integration remain the next major work items.
@@ -12,37 +12,37 @@
 - Repo tree matches `docs/PROJECT_BIBLE.md` §7 exactly: `apps/{web,mobile,training}`, `packages/{ui,core,api,types,shared,config}`.
 - `pnpm install` from root resolves cleanly across all workspace packages.
 
-### `packages/types` — shared domain types
+### `packages/types`   shared domain types
 - `User`, `Course`, `Unit`, `Lesson`, `Exercise`, `UserProgress`, `LessonProgress`, `LetterMastery`, `Streak`, `Achievement`, `UserAchievement`, `Statistics`.
 - `Letter` (A–Z union) and `LETTER_GROUPS` / `ALL_LETTERS` constants encoding the v1 curriculum letter groupings.
 
-### `packages/ui` — web design system (React DOM + Tailwind)
-- Design tokens as plain TS objects: `colors.ts`, `spacing.ts`, `typography.ts`, `radius.ts`, `motion.ts` — the single source of truth for brand identity (teal primary `#3e948c`, tan `#d9aa78`, warm neutral `#cec1ae`, navy info `#2c5f8a`, orange accent `#e8823c`, plus derived success/warning/error scales).
+### `packages/ui`   web design system (React DOM + Tailwind)
+- Design tokens as plain TS objects: `colors.ts`, `spacing.ts`, `typography.ts`, `radius.ts`, `motion.ts`   the single source of truth for brand identity (teal primary `#3e948c`, tan `#d9aa78`, warm neutral `#cec1ae`, navy info `#2c5f8a`, orange accent `#e8823c`, plus derived success/warning/error scales).
 - `tailwind-preset.js` mirrors those tokens for consumption by both apps.
 - Components: `Button`, `Card`, `ProgressBar`, `StreakBadge`, `XPBadge`, `LessonTile` (locked/active/completed), `AchievementBadge`, `MascotMoment` (mascot only renders for onboarding/milestone/mistake-explanation contexts), `ConfidenceIndicator` (high/medium/low, always color + icon + text).
 - Accessibility built in: 44px min touch targets, visible focus rings, `motion-reduce` handling.
-- **Scope note:** this package is web-only (React DOM). Mobile has its own parallel RN component set (see below) — no shared native UI package yet.
+- **Scope note:** this package is web-only (React DOM). Mobile has its own parallel RN component set (see below)   no shared native UI package yet.
 
-### `packages/core` — framework-agnostic business logic
-- `HandPosePredictor` interface: `predict(landmarks: number[]) => { letter, confidence }` — the stable contract both apps will call once a real model is dropped in. Input shape matches PROJECT_BIBLE's 42-value (21 landmarks × x,y) spec.
+### `packages/core`   framework-agnostic business logic
+- `HandPosePredictor` interface: `predict(landmarks: number[]) => { letter, confidence }`   the stable contract both apps will call once a real model is dropped in. Input shape matches PROJECT_BIBLE's 42-value (21 landmarks × x,y) spec.
 - `classifyConfidence()` + `CONFIDENCE_THRESHOLDS` (high ≥0.90, medium ≥0.70, else low).
 - XP calculation, streak calculation, and letter-group-based lesson ordering helpers.
 
-### `packages/api` — Supabase abstraction (stub only)
-- `createSupabaseClient()` placeholder documenting expected env vars (`SUPABASE_URL`, `SUPABASE_ANON_KEY`) — not wired to a real project.
-- Typed repository stubs (`courses`, `lessons`, `progress`, `achievements`) with real signatures using `@cappy/types`, currently throwing "not implemented" — establishes the "apps never talk to the DB directly" rule from day one.
+### `packages/api`   Supabase abstraction (stub only)
+- `createSupabaseClient()` placeholder documenting expected env vars (`SUPABASE_URL`, `SUPABASE_ANON_KEY`)   not wired to a real project.
+- Typed repository stubs (`courses`, `lessons`, `progress`, `achievements`) with real signatures using `@cappy/types`, currently throwing "not implemented"   establishes the "apps never talk to the DB directly" rule from day one.
 
 ### `packages/config` / `packages/shared`
 - Shared `tsconfig.base.json` (strict mode) and ESLint preset.
 - Small framework-agnostic utilities (`clamp`, date helpers) used by core/api.
 
-### `apps/web` — Vite + React + Tailwind + React Router
+### `apps/web`   Vite + React + Tailwind + React Router
 Fully styled static-mockup screens (real layout & styling, mock data, no live backend/ML):
 - Onboarding (mascot moment)
 - Dashboard (streak/XP badges, continue-lesson card, weekly summary, letter mastery grid)
 - Lesson List (units → lessons, locked/active/completed states)
 - Lesson Demo (demonstration screen)
-- Lesson Practice (camera viewport shell + `ConfidenceIndicator`, encouraging copy — never "Incorrect")
+- Lesson Practice (camera viewport shell + `ConfidenceIndicator`, encouraging copy   never "Incorrect")
 - Lesson Quiz (timed multiple-choice)
 - Lesson Review (spaced repetition of weak letters)
 - Achievements (badge grid + mascot milestone moment)
@@ -50,7 +50,7 @@ Fully styled static-mockup screens (real layout & styling, mock data, no live ba
 - Persistent, keyboard-navigable nav shell with skip-link and visible focus states.
 - **Verified:** `pnpm --filter @cappy/web typecheck` and `pnpm --filter @cappy/web build` both pass cleanly.
 
-### `apps/mobile` — Expo Router + React Native + NativeWind
+### `apps/mobile`   Expo Router + React Native + NativeWind
 Same 9 screens ported to native, mirroring web's visual language:
 - `app/onboarding.tsx`, `app/(tabs)/{index,lessons,achievements,profile}.tsx`, `app/lesson/[id]/{demo,practice,quiz,review}.tsx`.
 - Local RN component set (`Button`, `Card`, `ProgressBar`, `StreakBadge`, `XPBadge`, `LessonTile`, `AchievementBadge`, `MascotMoment`, `ConfidenceIndicator`) styled with NativeWind against the same shared token-derived Tailwind preset, so it visually matches web.
@@ -68,11 +68,11 @@ Same 9 screens ported to native, mirroring web's visual language:
 - Actual DB schema/migrations matching `packages/types` shapes.
 - Row-Level Security policies on every user-data table.
 - Wiring `packages/api` repository stubs to real Supabase calls.
-- Auth flows (email/password + Google OAuth) in both apps — currently no login screen exists in either app.
-- **Confidence this is buildable as scoped:** 90% (schema shape is already fully derived from `packages/types`, and Supabase's tooling — CLI, migrations, generated types, RLS — is mature and well-documented; the risk is entirely in careful RLS policy writing, not in unknowns).
+- Auth flows (email/password + Google OAuth) in both apps   currently no login screen exists in either app.
+- **Confidence this is buildable as scoped:** 90% (schema shape is already fully derived from `packages/types`, and Supabase's tooling   CLI, migrations, generated types, RLS   is mature and well-documented; the risk is entirely in careful RLS policy writing, not in unknowns).
 - **Estimated effort, one person, normal work pace:** ~14–20 hours end-to-end (provisioning + schema + RLS + seed data + wiring `packages/api` + smoke-testing both apps against it). See `docs/DB_SETUP_GUIDE.md` for the step-by-step breakdown and per-step hour estimates.
 
-### ML (explicitly deferred — you're training separately)
+### ML (explicitly deferred   you're training separately)
 - Actual MediaPipe landmark extraction + classifier training (`apps/training`).
 - Exporting to TF.js (web) and TFLite (mobile).
 - Implementing `HandPosePredictor` for real in both apps and replacing the mocked confidence-tier cycling in `apps/mobile`'s practice screen and the static states in `apps/web`'s practice screen.
@@ -81,18 +81,18 @@ Same 9 screens ported to native, mirroring web's visual language:
 ### Product surfaces not yet built
 - No login/signup screens (onboarding jumps straight into the app; no actual auth gate).
 - No real routing guards (e.g. redirect unauthenticated users).
-- Settings/accessibility toggles (reduced motion, text size) are stubbed — not functionally wired to a real settings store.
+- Settings/accessibility toggles (reduced motion, text size) are stubbed   not functionally wired to a real settings store.
 - No error/empty/loading states designed yet (screens assume mock data is always present).
 - No responsive/tablet layout pass on web beyond default Tailwind behavior.
 
 ### Cross-cutting design system gap
-- `packages/ui` (web) and `apps/mobile/src/components` (native) are two separate implementations kept visually in sync only by convention + shared tokens — there is no single shared native component package (`packages/ui-native`) yet. Low risk today (one app each), but will need consolidating if a second native surface is ever added.
+- `packages/ui` (web) and `apps/mobile/src/components` (native) are two separate implementations kept visually in sync only by convention + shared tokens   there is no single shared native component package (`packages/ui-native`) yet. Low risk today (one app each), but will need consolidating if a second native surface is ever added.
 
 ### Engineering hygiene
 - No unit tests written yet for any package or app (Definition of Done in PROJECT_BIBLE requires this).
-- No CI/CD (GitHub Actions) configured — lint/typecheck/test-on-PR and deploy-on-merge don't exist yet.
+- No CI/CD (GitHub Actions) configured   lint/typecheck/test-on-PR and deploy-on-merge don't exist yet.
 - No ADRs written to `docs/adr/` yet, despite PROJECT_BIBLE §14 requiring them for decisions like this scaffold.
-- `apps/training` currently only has dataset-download/inspect scripts — no actual training pipeline code.
+- `apps/training` currently only has dataset-download/inspect scripts   no actual training pipeline code.
 
 ---
 

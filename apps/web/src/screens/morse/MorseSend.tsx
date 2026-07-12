@@ -3,18 +3,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ConfidenceIndicator, MorseKeyer, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
-import { validateSendAttempt, type TapEvent } from "@cappy/core";
+import { tapsToPattern, validateSendAttempt, type TapEvent } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
 import { fadeUp, fadeUpReduced } from "../../components/motion";
 
 const SEND_COPY = {
   high: { text: "Sent perfectly!", icon: "✓" },
-  medium: { text: "Close — check your dot/dash timing.", icon: "⏱" },
+  medium: { text: "Close   check your dot/dash timing.", icon: "⏱" },
   low: { text: "Let's try that pattern again.", icon: "↻" },
 };
 
 /**
- * Live tapping surface — the Card below deliberately has no entrance
+ * Live tapping surface   the Card below deliberately has no entrance
  * animation. Any delay on the interactive element itself would feel like
  * input lag during a timing-sensitive task; only the header settles in.
  */
@@ -62,17 +62,17 @@ export function MorseSend() {
         animate="visible"
         variants={fade}
       >
-        Character {charIndex + 1} of {lesson.characters.length} — Sending
+        Character {charIndex + 1} of {lesson.characters.length}   Sending
       </motion.span>
 
       <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
         <h1 className="font-display text-3xl font-bold text-neutral-800">Send: {character}</h1>
 
-        <MorseSequenceDisplay pattern={taps.length > 0 ? taps.map(() => "•").join("") : ""} />
+        <MorseSequenceDisplay pattern={tapsToPattern(taps)} />
 
         <MorseKeyer onTap={handleTap} disabled={result !== null} />
 
-        <p className="text-sm text-neutral-500">Recorded {taps.length} symbol{taps.length === 1 ? "" : "s"} — expecting {expectedPattern.length}.</p>
+        <p className="text-sm text-neutral-500">Recorded {taps.length} symbol{taps.length === 1 ? "" : "s"}   expecting {expectedPattern.length}.</p>
 
         {result && <ConfidenceIndicator score={result.accuracy} copy={SEND_COPY} />}
 

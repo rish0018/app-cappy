@@ -1,4 +1,4 @@
-/** Border radius scale — soft, rounded, calm (matches logo/mascot roundness). */
+/** Border radius scale   soft, rounded, calm (matches logo/mascot roundness). */
 export const radius = {
   sm: 6,
   md: 12,

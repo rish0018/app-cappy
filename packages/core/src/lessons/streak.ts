@@ -1,7 +1,7 @@
 /**
  * Streak calculation, per docs/PROJECT_BIBLE.md §140 ("Streak Philosophy"):
  * streaks should motivate, not punish. Missing a day resets the streak
- * without any punitive messaging — callers are responsible for copy like
+ * without any punitive messaging   callers are responsible for copy like
  * "Welcome back! Let's continue where we left off."
  */
 import { toDayKey } from "@cappy/shared";
