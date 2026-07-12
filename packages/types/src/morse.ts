@@ -54,6 +54,74 @@ export const MORSE_GROUPS: readonly MorseGroup[] = [
 
 export type MorseExerciseType = "send" | "receive" | "checkout";
 
+/**
+ * Word & phrase curriculum stages, layered on top of the character levels.
+ * Stages marked "dormant" are fully authored lesson plans that ship with
+ * the app but stay hidden/locked until the team activates them — flip
+ * status to "active" to release one, no other changes needed.
+ */
+export type MorseStageStatus = "active" | "dormant";
+
+export interface MorseWordStage {
+  id: string;
+  label: string;
+  description: string;
+  /** Words (or space-separated phrases) practiced in this stage. */
+  words: string[];
+  status: MorseStageStatus;
+  /** Character levels a learner should finish before this stage unlocks. */
+  requiredGroupIds: string[];
+  orderIndex: number;
+}
+
+export const MORSE_WORD_STAGES: readonly MorseWordStage[] = [
+  {
+    id: "words-1",
+    label: "First Words",
+    description: "Short words built only from Levels 1–2 characters.",
+    words: ["ACE", "BAD", "CAB", "DIG", "FADE", "HIGH", "JAB", "BEACH"],
+    status: "active",
+    requiredGroupIds: ["level-1", "level-2"],
+    orderIndex: 0,
+  },
+  {
+    id: "words-2",
+    label: "Everyday Words",
+    description: "Longer words using everything through Level 3.",
+    words: ["LAKE", "MOON", "CALM", "COIN", "HELLO", "ANIMAL", "OCEAN"],
+    status: "active",
+    requiredGroupIds: ["level-1", "level-2", "level-3"],
+    orderIndex: 1,
+  },
+  {
+    id: "words-3",
+    label: "Full Alphabet Words",
+    description: "Words that reach across the whole alphabet.",
+    words: ["QUIET", "WORLD", "ZEBRA", "PROUD", "RHYTHM", "VOYAGE", "EXPLORE"],
+    status: "dormant",
+    requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
+    orderIndex: 2,
+  },
+  {
+    id: "phrases-1",
+    label: "Short Phrases",
+    description: "Two-word phrases — your first real messages.",
+    words: ["HI MOM", "GOOD DAY", "BE CALM", "ALL CLEAR", "ON MY WAY"],
+    status: "dormant",
+    requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
+    orderIndex: 3,
+  },
+  {
+    id: "radio-1",
+    label: "On the Air",
+    description: "Real operator shorthand: greetings, sign-offs, and calls.",
+    words: ["CQ CQ", "73", "SOS", "QTH", "OVER OUT"],
+    status: "dormant",
+    requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
+    orderIndex: 4,
+  },
+] as const;
+
 export interface MorseUnit {
   id: string;
   groupId: string;

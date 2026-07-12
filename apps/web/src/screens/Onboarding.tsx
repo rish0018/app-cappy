@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Button, MascotFigure, MascotMoment, OVERSHOOT_EASE } from "@cappy/ui";
+import { Button, MascotMoment, OVERSHOOT_EASE } from "@cappy/ui";
 import logoMark from "../assets/logo-mark-circular.png";
 import {
   fadeUp,
@@ -11,6 +11,7 @@ import {
   staggerItem,
   staggerItemReduced,
 } from "../components/motion";
+import { ProductPreview } from "../components/ProductPreview";
 
 /** Spring-like pop-in (scale + translateY overshoot) for the mascot figure. */
 const figurePopIn: Variants = {
@@ -107,21 +108,12 @@ export function Onboarding() {
         </svg>
 
         <motion.div
-          className="relative flex justify-center"
+          className="relative flex justify-center w-full"
           initial="hidden"
           animate="visible"
           variants={popIn}
         >
-          {/* grounding shadow */}
-          <div
-            aria-hidden="true"
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 h-8 w-40 rounded-full blur-md"
-            style={{
-              background:
-                "radial-gradient(closest-side, rgba(0,0,0,0.35), rgba(0,0,0,0) 70%)",
-            }}
-          />
-          <MascotFigure pose="mentor" size="xl" />
+          <ProductPreview className="w-full" />
         </motion.div>
 
         {/* Cappy's welcome — the existing MascotMoment message, now a proper

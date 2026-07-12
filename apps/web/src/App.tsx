@@ -18,6 +18,7 @@ import { MorseLevelList } from "./screens/morse/MorseLevelList";
 import { MorseSend } from "./screens/morse/MorseSend";
 import { MorseReceive } from "./screens/morse/MorseReceive";
 import { MorseCheckout } from "./screens/morse/MorseCheckout";
+import { MorseWords } from "./screens/morse/MorseWords";
 
 const INTRO_SESSION_KEY = "cappy-intro-shown";
 
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/morse/levels/:id/send" element={<MorseSend />} />
           <Route path="/morse/levels/:id/receive" element={<MorseReceive />} />
           <Route path="/morse/levels/:id/checkout" element={<MorseCheckout />} />
+          <Route path="/morse/words/:stageId" element={<MorseWords />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/profile" element={<Profile />} />
         </Route>

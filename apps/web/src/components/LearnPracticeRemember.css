@@ -1,0 +1,51 @@
+/* Two-column at every size: the phone always runs in the right column.
+   Mobile gets "hero full-width, then cards left / phone right"; md+ gives
+   the phone the whole right column from the hero down. */
+
+.lpr-grid {
+  display: grid;
+  /* minmax(0, …) stops the phone's unscaled 280px layout box from forcing
+     its track wider and crushing the cards column on small screens. */
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-areas:
+    "hero hero"
+    "blocks phone";
+  column-gap: 12px;
+  row-gap: 8px;
+  align-items: start;
+}
+.lpr-hero {
+  grid-area: hero;
+}
+.lpr-phone {
+  grid-area: phone;
+}
+.lpr-blocks {
+  grid-area: blocks;
+}
+
+/* Small screens can't fit the full 280px phone beside the cards — render it
+   at full size and scale the whole thing down so the screens inside keep
+   their intended layout. The wrapper height reserves the scaled footprint
+   (frame is ~607px tall unscaled; 0.56 * 607 ≈ 340px). */
+@media (max-width: 767px) {
+  .lpr-phone-scale {
+    transform: scale(0.56);
+    transform-origin: top center;
+  }
+  .lpr-phone-scale-wrap {
+    height: 350px;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 768px) {
+  .lpr-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "hero phone"
+      "blocks phone";
+    column-gap: 2rem;
+    row-gap: 0;
+  }
+}

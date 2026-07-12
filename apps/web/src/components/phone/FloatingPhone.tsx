@@ -10,6 +10,15 @@ export interface FloatingPhoneProps {
   screens?: StoryStep[];
   /** Forwarded to PhoneStoryController — resets to the subset's first screen when this changes. */
   groupKey?: string;
+  /**
+   * Element whose scroll traversal drives the glide (rotate/lift/scale).
+   * Defaults to the phone's own wrapper, which is fine for a plain
+   * standalone phone — but when the phone sits inside a `position: sticky`
+   * column, its own wrapper stops moving relative to the viewport once
+   * stuck, freezing the glide. Pass a ref to the tall outer container it's
+   * pinned within instead, so progress keeps advancing for the whole scroll.
+   */
+  scrollContainerRef?: React.RefObject<HTMLElement>;
 }
 
 /**
@@ -18,12 +27,15 @@ export interface FloatingPhoneProps {
  * scrolling nudges it toward level, slightly larger, and slightly higher —
  * as if the visitor is travelling further into the product.
  */
-export function FloatingPhone({ className = "", screens, groupKey }: FloatingPhoneProps) {
+export function FloatingPhone({ className = "", screens, groupKey, scrollContainerRef }: FloatingPhoneProps) {
   const reduced = useReducedMotion();
   const [paused, setPaused] = React.useState(false);
   const wrapRef = React.useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start start", "end start"] });
+  const { scrollYProgress } = useScroll({
+    target: scrollContainerRef ?? wrapRef,
+    offset: ["start start", "end start"],
+  });
   const scrollRotate = useTransform(scrollYProgress, [0, 1], [-10, -2]);
   const scrollY = useTransform(scrollYProgress, [0, 1], [0, -36]);
   const scrollScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
