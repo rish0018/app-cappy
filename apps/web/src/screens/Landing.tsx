@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Button, Card, MascotFigure } from "@cappy/ui";
+import { Button, Card } from "@cappy/ui";
 import {
   fadeUp,
   fadeUpReduced,
@@ -97,82 +97,67 @@ export function Landing() {
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-800">
       <TargetCursor targetSelector=".cursor-target" cursorColorOnTarget="#B497CF" />
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-primary-900 text-neutral-0">
-        {/* faint oversized morse-dash texture bleeding off the right edge */}
-        <svg
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-24 top-1/2 -translate-y-1/2 h-[140%] w-[60%] opacity-[0.05]"
-          viewBox="0 0 300 600"
-        >
-          {Array.from({ length: 14 }).map((_, row) => (
-            <g key={row} transform={`translate(0 ${row * 44})`}>
-              <line x1="0" y1="20" x2="60" y2="20" stroke="white" strokeWidth="6" strokeLinecap="round" />
-              <circle cx="90" cy="20" r="6" fill="white" />
-              <line x1="120" y1="20" x2="150" y2="20" stroke="white" strokeWidth="6" strokeLinecap="round" />
-              <circle cx="180" cy="20" r="6" fill="white" />
-              <circle cx="210" cy="20" r="6" fill="white" />
-              <line x1="240" y1="20" x2="300" y2="20" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            </g>
-          ))}
-        </svg>
+      {/* Hero + Learn/Practice/Remember — one continuous centerpiece: a single
+          phone stays pinned from the header all the way to "Pick your path",
+          switching screens to match whichever text is in view. */}
+      <LearnPracticeRemember
+        hero={
+          <div className="relative pt-4xl pb-2xl md:pb-3xl">
+            {/* faint oversized morse-dash texture bleeding off the right edge */}
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-24 -top-8 h-[36rem] w-[60%] opacity-[0.05]"
+              viewBox="0 0 300 600"
+            >
+              {Array.from({ length: 14 }).map((_, row) => (
+                <g key={row} transform={`translate(0 ${row * 44})`}>
+                  <line x1="0" y1="20" x2="60" y2="20" stroke="white" strokeWidth="6" strokeLinecap="round" />
+                  <circle cx="90" cy="20" r="6" fill="white" />
+                  <line x1="120" y1="20" x2="150" y2="20" stroke="white" strokeWidth="6" strokeLinecap="round" />
+                  <circle cx="180" cy="20" r="6" fill="white" />
+                  <circle cx="210" cy="20" r="6" fill="white" />
+                  <line x1="240" y1="20" x2="300" y2="20" stroke="white" strokeWidth="6" strokeLinecap="round" />
+                </g>
+              ))}
+            </svg>
 
-        <div className="relative max-w-6xl mx-auto px-lg pt-4xl pb-40 sm:pb-48 md:pb-56 grid gap-2xl md:grid-cols-2 items-center">
-          <motion.div
-            className="flex flex-col items-start text-left gap-lg order-2 md:order-1"
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
-          >
-            <motion.img variants={item} src={logoMark} alt="Cappy" className="h-16 w-16 rounded-full shadow-lg" />
-            <motion.p
-              variants={item}
-              className="text-xs font-semibold uppercase tracking-[0.35em] text-accent-300 [word-spacing:0.2em]"
+            <motion.div
+              className="relative flex flex-col items-start text-left gap-lg"
+              initial="hidden"
+              animate="visible"
+              variants={stagger}
             >
-              Braille&nbsp;&#8226;&nbsp;Morse&nbsp;Code&nbsp;&#8226;&nbsp;ASL
-            </motion.p>
-            <motion.h1
-              variants={item}
-              className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.98] tracking-tight"
-            >
-              Meet Cappy — your calm guide to Braille, Morse code, and ASL
-            </motion.h1>
-            <motion.p variants={item} className="max-w-xl text-base text-neutral-200">
-              Watch a sign, try it yourself, then keep a quiet streak going — no clocks, no pressure,
-              just steady progress you can see.
-            </motion.p>
-            <motion.div variants={item}>
-              <Button
-                variant="primary"
-                className="cursor-target text-base bg-accent-500 hover:bg-accent-700 active:bg-accent-700"
-                onClick={() => navigate("/onboarding")}
+              <motion.img variants={item} src={logoMark} alt="Cappy" className="h-16 w-16 rounded-full shadow-lg" />
+              <motion.p
+                variants={item}
+                className="text-xs font-semibold uppercase tracking-[0.35em] text-accent-300 [word-spacing:0.2em]"
               >
-                Let's get started
-              </Button>
+                Braille&nbsp;&#8226;&nbsp;Morse&nbsp;Code&nbsp;&#8226;&nbsp;ASL
+              </motion.p>
+              <motion.h1
+                variants={item}
+                className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.98] tracking-tight"
+              >
+                Meet Cappy — your calm guide to Braille, Morse code, and ASL
+              </motion.h1>
+              <motion.p variants={item} className="max-w-xl text-base text-neutral-200">
+                Watch a sign, try it yourself, then keep a quiet streak going — no clocks, no pressure,
+                just steady progress you can see.
+              </motion.p>
+              <motion.div variants={item}>
+                <Button
+                  variant="primary"
+                  className="cursor-target text-base bg-accent-500 hover:bg-accent-700 active:bg-accent-700"
+                  onClick={() => navigate("/onboarding")}
+                >
+                  Let's get started
+                </Button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="order-1 md:order-2"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={reduced ? { duration: 0.01 } : { duration: 0.6, ease: "easeOut" }}
-          >
-            <div className="relative w-full max-w-md mx-auto flex justify-center">
-              <div
-                aria-hidden="true"
-                className="absolute bottom-2 left-1/2 -translate-x-1/2 h-8 w-40 rounded-full blur-md"
-                style={{ background: "radial-gradient(closest-side, rgba(0,0,0,0.35), rgba(0,0,0,0) 70%)" }}
-              />
-              <MascotFigure pose="mentor" size="xl" />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Learn / Practice / Remember — the centerpiece: a sticky phone that
-          advances through its story as this copy scrolls past beside it */}
-      <LearnPracticeRemember blocks={EDITORIAL_BLOCKS} />
+          </div>
+        }
+        blocks={EDITORIAL_BLOCKS}
+      />
 
       {/* Explore the three skills — hover/tap-reveal flowing menu */}
       <section className="bg-neutral-900">

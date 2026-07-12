@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Award, BookOpen, Home, Radio, User } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Dock, DockIcon, DockItem, DockLabel } from "./Dock";
@@ -10,19 +11,35 @@ const DOCK_ITEMS = [
   { to: "/profile", label: "Profile", icon: User },
 ];
 
-/** Matches an in-progress lesson/level step, e.g. /lessons/a1/demo or /morse/levels/2/send. */
-export const LESSON_STEP_PATTERN = /^\/(lessons|morse\/levels)\/[^/]+\/.+/;
+/** Matches an in-progress lesson/level step, e.g. /lessons/a1/demo, /morse/levels/2/send, or /morse/words/words-1. */
+export const LESSON_STEP_PATTERN = /^\/(?:(?:lessons|morse\/levels)\/[^/]+\/.+|morse\/words\/.+)/;
+
+/** Tracks the md breakpoint — the side-dock treatment only makes sense with desktop width to spare. */
+function useIsDesktop(): boolean {
+  const [isDesktop, setIsDesktop] = useState(true);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mql = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mql.matches);
+    const listener = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", listener);
+    return () => mql.removeEventListener("change", listener);
+  }, []);
+  return isDesktop;
+}
 
 /**
  * Floating quick-nav dock shown on the dashboard and every route reached from it.
  * Sits as a horizontal bar at the bottom normally, but switches to a vertical bar
  * pinned to the side while inside a lesson/level step so it stays out of the way
- * of the step content.
+ * of the step content. On mobile it always stays at the bottom — a side dock
+ * would eat too much of the viewport width.
  */
 export function DashboardDock() {
   const navigate = useNavigate();
   const location = useLocation();
-  const isLessonStep = LESSON_STEP_PATTERN.test(location.pathname);
+  const isDesktop = useIsDesktop();
+  const isLessonStep = LESSON_STEP_PATTERN.test(location.pathname) && isDesktop;
 
   return (
     <div
@@ -34,6 +51,7 @@ export function DashboardDock() {
     >
       <div className="pointer-events-auto">
         <Dock
+          key={isLessonStep ? "vertical" : "horizontal"}
           orientation={isLessonStep ? "vertical" : "horizontal"}
           className={isLessonStep ? "items-end pr-3" : "items-end pb-3"}
         >

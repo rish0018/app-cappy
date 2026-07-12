@@ -1,13 +1,12 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { StreakBadge, XPBadge } from "@cappy/ui";
+import { MascotFigure } from "@cappy/ui";
 import { LETTER_GROUPS } from "@cappy/types";
 import {
   mockActiveLessonId,
   mockLessonById,
   mockLetterMastery,
-  mockStreak,
   mockUser,
   mockUserProgress,
   mockWeeklyLabels,
@@ -24,6 +23,10 @@ import {
 import { ContinueLessonCard } from "../components/dashboard/ContinueLessonCard";
 import { WeeklyActivityChart } from "../components/dashboard/WeeklyActivityChart";
 import { MasteryTile } from "../components/dashboard/MasteryTile";
+import { DailyGoalCard } from "../components/dashboard/DailyGoalCard";
+import { ExploreMorseCard } from "../components/dashboard/ExploreMorseCard";
+import { averageMasteryForCharacters } from "../morseMockData";
+import { MORSE_GROUPS } from "@cappy/types";
 
 function groupMasteryAverage(letters: string[]): number {
   const scores = mockLetterMastery.filter((m) => letters.includes(m.letter));
@@ -55,19 +58,28 @@ export function Dashboard() {
   let firstIncompleteFound = false;
 
   return (
-    <div className="flex flex-col gap-2xl">
-      <motion.section initial="hidden" animate="visible" variants={fade}>
-        <h1 className="font-display text-2xl font-bold text-neutral-800 mb-xs">
-          Welcome back, {mockUser.displayName}
-        </h1>
-        <p className="text-neutral-600">Here's where you left off.</p>
-        <div className="flex gap-sm mt-md md:hidden">
-          <StreakBadge streakDays={mockStreak.currentStreak} />
-          <XPBadge xp={mockUser.totalXp} />
+    <div className="flex flex-col gap-3xl">
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+        className="relative overflow-hidden rounded-xl border border-primary-100 bg-gradient-to-br from-primary-50 to-neutral-0 px-lg py-xl sm:px-xl"
+      >
+        <div className="relative z-10 max-w-lg">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
+            Welcome back
+          </p>
+          <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">
+            Hi, {mockUser.displayName}
+          </h1>
+          <p className="text-neutral-600">Here's where you left off — no rush, pick up whenever you're ready.</p>
+        </div>
+        <div className="hidden sm:block absolute -right-4 -bottom-4 opacity-90 pointer-events-none">
+          <MascotFigure pose="curious" size="md" />
         </div>
       </motion.section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-lg items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-xl items-start">
         <div className="lg:col-span-3">
           <ContinueLessonCard
             title={activeLesson.title}
@@ -96,13 +108,36 @@ export function Dashboard() {
         </motion.div>
       </div>
 
+      {/* Additive second row: daily goal + cross-skill teaser. New components
+          only — ContinueLessonCard/WeeklyActivityChart/MasteryTile untouched. */}
+      <motion.div
+        className="grid grid-cols-1 lg:grid-cols-5 gap-xl items-stretch"
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+        transition={{ delay: 0.18 }}
+      >
+        <div className="lg:col-span-3">
+          <DailyGoalCard minutesToday={mockWeeklyMinutes[TODAY_INDEX] ?? 0} goalMinutes={DAILY_GOAL_MINUTES} />
+        </div>
+        <div className="lg:col-span-2">
+          <ExploreMorseCard
+            levelOneMastery={averageMasteryForCharacters([...(MORSE_GROUPS[0]?.characters ?? [])])}
+            onExplore={() => navigate("/morse")}
+          />
+        </div>
+      </motion.div>
+
       <motion.section
         initial="hidden"
         animate="visible"
         variants={stagger}
         transition={{ delayChildren: 0.24 }}
       >
-        <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
+          Your progress
+        </p>
+        <h2 className="font-display text-xl font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md">
           {LETTER_GROUPS.map((group, i) => {
             const avg = groupMasteryAverage(group.letters as unknown as string[]);

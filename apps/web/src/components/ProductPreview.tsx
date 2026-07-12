@@ -228,9 +228,9 @@ export function ProductPreview({ className = "" }: ProductPreviewProps) {
         className="cappy-preview-wrap relative overflow-hidden rounded-[28px] border border-neutral-200 bg-neutral-0 shadow-2xl"
       >
         <div className="flex items-center gap-sm border-b border-neutral-200 bg-neutral-50 px-lg py-md">
-          <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-          <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-          <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
           <span className="ml-md truncate rounded-full bg-neutral-100 px-md py-xs text-xs text-neutral-400">
             cappy.app/learn
           </span>

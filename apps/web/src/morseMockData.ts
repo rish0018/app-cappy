@@ -6,11 +6,13 @@
 import {
   MORSE_GROUPS,
   MORSE_MAP,
+  MORSE_WORD_STAGES,
   type MorseCharacter,
   type MorseCharacterMastery,
   type MorseLesson,
   type MorseLessonStatus,
   type MorseUnit,
+  type MorseWordStage,
 } from "@cappy/types";
 
 export const mockMorseUnits: MorseUnit[] = MORSE_GROUPS.map((group, index) => ({
@@ -99,4 +101,27 @@ export function averageMasteryForCharacters(characters: MorseCharacter[]): numbe
   const scores = mockMorseMastery.filter((m) => characters.includes(m.character));
   if (scores.length === 0) return 0;
   return scores.reduce((sum, m) => sum + m.masteryScore, 0) / scores.length / 100;
+}
+
+/** Word stages surfaced in the UI, in curriculum order. Dormant stages render as "coming soon". */
+export const mockMorseWordStages: MorseWordStage[] = [...MORSE_WORD_STAGES].sort(
+  (a, b) => a.orderIndex - b.orderIndex,
+);
+
+export const mockMorseWordStageById: Record<string, MorseWordStage> = Object.fromEntries(
+  mockMorseWordStages.map((stage) => [stage.id, stage]),
+);
+
+/**
+ * A word stage is playable when it's active AND every character level it
+ * depends on is mastered. Mock mastery only covers the first levels, so in
+ * dev the first stage is unlocked and later active stages show as locked.
+ */
+export function isWordStageUnlocked(stage: MorseWordStage): boolean {
+  if (stage.status !== "active") return false;
+  return stage.requiredGroupIds.every((groupId) => {
+    const group = MORSE_GROUPS.find((g) => g.id === groupId);
+    if (!group || group.characters.length === 0) return true;
+    return averageMasteryForCharacters([...group.characters]) >= 0.5;
+  });
 }

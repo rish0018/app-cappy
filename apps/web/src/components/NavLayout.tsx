@@ -34,7 +34,9 @@ export function NavLayout() {
         id="main-content"
         className={
           isLessonStep
-            ? "flex-1 max-w-6xl w-full mx-auto px-lg py-xl pl-24"
+            ? // Mobile keeps the dock at the bottom (see DashboardDock), so pad
+              // the bottom there and only switch to left padding at md+.
+              "flex-1 max-w-6xl w-full mx-auto px-lg py-xl pb-32 md:pb-xl md:pl-24"
             : "flex-1 max-w-6xl w-full mx-auto px-lg py-xl pb-32"
         }
       >

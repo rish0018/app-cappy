@@ -30,6 +30,7 @@ export const STORY: StoryStep[] = [
  * right cluster of screens while its matching text block is in view.
  */
 export const STORY_GROUPS = {
+  hero: STORY,
   learn: STORY.slice(0, 3),
   practice: STORY.slice(3, 5),
   remember: STORY.slice(5, 7),
