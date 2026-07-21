@@ -15,11 +15,11 @@
 | Mobile | Expo (React Native) + EAS | 98% |
 | Monorepo | Turborepo + pnpm | 99% |
 | ML Framework | TensorFlow (.js + Lite) | 95% |
-| Auth | Email/Password + Google OAuth | 99% |
+| Auth | Email/Password + Google OAuth + Apple Sign-In | 99% |
 | Deployment | Web-first, Mobile follows | 99% |
 | DB Implementation (schema + RLS + wiring `packages/api`) | Buildable as scoped — see `docs/DB_SETUP_GUIDE.md` | 90% confidence · ~14–20 hrs for one person |
 
-> Training milestone update (2026-07-04): the ML pipeline has completed dataset inspection, landmark extraction, normalization, model training, evaluation, and webcam testing. Remaining work is TensorFlow.js export, React integration, and the educational lesson UX.
+> Training milestone update (2026-07-17): dataset inspection is complete. Landmark extraction, normalization, and model training are being re-run from scratch — the previously reported artifacts (trained model file, processed CSV) were not actually present on disk, only summary reports survived. See `docs/PROGRESS.md` for current status. Remaining work after that: TensorFlow.js export, React integration, and the educational lesson UX.
 
 ---
 
@@ -232,8 +232,8 @@ daily_activity
 - ML models are **not** stored in Supabase Storage. They ship with the app.
 
 ### Auth
-- v1: Email/password + Google OAuth
-- Future: Apple Sign-In, GitHub, anonymous guest mode
+- v1: Email/password + Google OAuth + Apple Sign-In (see `docs/DECISIONS.md` for why Apple moved up from "Future" — pulled into v1 on 2026-07-17). Native Apple Sign-In on mobile (`expo-apple-authentication` + `signInWithIdToken`) is a follow-up; the UI/backend contract for it already exists.
+- Future: GitHub, anonymous guest mode
 
 ### Cost (v1 stays free tier)
 | Service | Purpose |

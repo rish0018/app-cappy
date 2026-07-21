@@ -2,10 +2,12 @@
 
 **Purpose:** A step-by-step walkthrough for provisioning the real Supabase backend and wiring it into `packages/api`. This is a **self-serve checklist for you to work through**, not something that gets auto-implemented — check items off as you go and update `docs/PROGRESS.md` when done.
 
+> **Status update (2026-07-16):** Steps 2, 3, 4, and 6 below are now **implemented in code** — there is still no live Supabase project or real credentials, but the schema migration, RLS policies, seed data, and `packages/api` wiring all exist and are ready to run the moment a project is provisioned. See the "✅ Done in code" callouts inline below, and `docs/BACKEND_SSO_SETUP.md` for the concrete runbook to execute once a real project exists (provisioning, running these migrations against it, and configuring Google/Apple auth providers).
+
 **Confidence this is buildable exactly as scoped below:** **90%**
 The schema is already fully derived from `packages/types` (no unknowns there), and Supabase's CLI/migrations/RLS/generated-types tooling is mature. The 10% risk is entirely in getting RLS policies exactly right on the first pass and in Google OAuth redirect-URI configuration across three environments (local, web, mobile) — both are known-tricky-but-solved problems, not open research.
 
-**Estimated effort (one person, normal work pace, ~focused hours not wall-clock days):** **~14–20 hours total.** See the per-step estimate in each section. This assumes no prior Supabase project exists yet and both apps need at least a smoke-test login flow working against it.
+**Estimated effort (one person, normal work pace, ~focused hours not wall-clock days):** **~14–20 hours total.** See the per-step estimate in each section. This assumes no prior Supabase project exists yet and both apps need at least a smoke-test login flow working against it. With steps 2/3/4/6 already written, remaining effort is mostly steps 1, 5, 7, 8 — see `docs/BACKEND_SSO_SETUP.md`.
 
 ---
 
@@ -34,7 +36,7 @@ The schema is already fully derived from `packages/types` (no unknowns there), a
 
 ## 2. Write the schema migration
 
-**Est. time: 3–4 hrs**
+**Est. time: 3–4 hrs** — **✅ Done in code.** `supabase/migrations/20260716120000_init_schema.sql` implements every table below (hand-written since no Supabase CLI was available in the build environment; matches the structure `supabase migration new init_schema` would produce). Not yet applied to any live project — run `supabase db push` once one exists (see `docs/BACKEND_SSO_SETUP.md` §2).
 
 Create your first migration: `supabase migration new init_schema`. This drops a timestamped `.sql` file under `supabase/migrations/`. Write the schema to match `packages/types` **exactly** — every field below maps 1:1 to a TS interface, so cross-check as you go instead of retyping from memory.
 
@@ -66,7 +68,7 @@ Rules to bake into the migration (per `AI_project_bible.md` §9 "Key Rules"):
 
 ## 3. Row-Level Security (RLS)
 
-**Est. time: 3–4 hrs** (this is where the 10% risk lives — budget extra time for testing policies, not just writing them)
+**Est. time: 3–4 hrs** (this is where the 10% risk lives — budget extra time for testing policies, not just writing them) — **✅ Policies written in code** in `supabase/migrations/20260716120001_rls_policies.sql`. **Still needs real-project testing** (the "budget extra time for testing" part below) once a project exists — policy *logic* is done, policy *verification against live data* is not.
 
 Per `AI_project_bible.md` §9: **RLS on every user-data table, no exceptions, never rely on frontend restrictions.**
 
@@ -81,7 +83,7 @@ Per `AI_project_bible.md` §9: **RLS on every user-data table, no exceptions, ne
 
 ## 4. Seed data
 
-**Est. time: 1 hr**
+**Est. time: 1 hr** — **✅ Done in code.** `supabase/seed.sql` seeds the "ASL Alphabet" course, a Group 1 (A/S/E) unit with observe/perform/recall lessons and their exercises, and 5 achievement rows. Idempotent via explicit UUIDs + `on conflict do nothing`. Run it against a real project per `docs/BACKEND_SSO_SETUP.md` §2.
 
 Write a `supabase/seed.sql` (or a seed script under `scripts/`) that inserts:
 - The Phase-1 curriculum: one `course` ("ASL Alphabet"), its `units`, and `lessons`/`exercises` for at least the first letter group (`A, S, E` per `AI_project_bible.md` §12) so you have something real to develop the app screens against.
@@ -93,27 +95,27 @@ Write a `supabase/seed.sql` (or a seed script under `scripts/`) that inserts:
 
 ## 5. Environment variables
 
-**Est. time: 0.5 hr**
+**Est. time: 0.5 hr** — **✅ `.env.example` files done in code** (root, `apps/web/.env.example`, `apps/mobile/.env.example`), documenting exactly these variable names. **Still needed:** the real `.env`/`.env.local` files with actual values, which can only exist once step 1 gives you a real project — these are gitignored on purpose (see `.gitignore`).
 
 Per `docs/GUIDE.md` §6 (already stubbed, waiting on this work):
 
-- Add a root-level `.env` (gitignored) with `SUPABASE_URL` and `SUPABASE_ANON_KEY` from step 1.
-- Web (`apps/web`): expose via Vite's `import.meta.env.VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` — add an `.env.local` in `apps/web` or wire root env through Vite's `envDir` config.
-- Mobile (`apps/mobile`): expose via Expo's `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_ANON_KEY` convention.
+- Add a root-level `.env` (gitignored) with `SUPABASE_URL` and `SUPABASE_ANON_KEY` from step 1. See `.env.example` for the exact shape.
+- Web (`apps/web`): expose via Vite's `import.meta.env.VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` — add an `.env.local` in `apps/web` (see `apps/web/.env.example`).
+- Mobile (`apps/mobile`): expose via Expo's `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_ANON_KEY` convention (see `apps/mobile/.env.example`).
 - Once done, come back and update `docs/GUIDE.md` §6 with the final variable names/locations — it currently has a placeholder note pointing here.
 
 ---
 
 ## 6. Wire `packages/api`
 
-**Est. time: 4–5 hrs**
+**Est. time: 4–5 hrs** — **✅ Done in code.** All four sub-steps below are implemented:
 
-1. Add `@supabase/supabase-js` as a real dependency of `packages/api` (currently intentionally absent per the comment in `client.ts`).
-2. Implement `createSupabaseClient()` in `packages/api/src/client.ts` for real, reading the env vars from step 5. Keep it as the **only** place a client is constructed, per the existing header comment.
-3. Implement each repository in `packages/api/src/repositories/` (`courses.ts`, `lessons.ts`, `progress.ts`, `achievements.ts`) against the real client — the typed signatures already exist and currently throw "not implemented." Swap the throw for a real Supabase call, mapping snake_case DB rows to the camelCase `packages/types` shapes.
-4. Do **not** let `apps/web` or `apps/mobile` import `@supabase/supabase-js` directly — everything goes through these repositories, per the "apps never talk to DB tables directly" rule (`AI_project_bible.md` §7).
+1. ✅ `@supabase/supabase-js` is a real dependency of `packages/api` (`package.json`).
+2. ✅ `createSupabaseClient()` in `packages/api/src/client.ts` reads `SUPABASE_URL`/`SUPABASE_ANON_KEY` (root), `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` (web), or `EXPO_PUBLIC_SUPABASE_URL`/`EXPO_PUBLIC_SUPABASE_ANON_KEY` (mobile) — whichever is present — and throws a clear "Supabase not configured yet" error at **call** time (not import time) if none are set. It remains the only place a client is constructed.
+3. ✅ Every repository in `packages/api/src/repositories/` (`courses.ts`, `lessons.ts`, `progress.ts`, `achievements.ts`) is implemented against the real client, mapping snake_case rows to the camelCase `packages/types` shapes. Two new repositories were also added: `auth.ts` (`signUp`, `signInWithPassword`, `signInWithOAuth`, `signOut`, `getSession`, `onAuthStateChange`) and `profile.ts` (`getProfile`, `updateProfile`).
+4. ✅ `apps/web`/`apps/mobile` still don't import `@supabase/supabase-js` directly — unchanged, everything goes through `packages/api`.
 
-**Checkpoint:** A small script or temporary test in `packages/api` can fetch the seeded course/lesson list and get real data back, fully typed.
+**Checkpoint (still pending — needs a real project):** A small script or temporary test in `packages/api` can fetch the seeded course/lesson list and get real data back, fully typed. The code is ready; there's just nothing live to call yet.
 
 ---
 
@@ -121,11 +123,13 @@ Per `docs/GUIDE.md` §6 (already stubbed, waiting on this work):
 
 **Est. time: 2–3 hrs** (screens + route guards; OAuth redirect config is the fiddly part)
 
-- Email/password: use Supabase Auth's built-in `signUp`/`signInWithPassword` via the client from step 6.
-- Google OAuth: configure the Google provider in Supabase dashboard (Authentication → Providers), then set up redirect URIs for both web (your Vercel domain + localhost) and mobile (Expo's auth session redirect scheme).
-- Build minimal login/signup screens in both apps (currently absent — see `docs/PROGRESS.md` → "Product surfaces not yet built") and a route guard that redirects unauthenticated users.
+**v1 providers, per a later CTO decision superseding the Google-only note in `AI_project_bible.md` §9: email/password + Google OAuth + Apple Sign-In.** ("SSO" here means these two social providers only — no enterprise SAML/OIDC.)
 
-**Checkpoint:** You can sign up, log in, log out, and hit a route guard on both web and mobile against the real project.
+- ✅ `packages/api/src/repositories/auth.ts` is implemented against the real client (`signUp`, `signInWithPassword`, `signInWithOAuth('google' | 'apple')`, `signOut`, `getSession`, `onAuthStateChange`). Native Apple Sign-In (`expo-apple-authentication` + `signInWithIdToken`) is **not yet implemented** — see `docs/BACKEND_SSO_SETUP.md` §5c for why iOS needs it and what to add.
+- **Still to do (needs a real project + dashboard access):** configure the Google and Apple providers in the Supabase dashboard, set up redirect URIs for web (Vercel domain + localhost) and mobile (Expo auth proxy + `cappy://` deep link). **Full concrete step-by-step for both providers now lives in `docs/BACKEND_SSO_SETUP.md`** — this section used to have the how-to inline; it's been extracted there since it's a CTO-executed runbook, not implementation work.
+- **Still to do (product surface, not backend):** build minimal login/signup screens in both apps (currently absent — see `docs/PROGRESS.md` → "Product surfaces not yet built") and a route guard that redirects unauthenticated users.
+
+**Checkpoint:** You can sign up, log in, log out, and hit a route guard on both web and mobile against the real project. See `docs/BACKEND_SSO_SETUP.md` §6 for the full smoke-test checklist.
 
 ---
 

@@ -1,7 +1,7 @@
 # Progress — Cappy
 
-**Last updated:** 2026-07-04
-**Status:** UI structure scaffolded across web + mobile, mobile build runs end-to-end on Android, and the training pipeline has completed its core ML milestones. Backend and browser integration remain the next major work items.
+**Last updated:** 2026-07-17
+**Status:** Backend (schema/RLS/API wiring) and auth UI (login/signup/SSO buttons/route guards) are now implemented in code on both web and mobile, awaiting a live Supabase project + real keys to actually connect. TF.js browser integration is still pending (see §2).
 
 ---
 
@@ -63,24 +63,24 @@ Same 9 screens ported to native, mirroring web's visual language:
 
 ## 2. What's Left
 
-### Backend (not started)
-- Real Supabase project provisioning (auth, Postgres, storage).
-- Actual DB schema/migrations matching `packages/types` shapes.
-- Row-Level Security policies on every user-data table.
-- Wiring `packages/api` repository stubs to real Supabase calls.
-- Auth flows (email/password + Google OAuth) in both apps — currently no login screen exists in either app.
-- **Confidence this is buildable as scoped:** 90% (schema shape is already fully derived from `packages/types`, and Supabase's tooling — CLI, migrations, generated types, RLS — is mature and well-documented; the risk is entirely in careful RLS policy writing, not in unknowns).
-- **Estimated effort, one person, normal work pace:** ~14–20 hours end-to-end (provisioning + schema + RLS + seed data + wiring `packages/api` + smoke-testing both apps against it). See `docs/DB_SETUP_GUIDE.md` for the step-by-step breakdown and per-step hour estimates.
+### Backend (schema/RLS/API code complete, no live project yet)
+- `supabase/migrations/` — full schema (users, courses, units, lessons, exercises, user_progress, lesson_progress, letter_mastery, streaks, achievements, user_achievements, daily_activity) + RLS policies (`auth.uid() = user_id` baseline on user-data tables, public-read on curriculum tables). `supabase/seed.sql` seeds the ASL Alphabet course + A/S/E unit + achievements.
+- `packages/api` now has a real `createSupabaseClient()` and real repository implementations (courses/lessons/progress/achievements/auth/profile) — no more "not implemented" throws. Reads env vars from root/Vite/Expo conventions; throws a clear "not configured" error at call time until real keys exist.
+- `packages/types/src/auth.ts` — `AuthUser`, `Session`, `LoginCredentials`, `SignupCredentials`, `OAuthProvider` ('google' | 'apple').
+- **Still needed:** a real Supabase project + keys (`.env.example` files show exactly what's expected), then run the migrations/seed against it. See `docs/BACKEND_SSO_SETUP.md` for the full runbook (Google + Apple OAuth provider setup, redirect URIs) and `docs/DB_SETUP_GUIDE.md` for the original step-by-step plan (now annotated with what's done in code vs. what needs the live project).
+- **Known gap:** native Apple Sign-In (`expo-apple-authentication` + `signInWithIdToken`) isn't implemented on mobile yet — `signInWithOAuth('apple')` will error until that's added.
 
-### ML (explicitly deferred — you're training separately)
-- Actual MediaPipe landmark extraction + classifier training (`apps/training`).
-- Exporting to TF.js (web) and TFLite (mobile).
-- Implementing `HandPosePredictor` for real in both apps and replacing the mocked confidence-tier cycling in `apps/mobile`'s practice screen and the static states in `apps/web`'s practice screen.
-- Real camera capture → landmark → prediction pipeline (camera permission UI exists as a shell only; no `getUserMedia`/live inference wired on web, no live landmark feed on mobile).
+### ML — landmark extraction, training, and web integration complete; mobile pending
+- Landmark extraction, normalization, and model training all re-run for real (the previously reported artifacts weren't actually on disk — see `docs/CHANGELOG.md`). Random Forest baseline: 98.7% accuracy. Keras MLP (for TF.js export, since RF can't convert directly): 98.8% accuracy.
+- `apps/training/exports/tensorflowjs/` has the real exported model; `apps/web/src/ml/` implements `HandPosePredictor` for real using it, replacing the mocked confidence-tier cycling and camera shell in `apps/web/src/screens/LessonPractice.tsx` with a live `getUserMedia` feed + MediaPipe `HandLandmarker` + TF.js inference.
+- **Still needed:** mobile ML integration (`apps/mobile/app/lesson/[id]/practice.tsx` still has its `HandPosePredictor` TODO — react-native TF.js is a different runtime and wasn't attempted this pass) and TFLite export for mobile.
+- Webcam testing (`apps/training/scripts/webcam_test.py`) exists but wasn't re-verified against the freshly retrained model in this pass.
 
-### Product surfaces not yet built
-- No login/signup screens (onboarding jumps straight into the app; no actual auth gate).
-- No real routing guards (e.g. redirect unauthenticated users).
+### Product surfaces
+- Login/signup screens now exist on both web (`apps/web/src/screens/{Login,Signup}.tsx`) and mobile (`apps/mobile/app/{login,signup}.tsx`), with Google/Apple SSO buttons (UI only — SSO wiring depends on a live Supabase project, see Backend above).
+- Route guards now exist: web's `RequireAuth` wraps the `NavLayout` route group; mobile's `useAuthGate()` in `(tabs)/_layout.tsx` redirects to `/login`. Both **fail open** (don't block navigation) if the backend throws "not configured" — this is intentional so dev stays usable pre-launch, but means there's currently no real enforcement until a live project exists.
+- Profile screens on both apps now have a working "Sign out" action.
+- ASL per-letter reference photos are wired in: `apps/web/src/assets/asl-samples/` + `ReferenceImage` component (used in `LessonDemo.tsx`), `apps/mobile/assets/asl-samples/` + `aslSamples.ts` (used in mobile's lesson `demo.tsx`, replacing the old "Demonstration video placeholder" text).
 - Settings/accessibility toggles (reduced motion, text size) are stubbed — not functionally wired to a real settings store.
 - No error/empty/loading states designed yet (screens assume mock data is always present).
 - No responsive/tablet layout pass on web beyond default Tailwind behavior.

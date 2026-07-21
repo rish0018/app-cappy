@@ -1,8 +1,52 @@
+import { getSession, onAuthStateChange } from "@cappy/api";
 import { Ionicons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
-import React from "react";
+import { Redirect, Tabs } from "expo-router";
+import React, { useEffect, useState } from "react";
+
+type AuthGateState = "checking" | "authenticated" | "unauthenticated";
+
+/**
+ * Auth gate: unauthenticated users are redirected to /login. There is no
+ * live Supabase project configured yet, so @cappy/api's auth functions
+ * throw a "not configured" error — we deliberately FAIL OPEN on that (warn
+ * to console, treat as authenticated) so the app stays usable in dev until
+ * a real backend lands. Once auth is wired up, getSession()/onAuthStateChange
+ * resolving to `null` is what actually triggers the redirect.
+ */
+function useAuthGate(): AuthGateState {
+  const [state, setState] = useState<AuthGateState>("checking");
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    getSession()
+      .then((session) => setState(session ? "authenticated" : "unauthenticated"))
+      .catch((err) => {
+        console.warn("[auth-gate] getSession() unavailable, failing open:", err);
+        setState("authenticated");
+      });
+
+    try {
+      unsubscribe = onAuthStateChange((session) => {
+        setState(session ? "authenticated" : "unauthenticated");
+      });
+    } catch (err) {
+      console.warn("[auth-gate] onAuthStateChange() unavailable, failing open:", err);
+    }
+
+    return () => unsubscribe?.();
+  }, []);
+
+  return state;
+}
 
 export default function TabsLayout() {
+  const authState = useAuthGate();
+
+  if (authState === "unauthenticated") {
+    return <Redirect href="/login" />;
+  }
+
   return (
     <Tabs
       screenOptions={{

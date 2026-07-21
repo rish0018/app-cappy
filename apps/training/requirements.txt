@@ -6,9 +6,15 @@ opencv-python
 mediapipe
 tensorflow
 tensorflowjs
+# tensorflowjs's SavedModel converter transitively imports tensorflow_decision_forests,
+# whose compiled protobufs require a newer protobuf runtime than the one tensorflow
+# itself pins (>=6.31.1 vs tensorflow's <6.0.0dev) -- pin explicitly, works despite pip's
+# conflict warning (see scripts/export_tfjs.py).
+protobuf>=6.31.1
 Pillow
 tqdm
 joblib
 jupyter
 notebook
 ipykernel
+kagglehub

@@ -154,14 +154,31 @@ Runs `dev` in every app in parallel via Turborepo (currently: web + mobile). Use
 
 ## 6. Environment variables
 
-**None are required yet.** The backend (`packages/api`) is currently a typed stub — no real Supabase project is wired up, so there's nothing to configure to run the apps today.
+`packages/api` now has a real `createSupabaseClient()` and real repository implementations — but there is still no live Supabase project, so the apps run today with auth/data calls throwing a clear "not configured yet" error at call time (both the web and mobile route guards fail open when this happens, so the app stays usable without a backend).
 
-Once Supabase is provisioned (see `PROGRESS.md` → "What's Left"), you'll need a `.env` file (not committed — check `.gitignore`) with at minimum:
+To connect a real project, copy the example env files and fill in the values from your Supabase dashboard (Settings → API):
 ```
+cp .env.example .env
+cp apps/web/.env.example apps/web/.env.local
+cp apps/mobile/.env.example apps/mobile/.env
+```
+
+Variable names by context (first pair found wins, checked in this order in `packages/api/src/client.ts`):
+```
+# Root / plain Node
 SUPABASE_URL=...
 SUPABASE_ANON_KEY=...
+
+# apps/web (Vite)
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+
+# apps/mobile (Expo)
+EXPO_PUBLIC_SUPABASE_URL=...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=...
 ```
-This doc will be updated with exact variable names and where to place them (web uses Vite's `import.meta.env.VITE_*` convention; mobile uses Expo's `EXPO_PUBLIC_*` convention) once that work starts.
+
+Once you provision the project and set these, run the schema/RLS/seed migrations under `supabase/migrations/` and `supabase/seed.sql`, then follow `docs/BACKEND_SSO_SETUP.md` to configure Google + Apple OAuth. See `docs/DB_SETUP_GUIDE.md` for the full provisioning checklist.
 
 ---
 
