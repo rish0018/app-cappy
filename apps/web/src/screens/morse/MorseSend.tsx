@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ConfidenceIndicator, MorseKeyer, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
-import { validateSendAttempt, type TapEvent } from "@cappy/core";
+import { tapsToPattern, validateSendAttempt, type TapEvent } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
 import { fadeUp, fadeUpReduced } from "../../components/motion";
 
@@ -68,7 +68,7 @@ export function MorseSend() {
       <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
         <h1 className="font-display text-3xl font-bold text-neutral-800">Send: {character}</h1>
 
-        <MorseSequenceDisplay pattern={taps.length > 0 ? taps.map(() => "•").join("") : ""} />
+        <MorseSequenceDisplay pattern={tapsToPattern(taps)} />
 
         <MorseKeyer onTap={handleTap} disabled={result !== null} />
 

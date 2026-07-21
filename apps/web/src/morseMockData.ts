@@ -32,6 +32,18 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
 
   return [
     {
+      id: `${group.id}-learn`,
+      unitId,
+      title: `${group.label}   Learn`,
+      description: "Review the dot/dash patterns and hear the sounds for these characters.",
+      exerciseType: "learn" as const,
+      characters,
+      prosigns: group.prosigns,
+      estimatedMinutes: 5,
+      xpReward: 20,
+      orderIndex: 0,
+    },
+    {
       id: `${group.id}-send`,
       unitId,
       title: `${group.label}   Sending`,
@@ -40,7 +52,7 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
       characters,
       estimatedMinutes: 5,
       xpReward: 25,
-      orderIndex: 0,
+      orderIndex: 1,
     },
     {
       id: `${group.id}-receive`,
@@ -51,7 +63,7 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
       characters,
       estimatedMinutes: 5,
       xpReward: 25,
-      orderIndex: 1,
+      orderIndex: 2,
     },
     {
       id: `${group.id}-checkout`,
@@ -60,26 +72,22 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
       description: "A mixed review to confirm you've got this level down.",
       exerciseType: "checkout" as const,
       characters,
+      prosigns: group.prosigns,
       estimatedMinutes: 8,
       xpReward: 50,
-      orderIndex: 2,
+      orderIndex: 3,
     },
   ];
-}).filter((lesson) => lesson.characters.length > 0 || lesson.exerciseType === "checkout");
+}).filter((lesson) => lesson.characters.length > 0 || lesson.prosigns?.length || lesson.exerciseType === "checkout");
 
 export const mockMorseLessonById: Record<string, MorseLesson> = Object.fromEntries(
   mockMorseLessons.map((lesson) => [lesson.id, lesson]),
 );
 
-export const mockActiveMorseLessonId = mockMorseLessons[1]!.id;
+export const mockActiveMorseLessonId = mockMorseLessons[0]!.id;
 
 export const mockMorseLessonStatusById: Record<string, MorseLessonStatus> = Object.fromEntries(
-  mockMorseLessons.map((lesson, index) => {
-    let status: MorseLessonStatus = "not-started";
-    if (index === 0) status = "completed";
-    else if (lesson.id === mockActiveMorseLessonId) status = "in-progress";
-    return [lesson.id, status];
-  }),
+  mockMorseLessons.map((lesson) => [lesson.id, "in-progress"]),
 );
 
 const ALL_MORSE_CHARACTERS = Object.keys(MORSE_MAP) as MorseCharacter[];
@@ -118,10 +126,5 @@ export const mockMorseWordStageById: Record<string, MorseWordStage> = Object.fro
  * dev the first stage is unlocked and later active stages show as locked.
  */
 export function isWordStageUnlocked(stage: MorseWordStage): boolean {
-  if (stage.status !== "active") return false;
-  return stage.requiredGroupIds.every((groupId) => {
-    const group = MORSE_GROUPS.find((g) => g.id === groupId);
-    if (!group || group.characters.length === 0) return true;
-    return averageMasteryForCharacters([...group.characters]) >= 0.5;
-  });
+  return stage.status === "active";
 }

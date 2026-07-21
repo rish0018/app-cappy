@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Morse Code   words & staged curriculum
+- Added word-level Morse logic to `@cappy/core` (`morse/words.ts`): word/phrase → per-letter patterns, full audio timelines with standard 3-unit letter gaps and 7-unit word gaps, gap classification for tap streams, and `validateWordSendAttempt` for scoring word-level sending (shared by web and mobile).
+- Added the word & phrase curriculum to `@cappy/types` (`MORSE_WORD_STAGES`): five active stages (First Words, Everyday Words, Full Alphabet Words, Short Phrases, On the Air). Active stages are now immediately testable.
+- New `/morse/words/:stageId` practice screen (listen to a whole word, pick it, pattern revealed per letter after answering), with the unlock guard simplified so all active stages are accessible during testing.
+- Added a dedicated Morse learn lesson before each practice block so learners can review dot/dash patterns and hear the sounds for every character.
+- Redesigned the Morse learn screen to use a two-column review layout and simplified the action flow to a single Practice button.
 ### Bug fixes from real-device/browser testing (2026-07-21)
 - **Fixed a real bug that let unauthenticated users straight into the app**: `packages/api/src/client.ts`'s env-var reader used `(import.meta as any)?.env`   Vite's dev server statically pattern-matches the literal, unwrapped `import.meta.env` expression to inject real env values; the optional-chaining (`?.`) form defeats that match and silently evaluates to `undefined` even with a valid `.env.local`. This made `createSupabaseClient()` always throw "not configured," which made every route guard fail open. Confirmed via a headless-browser repro before and after the fix   `/lessons/:id/demo` now correctly redirects an unauthenticated visitor to `/login`, with zero console warnings once actually authenticated.
 - **Fixed `apps/mobile/android/gradlew` missing its executable bit** (`git ls-files -s` shows it's tracked as mode `100644`)   this breaks `expo run:android` with `spawn .../gradlew EACCES` on every fresh clone. Fixed locally (`chmod +x`); **needs `git update-index --chmod=+x apps/mobile/android/gradlew` committed** so this doesn't regress for the next person who clones the repo.

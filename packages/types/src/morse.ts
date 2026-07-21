@@ -52,7 +52,7 @@ export const MORSE_GROUPS: readonly MorseGroup[] = [
   { id: "level-6", label: "Level 6   Bonus: Prosigns", characters: [], prosigns: ["SOS", "AR", "KN"] },
 ] as const;
 
-export type MorseExerciseType = "send" | "receive" | "checkout";
+export type MorseExerciseType = "learn" | "send" | "receive" | "checkout";
 
 /**
  * Word & phrase curriculum stages, layered on top of the character levels.
@@ -98,7 +98,7 @@ export const MORSE_WORD_STAGES: readonly MorseWordStage[] = [
     label: "Full Alphabet Words",
     description: "Words that reach across the whole alphabet.",
     words: ["QUIET", "WORLD", "ZEBRA", "PROUD", "RHYTHM", "VOYAGE", "EXPLORE"],
-    status: "dormant",
+    status: "active",
     requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
     orderIndex: 2,
   },
@@ -107,7 +107,7 @@ export const MORSE_WORD_STAGES: readonly MorseWordStage[] = [
     label: "Short Phrases",
     description: "Two-word phrases   your first real messages.",
     words: ["HI MOM", "GOOD DAY", "BE CALM", "ALL CLEAR", "ON MY WAY"],
-    status: "dormant",
+    status: "active",
     requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
     orderIndex: 3,
   },
@@ -116,7 +116,7 @@ export const MORSE_WORD_STAGES: readonly MorseWordStage[] = [
     label: "On the Air",
     description: "Real operator shorthand: greetings, sign-offs, and calls.",
     words: ["CQ CQ", "73", "SOS", "QTH", "OVER OUT"],
-    status: "dormant",
+    status: "active",
     requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
     orderIndex: 4,
   },
@@ -137,6 +137,7 @@ export interface MorseLesson {
   description: string;
   exerciseType: MorseExerciseType;
   characters: MorseCharacter[];
+  prosigns?: string[];
   estimatedMinutes: number;
   xpReward: number;
   orderIndex: number;

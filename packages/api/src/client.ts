@@ -1,17 +1,14 @@
 /**
  * Supabase client factory.
  *
- * Per docs/AI_project_bible.md §9-10, Supabase is the backend of record.
+ * Per docs/PROJECT_BIBLE.md §167-168, Supabase is the backend of record.
  * This file is the ONLY place a Supabase client is ever constructed  
  * apps and other packages must go through @cappy/api's repositories
  * (see src/repositories/*), never instantiate their own client.
  *
- * There is currently NO live Supabase project and NO real credentials
- * (see docs/DB_SETUP_GUIDE.md and docs/BACKEND_SSO_SETUP.md for the
- * provisioning runbook). This client reads whichever env vars are present
- * so it works unmodified in web (Vite), mobile (Expo), and plain Node
- * contexts, and throws a clear, actionable error at call time   not at
- * import time   if none are configured yet.
+ * Expected environment variables (not read yet   stub only):
+ *   SUPABASE_URL       - project URL
+ *   SUPABASE_ANON_KEY  - public anon key
  *
  * Supported env var pairs (first one found wins):
  *   - Root / Node:  SUPABASE_URL              / SUPABASE_ANON_KEY

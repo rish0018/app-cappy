@@ -3,6 +3,10 @@
 This folder contains the core project documentation for Cappy.
 
 ## Documents
+- [PROJECT_BIBLE.md](PROJECT_BIBLE.md)   product scope, roadmap, and architecture decisions.
+- [VISION.md](VISION.md)   the product vision and guiding questions.
+- [DECISIONS.md](DECISIONS.md)   key architectural and product decisions.
+- [CHANGELOG.md](CHANGELOG.md)   release and project history notes.
 - [AI_project_bible.md](AI_project_bible.md)   the current, authoritative project bible (v1.1). Use this over `PROJECT_BIBLE.md` below, which is an earlier, superseded draft kept for deeper background reading only.
 - [PROJECT_BIBLE.md](PROJECT_BIBLE.md)   earlier/larger draft (v0.1.0), superseded by `AI_project_bible.md`; still useful for deep curriculum/lesson-UX rationale in its appendices.
 - [VISION.md](VISION.md)   the product vision and guiding questions.

@@ -140,3 +140,730 @@ CHARACTER PROMPTS
 =====================================================================
 RECOMMENDED FOLDER STRUCTURE
 =====================================================================
+Library for Achievements Section 
+This is one of those ideas that can either become a gimmick or become the thing people remember about Cappy ten years from now.
+
+The difference is whether it feels like:
+
+> "A bookshelf UI with badges"
+
+or
+
+> "A physical place that slowly becomes a reflection of your learning journey."
+
+You want the second.
+
+---
+
+# The Core Philosophy
+
+Most apps treat achievements as events.
+
+```text
+Achievement unlocked.
++50 XP.
+Badge added.
+```
+
+Then it disappears forever.
+
+Cappy should treat achievements as memories.
+
+A learner shouldn't think:
+
+> "I unlocked a badge."
+
+They should think:
+
+> "I wrote another chapter."
+
+The library is not an achievement screen.
+
+It is your learning autobiography.
+
+---
+
+# The Feeling
+
+If Duolingo is:
+
+```text
+Arcade machine
+```
+
+Cappy should feel like:
+
+```text
+Personal study room.
+```
+
+Imagine entering a quiet library at sunset.
+
+Dust particles float through warm light.
+
+Books sit on oak shelves.
+
+A small lamp glows softly.
+
+The room feels lived in.
+
+Not empty.
+
+Not gamified.
+
+Not optimized for engagement metrics.
+
+Optimized for reflection.
+
+---
+
+# Visual Direction
+
+## Primary References
+
+### Studio Ghibli Interiors
+
+Especially:
+
+* Whisper of the Heart
+* The Wind Rises
+* Howl's Moving Castle studies
+* The Secret World of Arrietty interiors
+
+Warm woods.
+
+Paper textures.
+
+Brass details.
+
+Books that look touched by people.
+
+---
+
+### Apple Editorial Motion
+
+For:
+
+* transitions
+* camera movement
+* subtle lighting
+* premium polish
+
+---
+
+### Monument Valley
+
+For:
+
+* spatial clarity
+* simplicity
+* composition
+
+---
+
+### Notion
+
+For:
+
+* information density
+* hierarchy
+* breathing room
+
+---
+
+### Headspace
+
+For:
+
+* emotional tone
+* lack of pressure
+* warmth
+
+---
+
+# Physical Construction
+
+This should not be flat UI.
+
+This should be a miniature 3D room.
+
+Not a game.
+
+A diorama.
+
+Imagine:
+
+```text
+┌─────────────────────────┐
+│                         │
+│     Window              │
+│                         │
+│ Bookshelf   Lamp        │
+│                         │
+│ Achievement Desk        │
+│                         │
+│ Reading Chair           │
+│                         │
+└─────────────────────────┘
+```
+
+Almost like a Pixar set.
+
+---
+
+# Why 3D Matters
+
+Flat cards say:
+
+```text
+data
+```
+
+Physical objects say:
+
+```text
+history
+```
+
+A 3D book immediately communicates:
+
+* weight
+* permanence
+* ownership
+* value
+
+You remember books.
+
+You don't remember cards.
+
+---
+
+# How 3D Should Work
+
+Not realistic Unreal Engine rendering.
+
+Think:
+
+```text
+Apple Vision Pro demos
++
+Monument Valley
++
+Pixar props
+```
+
+Materials should be stylized realism.
+
+---
+
+## Books
+
+Books should have:
+
+### Thickness
+
+Thin:
+
+```text
+first lesson
+```
+
+Medium:
+
+```text
+7 day streak
+```
+
+Large:
+
+```text
+ASL Mastery
+```
+
+Massive:
+
+```text
+1 Year Learner
+```
+
+---
+
+### Materials
+
+Common achievements:
+
+```text
+linen cover
+```
+
+Rare:
+
+```text
+leather cover
+```
+
+Epic:
+
+```text
+gold embossing
+```
+
+Legendary:
+
+```text
+cloth wrapped atlas
+```
+
+---
+
+### Physical Aging
+
+Older achievements become:
+
+* worn edges
+* faded corners
+* darker leather
+* slightly bent pages
+
+The room becomes lived in.
+
+---
+
+# Shelf Logic
+
+Shelves are categories.
+
+Example:
+
+```text
+Shelf 1
+Beginnings
+
+Shelf 2
+Consistency
+
+Shelf 3
+Mastery
+
+Shelf 4
+Exploration
+
+Shelf 5
+Community
+```
+
+The user sees their journey visually.
+
+---
+
+# Environmental Evolution
+
+This is the secret weapon.
+
+The library grows.
+
+---
+
+## Day 1
+
+```text
+One shelf.
+
+One lamp.
+
+Three books.
+```
+
+---
+
+## 1 Month
+
+```text
+Two shelves.
+
+Plant appears.
+
+Bookmarks appear.
+```
+
+---
+
+## 6 Months
+
+```text
+Wall map.
+
+More books.
+
+Brass globe.
+
+Study chair.
+```
+
+---
+
+## 1 Year
+
+```text
+Full room.
+
+Warm lighting.
+
+Large collection.
+
+Personal study sanctuary.
+```
+
+The room itself becomes progress.
+
+---
+
+# Book Opening Animation
+
+This should feel expensive.
+
+Sequence:
+
+```text
+Hover
+↓
+Book lifts 4px
+↓
+Soft shadow grows
+↓
+Click
+↓
+Book slides outward
+↓
+Camera zooms
+↓
+Book rotates toward viewer
+↓
+Cover opens
+↓
+Pages turn
+↓
+Content revealed
+```
+
+Duration:
+
+```text
+700-1200ms
+```
+
+Everything eased.
+
+No snapping.
+
+---
+
+# Inside The Book
+
+The book isn't a modal.
+
+It is a physical object.
+
+Two pages.
+
+---
+
+## Left Page
+
+```text
+Illustration
+
+Achievement title
+
+Unlock date
+```
+
+---
+
+## Right Page
+
+```text
+Story
+
+Statistics
+
+Memories
+
+Related lessons
+```
+
+Example:
+
+```text
+The First Week
+
+Unlocked:
+March 16 2027
+
+Seven quiet days became a habit.
+
+You practiced for
+83 minutes.
+
+You learned:
+A B C D E F G
+
+Mentor Cappy's Note:
+
+"The hardest part was showing up.
+You already did that."
+```
+
+---
+
+# Camera Behavior
+
+The camera should feel cinematic.
+
+Never abrupt.
+
+Example:
+
+```text
+Idle room view
+
+↓
+
+Select shelf
+
+↓
+
+Camera pans
+
+↓
+
+Select book
+
+↓
+
+Camera zooms
+
+↓
+
+Book opens
+
+↓
+
+Page view
+
+↓
+
+Close
+
+↓
+
+Return to shelf
+```
+
+Almost Pixar-level staging.
+
+---
+
+# Lighting
+
+Lighting sells realism.
+
+Morning:
+
+```text
+warm sunlight
+```
+
+Evening:
+
+```text
+desk lamp
+```
+
+Dust particles visible.
+
+Soft shadows.
+
+Indirect bounce lighting.
+
+No RGB.
+
+No glowing effects.
+
+---
+
+# Sound (if added)
+
+* page turn
+* leather movement
+* wood tap
+* soft shelf movement
+* distant room ambience
+
+Very subtle.
+
+---
+
+# Technical Direction
+
+If Claude builds this:
+
+```text
+Three.js
+```
+
+or
+
+```text
+React Three Fiber
+```
+
+for the room.
+
+---
+
+Books:
+
+```text
+actual 3D meshes
+```
+
+not cards.
+
+---
+
+Pages:
+
+```text
+skinned mesh animation
+```
+
+or
+
+```text
+shader driven page turns
+```
+
+---
+
+Lighting:
+
+```text
+HDRI environment map
+```
+
+Warm afternoon study room.
+
+---
+
+Performance target:
+
+```text
+60 FPS
+```
+
+even on midrange laptops.
+
+---
+
+# The Master Prompt
+
+```
+Design a premium 3D achievement experience for Cappy called The Library of Milestones.
+
+This is not an achievement screen.
+
+This is a physical memory space that evolves with the learner.
+
+Create a warm Scandinavian study room inspired by Studio Ghibli interiors, Apple editorial design and Pixar environmental storytelling.
+
+The environment should be built as a stylized 3D diorama rather than flat UI.
+
+Bookshelves contain physical books representing achievements.
+
+Each book has real thickness, materials, weight and aging.
+
+Book properties reflect rarity:
+
+Common:
+linen binding
+
+Rare:
+leather cover
+
+Epic:
+gold embossed hardcover
+
+Legendary:
+atlas scale reference books
+
+Books physically occupy shelf space and slowly fill the room over months and years.
+
+The room itself evolves:
+
+new shelves appear,
+plants grow,
+lamps are added,
+decorations emerge,
+maps appear,
+study tools accumulate.
+
+Opening a book should feel like interacting with a treasured object.
+
+Interaction sequence:
+
+hover
+book lifts slightly
+
+click
+book slides outward
+
+camera zooms
+
+cover opens
+
+pages turn realistically
+
+achievement content becomes visible
+
+Books contain:
+
+title,
+date,
+illustration,
+story,
+statistics,
+related lessons,
+mentor notes.
+
+The atmosphere should feel like:
+
+a quiet library at golden hour,
+dust particles in sunlight,
+oak shelves,
+linen textures,
+brass lamps,
+leather bindings,
+paper textures,
+soft shadows.
+
+Avoid:
+
+gamification,
+badges,
+trophies,
+confetti explosions,
+arcade aesthetics,
+neon colors,
+fantasy excess.
+
+The final emotional response should be:
+
+"These are not achievements."
+
+"These are chapters of my learning journey."
+```
+
+If executed well, this isn't just a feature.
+
+It's the kind of thing that ends up in product design case studies because nobody expects an accessibility learning app to preserve progress with this much care and physicality.

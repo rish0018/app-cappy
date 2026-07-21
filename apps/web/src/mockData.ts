@@ -16,8 +16,8 @@ import {
 
 export const mockUser: User = {
   id: "u-1",
-  email: "learner@cappy.app",
-  displayName: "Jordan",
+  email: "krishit40@gmail.com",
+  displayName: "RIshit",
   createdAt: "2026-04-01T00:00:00.000Z",
   totalXp: 1240,
 };

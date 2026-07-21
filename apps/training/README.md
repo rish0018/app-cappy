@@ -2,6 +2,7 @@
 activate python env .venv\Scripts\activate.bat for cmd 
 for powershell .\.venv\Scripts\Activate.ps1
 
+## Current Status   2026-07-04
 ## Current Status   2026-07-17
 
 > **Note:** as of this update, the entire pipeline below was re-run from scratch. The 2026-07-04 status table below had claimed "Complete" for extraction/training, but the actual model file and processed CSV were not present on disk anywhere in the repo   only summary reports had survived. Everything below is now backed by real artifacts.

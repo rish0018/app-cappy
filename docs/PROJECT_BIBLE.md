@@ -17613,6 +17613,8 @@ Messages
 Mastery
 ```
 
+In the most recent iteration, each character level now begins with a dedicated Learn lesson: learners see the dot/dash pattern and hear its tone before moving into sending and receiving practice.
+
 Consistency across learning systems strengthens usability.
 
 ---

@@ -2,50 +2,100 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { ConfidenceIndicator } from "@cappy/ui";
 
-const LANDMARKS = [
-  [48, 30], [40, 42], [56, 42], [34, 58], [62, 58], [48, 66],
-];
+// Brand Palette
+const colors = {
+  sageGreen: '#8AB8AE',
+  warmSand: '#D9AA78',
+  warmWalnut: '#7A5438',
+  creamWhite: '#F8F4EE',
+  softBeige: '#CEC1AE',
+  primaryBlue: '#4F7EA8',
+};
 
-/** Screen 4   Practice: camera preview, gentle hand-tracking overlay, confidence feedback. */
+const springTransition = {
+  type: "spring",
+  stiffness: 90,
+  damping: 15,
+};
+
+/** Screen 4: Practice - Emphatic, forgiving, and dynamic */
 export function PracticeScreen() {
   return (
-    <div className="flex h-full flex-col gap-4 px-6 py-2">
-      <p className="text-center text-[0.72rem] font-semibold uppercase tracking-[0.25em] text-[#8AB8AE]">
-        Try it yourself
-      </p>
+    <div className="flex h-full w-full flex-col justify-between bg-[#F8F4EE] px-6 py-8">
+      
+      {/* Header Section: Bold & Emphatic */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={springTransition}
+        className="mb-4 flex flex-col items-center text-center mt-2"
+      >
+        <span className="mb-2 rounded-full bg-[#4F7EA8]/15 px-4 py-1.5 text-[0.75rem] font-bold uppercase tracking-widest text-[#4F7EA8]">
+          Action Time
+        </span>
+        <h2 className="font-display text-3xl font-extrabold text-[#7A5438]">
+          Show me "YES!"
+        </h2>
+        <p className="mt-2 text-[0.9rem] font-medium text-[#CEC1AE]">
+          Make a fist and nod it gently in the frame.
+        </p>
+      </motion.div>
 
-      <div className="flex flex-1 flex-col justify-center gap-4">
-        <div className="relative mx-auto aspect-square w-full max-w-[13.5rem] overflow-hidden rounded-[1.4rem] bg-[#2b2620]">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 opacity-90"
-            style={{ background: "radial-gradient(circle at 50% 42%, #4a463f 0%, #2b2620 70%)" }}
-          />
-          {/* guide ring */}
-          <motion.div
-            className="absolute left-1/2 top-[42%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-white/30"
-            animate={{ scale: [1, 1.04, 1], opacity: [0.5, 0.85, 0.5] }}
-            transition={{ duration: 2.2, ease: "easeInOut", repeat: Infinity }}
-          />
-          {/* hand landmark dots */}
-          <svg viewBox="0 0 96 96" className="absolute inset-0 h-full w-full">
-            {LANDMARKS.map(([x, y], i) => (
-              <motion.circle
-                key={i}
-                cx={x}
-                cy={y}
-                r={2.6}
-                fill="#8AB8AE"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 1] }}
-                transition={{ duration: 0.6, delay: 0.15 * i, ease: "easeOut" }}
-              />
-            ))}
-          </svg>
+      {/* The Camera Viewport (The Emphatic Scanner) */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1, ...springTransition }}
+        className="relative mx-auto flex w-full max-w-[17rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[2.5rem] bg-[#EBE4D8] border-[6px] border-white shadow-[0_16px_40px_rgba(122,84,56,0.12),inset_0_4px_12px_rgba(0,0,0,0.05)]"
+      >
+        {/* Simulated Camera Feed Background */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-multiply"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1616628188550-808682f392a4?q=80&w=600&auto=format&fit=crop")' }}
+        />
+        
+        {/* The Sensing Aura (Replaces the broken dots) */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8AB8AE] opacity-20 blur-3xl mix-blend-overlay"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity }}
+        />
+
+        {/* Emphatic Focus Frame */}
+        <div className="absolute inset-6 rounded-[1.5rem] border-2 border-dashed border-[#F8F4EE]/60" />
+
+        {/* Dynamic Scanline (Implies ML processing without rigid dots) */}
+        <motion.div 
+          className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#F8F4EE] to-transparent opacity-60 blur-[1px]"
+          animate={{ top: ['15%', '85%', '15%'] }}
+          transition={{ duration: 3.5, ease: "linear", repeat: Infinity }}
+        />
+
+        {/* Floating Emphatic Feedback Badge */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1, type: "spring", stiffness: 200, damping: 10 }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-[#4F7EA8] px-5 py-2 shadow-lg"
+        >
+          <span className="text-[0.75rem] font-bold text-white tracking-wide shadow-sm">
+            Sensing motion...
+          </span>
+        </motion.div>
+      </motion.div>
+
+      {/* Confidence Feedback Zone */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, ...springTransition }}
+        className="mt-6 w-full"
+      >
+        <div className="mx-auto max-w-[15rem] rounded-[1.5rem] bg-white p-4 shadow-[0_8px_24px_rgba(122,84,56,0.06)] border border-[#F8F4EE]">
+          <ConfidenceIndicator score={0.88} />
         </div>
+      </motion.div>
 
-        <ConfidenceIndicator score={0.94} className="mx-auto" />
-      </div>
     </div>
   );
 }

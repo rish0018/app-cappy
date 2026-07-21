@@ -31,6 +31,10 @@ export default function LessonPracticeScreen() {
   const [tierIndex, setTierIndex] = useState(0);
   const tier = MOCK_TIER_CYCLE[tierIndex % MOCK_TIER_CYCLE.length]!;
 
+  // TODO: onFrame inference hook   replace mock with real HandPosePredictor
+  // from @cappy/core. That predictor consumes MediaPipe hand landmarks and
+  // returns { letter, confidence }; classifyConfidence() from @cappy/core
+  // then maps the score to a ConfidenceTier for ConfidenceIndicator below.
   // TODO: onFrame inference hook. `RNHandPosePredictor` (../../../src/ml/rnPredictor.ts)
   // implements the model-loading + inference half against @cappy/core's
   // HandPosePredictor contract (verified: loads the bundled TF.js model via
