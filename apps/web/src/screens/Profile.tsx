@@ -72,9 +72,9 @@ export function Profile() {
       await signOut();
       navigate("/login");
     } catch {
-      // Auth backend isn't configured yet in dev — let the learner leave
+      // Auth backend isn't configured yet in dev   let the learner leave
       // the screen anyway rather than trapping them behind a broken call.
-      console.warn("[Profile] signOut() failed — auth backend likely not configured yet.");
+      console.warn("[Profile] signOut() failed   auth backend likely not configured yet.");
       setSignOutNotice("We couldn't reach your account just now, but you're free to head back to sign in.");
     } finally {
       setSigningOut(false);

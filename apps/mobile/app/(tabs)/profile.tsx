@@ -128,7 +128,7 @@ export default function ProfileScreen() {
         <Card className="mb-lg">
           <Text className="mb-xs text-base font-bold text-neutral-800">Sign out</Text>
           <Text className="mb-md text-sm text-neutral-500">
-            Your progress is saved — you can pick right back up next time.
+            Your progress is saved   you can pick right back up next time.
           </Text>
           <Button
             label={signingOut ? "Signing out…" : "Sign out"}

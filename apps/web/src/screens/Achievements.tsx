@@ -66,7 +66,7 @@ export function Achievements() {
                 <MascotFigure pose="celebration" size="md" />
               </motion.div>
             }
-            message={`You just earned "${recent.name}"! ${recent.description} Keep going — you're building something real.`}
+            message={`You just earned "${recent.name}"! ${recent.description} Keep going   you're building something real.`}
           />
         </motion.div>
       ) : null}

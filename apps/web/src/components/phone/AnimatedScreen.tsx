@@ -1,7 +1,7 @@
 import * as React from "react";
 import { motion, type Variants } from "framer-motion";
 
-/** Keynote-style enter/exit: fade + slide + scale + a touch of blur — never a hard cut. */
+/** Keynote-style enter/exit: fade + slide + scale + a touch of blur   never a hard cut. */
 const SCREEN_VARIANTS: Variants = {
   enter: { opacity: 0, y: 18, scale: 0.97, filter: "blur(6px)" },
   center: {

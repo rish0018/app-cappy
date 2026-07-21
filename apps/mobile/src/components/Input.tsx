@@ -10,7 +10,7 @@ export interface InputProps extends Omit<TextInputProps, "style"> {
  * Labeled text field used across auth screens (login, signup). Matches
  * Button's 44px minimum touch target per accessibility guidelines. Errors
  * use the `error` color token (never accent orange, which is reserved for
- * warm/celebratory accents, not error states — see docs/AI_project_bible.md §11).
+ * warm/celebratory accents, not error states   see docs/AI_project_bible.md §11).
  */
 export function Input({ label, error, onBlur, onFocus, ...textInputProps }: InputProps) {
   const [focused, setFocused] = useState(false);

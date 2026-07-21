@@ -36,7 +36,7 @@ export interface MascotFigureProps {
 /**
  * Large full-body Cappy artwork, e.g. as a standalone dashboard/hero figure
  * (as opposed to the small icon used inside MascotMoment banners). Renders
- * a bare drop-shadowed <img> wrapped in idle life-sign motion — no bounding
+ * a bare drop-shadowed <img> wrapped in idle life-sign motion   no bounding
  * card/box, since the source art is a transparent PNG.
  *
  * Idle life-signs are split across two nested elements so independent

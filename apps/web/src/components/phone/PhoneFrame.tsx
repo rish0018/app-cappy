@@ -7,7 +7,7 @@ export interface PhoneFrameProps {
 }
 
 /**
- * A timeless flagship-phone shell — matte graphite aluminum, thin bezels,
+ * A timeless flagship-phone shell   matte graphite aluminum, thin bezels,
  * large display corners. Deliberately generic (no notch copy, no branding)
  * so it reads as "a phone" rather than a clone of any real device.
  */

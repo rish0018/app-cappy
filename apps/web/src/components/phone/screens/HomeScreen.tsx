@@ -2,7 +2,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { MascotFigure } from "@cappy/ui";
 
-/** Screen 1 — Welcome: friendly greeting, Cappy waves, one simple CTA, large whitespace. */
+/** Screen 1   Welcome: friendly greeting, Cappy waves, one simple CTA, large whitespace. */
 export function HomeScreen() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 px-7 text-center">
@@ -17,7 +17,7 @@ export function HomeScreen() {
         <p className="font-display text-[1.35rem] font-semibold leading-snug text-[#2b2620]">
           Hi, I'm Cappy
         </p>
-        <p className="text-[0.9rem] leading-snug text-[#877a68]">Ready when you are — no rush.</p>
+        <p className="text-[0.9rem] leading-snug text-[#877a68]">Ready when you are   no rush.</p>
       </div>
       <span className="rounded-full bg-[#4F7EA8] px-6 py-2.5 text-[0.85rem] font-semibold text-white shadow-[0_6px_16px_-6px_rgba(79,126,168,0.6)]">
         Let's begin

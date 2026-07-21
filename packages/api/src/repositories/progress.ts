@@ -3,7 +3,7 @@
  * Rules"): apps never talk to database tables directly. All reads/writes
  * for user progress, letter mastery, and streaks go through this
  * repository so the persistence layer can change without touching app
- * code. Every table here is RLS-protected (`auth.uid() = user_id`) — see
+ * code. Every table here is RLS-protected (`auth.uid() = user_id`)   see
  * supabase/migrations/20260716120001_rls_policies.sql.
  */
 import type { Letter, LessonProgress, LessonStatus, LetterMastery, Streak, UserProgress } from "@cappy/types";

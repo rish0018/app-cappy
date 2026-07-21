@@ -1,14 +1,14 @@
--- Cappy — Row-Level Security policies
+-- Cappy   Row-Level Security policies
 --
 -- Implements docs/DB_SETUP_GUIDE.md §3 / AI_project_bible.md §9 ("Key
 -- Rules"): RLS on every user-data table, never rely on frontend-only
 -- restrictions. Curriculum tables are public-read, no client-write.
 --
--- Not yet applied to any live project — see docs/BACKEND_SSO_SETUP.md §4
+-- Not yet applied to any live project   see docs/BACKEND_SSO_SETUP.md §4
 -- for how to run this against a real Supabase instance once provisioned.
 
 -- ============================================================================
--- User-data tables — baseline policy shape: auth.uid() = user_id
+-- User-data tables   baseline policy shape: auth.uid() = user_id
 -- ============================================================================
 
 -- ---- users -----------------------------------------------------------------
@@ -148,7 +148,7 @@ create policy "daily_activity_delete_own"
   using (auth.uid() = user_id);
 
 -- ============================================================================
--- Curriculum tables — public-read, no client-facing write policy. Writes
+-- Curriculum tables   public-read, no client-facing write policy. Writes
 -- only via service role (seed scripts / dashboard), which bypasses RLS.
 -- ============================================================================
 

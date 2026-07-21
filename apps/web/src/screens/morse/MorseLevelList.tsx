@@ -59,7 +59,7 @@ export function MorseLevelList() {
                   return (
                     <motion.div key={lesson.id} custom={i} variants={item}>
                       <LessonTile
-                        title={lesson.title.split(" — ")[1] ?? lesson.title}
+                        title={lesson.title.split("   ")[1] ?? lesson.title}
                         state={state}
                         onSelect={() => navigate(pathForLesson(lesson.id, lesson.exerciseType))}
                       />

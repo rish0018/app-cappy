@@ -18,7 +18,7 @@ try {
   logoSource = null;
 }
 
-/** Mascot callout used sparingly — celebrations, welcomes, and gentle explanations. */
+/** Mascot callout used sparingly   celebrations, welcomes, and gentle explanations. */
 export function MascotMoment({ message, subMessage, iconSource }: MascotMomentProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const source = iconSource ?? logoSource;

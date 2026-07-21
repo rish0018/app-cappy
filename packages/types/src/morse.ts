@@ -1,5 +1,5 @@
 /**
- * Morse Code module types — a standalone parallel type set, deliberately
+ * Morse Code module types   a standalone parallel type set, deliberately
  * NOT coupled to the ASL types in letters.ts/curriculum.ts/progress.ts.
  * Keeping Morse's Course/Lesson/Mastery shapes separate avoids any risk of
  * ASL and Morse progress ever colliding under a shared discriminator.
@@ -44,12 +44,12 @@ export interface MorseGroup {
  * structural/brand consistency, but is its own constant.
  */
 export const MORSE_GROUPS: readonly MorseGroup[] = [
-  { id: "level-1", label: "Level 1 — A–E, 0–4", characters: ["A", "B", "C", "D", "E", "0", "1", "2", "3", "4"] },
-  { id: "level-2", label: "Level 2 — F–J, 5–9", characters: ["F", "G", "H", "I", "J", "5", "6", "7", "8", "9"] },
-  { id: "level-3", label: "Level 3 — K–O", characters: ["K", "L", "M", "N", "O"] },
-  { id: "level-4", label: "Level 4 — P–T", characters: ["P", "Q", "R", "S", "T"] },
-  { id: "level-5", label: "Level 5 — U–Z", characters: ["U", "V", "W", "X", "Y", "Z"] },
-  { id: "level-6", label: "Level 6 — Bonus: Prosigns", characters: [], prosigns: ["SOS", "AR", "KN"] },
+  { id: "level-1", label: "Level 1   A–E, 0–4", characters: ["A", "B", "C", "D", "E", "0", "1", "2", "3", "4"] },
+  { id: "level-2", label: "Level 2   F–J, 5–9", characters: ["F", "G", "H", "I", "J", "5", "6", "7", "8", "9"] },
+  { id: "level-3", label: "Level 3   K–O", characters: ["K", "L", "M", "N", "O"] },
+  { id: "level-4", label: "Level 4   P–T", characters: ["P", "Q", "R", "S", "T"] },
+  { id: "level-5", label: "Level 5   U–Z", characters: ["U", "V", "W", "X", "Y", "Z"] },
+  { id: "level-6", label: "Level 6   Bonus: Prosigns", characters: [], prosigns: ["SOS", "AR", "KN"] },
 ] as const;
 
 export type MorseExerciseType = "send" | "receive" | "checkout";
@@ -57,7 +57,7 @@ export type MorseExerciseType = "send" | "receive" | "checkout";
 /**
  * Word & phrase curriculum stages, layered on top of the character levels.
  * Stages marked "dormant" are fully authored lesson plans that ship with
- * the app but stay hidden/locked until the team activates them — flip
+ * the app but stay hidden/locked until the team activates them   flip
  * status to "active" to release one, no other changes needed.
  */
 export type MorseStageStatus = "active" | "dormant";
@@ -105,7 +105,7 @@ export const MORSE_WORD_STAGES: readonly MorseWordStage[] = [
   {
     id: "phrases-1",
     label: "Short Phrases",
-    description: "Two-word phrases — your first real messages.",
+    description: "Two-word phrases   your first real messages.",
     words: ["HI MOM", "GOOD DAY", "BE CALM", "ALL CLEAR", "ON MY WAY"],
     status: "dormant",
     requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],

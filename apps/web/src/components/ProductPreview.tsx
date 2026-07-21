@@ -19,7 +19,7 @@ interface PanelDef {
 }
 
 /**
- * Static, non-interactive stand-in for the real LessonTile — this preview
+ * Static, non-interactive stand-in for the real LessonTile   this preview
  * is decorative (see aria-hidden on the root), so it deliberately avoids
  * rendering a focusable <button> that AT users could tab into twice (the
  * scroll track renders every panel twice to loop seamlessly).
@@ -48,7 +48,7 @@ const PANELS: PanelDef[] = [
           <img src={logoMark} alt="" className="h-14 w-14 rounded-full shadow-md" />
           <div>
             <p className="font-display text-lg font-semibold text-neutral-800">Hi, I'm Cappy</p>
-            <p className="text-sm text-neutral-500">Ready when you are — no rush.</p>
+            <p className="text-sm text-neutral-500">Ready when you are   no rush.</p>
           </div>
         </div>
         <div className="flex flex-wrap gap-sm">
@@ -100,7 +100,7 @@ const PANELS: PanelDef[] = [
       <>
         <p className="font-display text-lg font-semibold text-neutral-800">Letter mastery</p>
         <ProgressBar value={0.72} label="ASL alphabet" />
-        <p className="text-sm text-neutral-500">Day 5 of a quiet streak — steady wins.</p>
+        <p className="text-sm text-neutral-500">Day 5 of a quiet streak   steady wins.</p>
       </>
     ),
   },

@@ -14,7 +14,7 @@ export interface PhoneStoryControllerProps {
    * text block hands the phone just its own cluster of screens.
    */
   screens?: StoryStep[];
-  /** Identifies the active subset — the index resets to 0 whenever this changes. */
+  /** Identifies the active subset   the index resets to 0 whenever this changes. */
   groupKey?: string;
 }
 

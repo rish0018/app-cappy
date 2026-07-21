@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { getSession, onAuthStateChange } from "@cappy/api";
+import { getSession, onAuthStateChange, SupabaseNotConfiguredError } from "@cappy/api";
 import type { Session } from "@cappy/types";
 
 type AuthStatus = "checking" | "authenticated" | "unauthenticated" | "unconfigured";
@@ -8,12 +8,13 @@ type AuthStatus = "checking" | "authenticated" | "unauthenticated" | "unconfigur
 /**
  * Route guard for the authenticated app shell (NavLayout + its children).
  *
- * There is no live Supabase project wired up yet, so `getSession()` /
- * `onAuthStateChange()` currently throw a "not configured" error. Rather
- * than crash or trap the user, we treat any thrown error as "auth isn't
- * set up yet" and fail OPEN — render the app normally in dev, with a
- * console warning so it's obvious this needs revisiting once the real
- * backend lands.
+ * Fails open ONLY when Supabase itself isn't configured yet
+ * (`SupabaseNotConfiguredError`   e.g. a fresh dev checkout with no .env),
+ * so the app stays usable before a backend exists. Any OTHER error
+ * (network failure, outage, expired/malformed token) is treated as a real
+ * auth failure and redirects to /login   it must NOT be conflated with
+ * "not configured," or a live backend's real failures would silently let
+ * users into the protected app instead.
  */
 export function RequireAuth() {
   const [status, setStatus] = React.useState<AuthStatus>("checking");
@@ -33,12 +34,17 @@ export function RequireAuth() {
         });
       } catch (err) {
         if (cancelled) return;
-        console.warn(
-          "[RequireAuth] Auth backend is not configured yet — allowing navigation without a session. " +
-            "This guard will enforce real auth once Supabase is wired up.",
-          err,
-        );
-        setStatus("unconfigured");
+        if (err instanceof SupabaseNotConfiguredError) {
+          console.warn(
+            "[RequireAuth] Auth backend is not configured yet   allowing navigation without a session. " +
+              "This guard will enforce real auth once Supabase is wired up.",
+            err,
+          );
+          setStatus("unconfigured");
+        } else {
+          console.error("[RequireAuth] Unexpected auth error   treating as unauthenticated.", err);
+          setStatus("unauthenticated");
+        }
       }
     }
 

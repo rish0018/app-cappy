@@ -1,7 +1,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 
-/** Screen 3 — Lesson: one concept, a simple animated hand illustration, minimal copy. */
+/** Screen 3   Lesson: one concept, a simple animated hand illustration, minimal copy. */
 export function LessonScreen() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 px-7 text-center">

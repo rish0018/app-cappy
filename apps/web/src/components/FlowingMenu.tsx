@@ -25,7 +25,7 @@ export interface FlowingMenuProps {
 
 /**
  * Adapted from 0-ideation/flowing-menu-bar. The reference only reveals its
- * marquee on mouse enter/leave, which never fires on touch devices — tapping
+ * marquee on mouse enter/leave, which never fires on touch devices   tapping
  * would silently do nothing but navigate. Here every row is a real <button>
  * (always activatable via click/Enter/Space on any input), and on devices
  * without real hover we additionally use tap to *preview* the marquee panel
@@ -133,7 +133,7 @@ function FlowingMenuItemRow({
       typeof window !== "undefined" &&
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return; // static marquee — no auto-scrolling background motion
+    if (reducedMotion) return; // static marquee   no auto-scrolling background motion
 
     const setupMarquee = () => {
       if (!marqueeInnerRef.current) return;
@@ -195,7 +195,7 @@ function FlowingMenuItemRow({
   // tap) apart from a genuine keyboard Tab focus. Without this, a tap's
   // focus event would call setRevealed(true) a tick before the coincident
   // click runs handleActivate, which would then see revealed === true and
-  // navigate immediately instead of previewing — defeating the two-tap
+  // navigate immediately instead of previewing   defeating the two-tap
   // fallback entirely.
   const lastPointerTypeRef = React.useRef<string | null>(null);
 
@@ -221,7 +221,7 @@ function FlowingMenuItemRow({
    * Touch / keyboard-without-hover fallback: hovering can never happen, so
    * the first activation just previews the flowing panel instead of
    * silently doing nothing. A second activation (panel already open) runs
-   * the real action. On real-mouse devices this is a no-op passthrough —
+   * the real action. On real-mouse devices this is a no-op passthrough  
    * hover already revealed the panel, so activation always fires straight
    * away.
    */
@@ -235,7 +235,7 @@ function FlowingMenuItemRow({
     }
     if (isTouchLike && revealed) {
       // Touch/pen's own focus event was suppressed above, so `revealed`
-      // here can only have been set by a *previous* tap's activation —
+      // here can only have been set by a *previous* tap's activation  
       // meaning this is genuinely the second tap. Proceed to activate.
       onActivate();
       return;

@@ -51,7 +51,7 @@ export function MorseWords() {
           </h1>
           <p className="text-sm text-neutral-600 max-w-sm">
             {stage.status === "dormant"
-              ? "This stage is on Cappy's workbench — it'll open up in a future update."
+              ? "This stage is on Cappy's workbench   it'll open up in a future update."
               : "Finish the character levels this stage builds on first, then come back."}
           </p>
           <Button variant="secondary" onClick={() => navigate("/morse")}>
@@ -113,13 +113,13 @@ export function MorseWords() {
         animate="visible"
         variants={fade}
       >
-        {stage.label} — Word {wordIndex + 1} of {stage.words.length}
+        {stage.label}   Word {wordIndex + 1} of {stage.words.length}
       </motion.span>
 
       <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl px-lg">
         <h1 className="font-display text-2xl font-bold text-neutral-800">Which word did you hear?</h1>
         <p className="text-sm text-neutral-500 -mt-sm">
-          Listen for the longer pauses — they separate the letters.
+          Listen for the longer pauses   they separate the letters.
         </p>
 
         <MorseAudioPlayer timeline={timeline} />
@@ -140,7 +140,7 @@ export function MorseWords() {
         {answered && (
           <div className="flex flex-col items-center gap-md">
             <p className={correct ? "text-success-700" : "text-neutral-600"}>
-              {correct ? "Nice — that's right!" : `Not quite — that was "${word}". Let's keep going.`}
+              {correct ? "Nice   that's right!" : `Not quite   that was "${word}". Let's keep going.`}
             </p>
             <div className="flex flex-wrap items-end justify-center gap-md rounded-lg bg-neutral-50 p-md">
               {wordToPatterns(word).map((pattern, i) =>

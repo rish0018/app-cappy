@@ -9,12 +9,12 @@ import { fadeUp, fadeUpReduced } from "../../components/motion";
 
 const SEND_COPY = {
   high: { text: "Sent perfectly!", icon: "✓" },
-  medium: { text: "Close — check your dot/dash timing.", icon: "⏱" },
+  medium: { text: "Close   check your dot/dash timing.", icon: "⏱" },
   low: { text: "Let's try that pattern again.", icon: "↻" },
 };
 
 /**
- * Live tapping surface — the Card below deliberately has no entrance
+ * Live tapping surface   the Card below deliberately has no entrance
  * animation. Any delay on the interactive element itself would feel like
  * input lag during a timing-sensitive task; only the header settles in.
  */
@@ -62,7 +62,7 @@ export function MorseSend() {
         animate="visible"
         variants={fade}
       >
-        Character {charIndex + 1} of {lesson.characters.length} — Sending
+        Character {charIndex + 1} of {lesson.characters.length}   Sending
       </motion.span>
 
       <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
@@ -72,7 +72,7 @@ export function MorseSend() {
 
         <MorseKeyer onTap={handleTap} disabled={result !== null} />
 
-        <p className="text-sm text-neutral-500">Recorded {taps.length} symbol{taps.length === 1 ? "" : "s"} — expecting {expectedPattern.length}.</p>
+        <p className="text-sm text-neutral-500">Recorded {taps.length} symbol{taps.length === 1 ? "" : "s"}   expecting {expectedPattern.length}.</p>
 
         {result && <ConfidenceIndicator score={result.accuracy} copy={SEND_COPY} />}
 

@@ -1,5 +1,5 @@
 /**
- * @cappy/ui — WEB-ONLY React DOM component library.
+ * @cappy/ui   WEB-ONLY React DOM component library.
  *
  * These components use react-dom primitives (button, div, Tailwind
  * utility classes) and are intended for apps/web only. They are NOT

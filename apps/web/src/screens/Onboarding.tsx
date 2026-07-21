@@ -41,7 +41,7 @@ const STEPS: {
 }[] = [
   {
     chip: "bg-primary-100 text-primary-700",
-    // eye — "watch a demo"
+    // eye   "watch a demo"
     icon: (
       <>
         <path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z" />
@@ -52,7 +52,7 @@ const STEPS: {
   },
   {
     chip: "bg-tan-100 text-tan-600",
-    // camera — "practice with your camera"
+    // camera   "practice with your camera"
     icon: (
       <>
         <path d="M22 20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l2-3h6l2 3h3a2 2 0 0 1 2 2z" />
@@ -63,7 +63,7 @@ const STEPS: {
   },
   {
     chip: "bg-accent-100 text-accent-700",
-    // sprout — "build a gentle streak"
+    // sprout   "build a gentle streak"
     icon: (
       <>
         <path d="M12 22V11" />
@@ -71,7 +71,7 @@ const STEPS: {
         <path d="M12 11c0-3.3 2.4-5.5 6.5-5.5C18.5 8.8 16.1 11 12 11z" />
       </>
     ),
-    text: "Build a gentle streak — progress over perfection.",
+    text: "Build a gentle streak   progress over perfection.",
   },
 ];
 
@@ -87,7 +87,7 @@ export function Onboarding() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-[1fr_1.05fr] bg-neutral-50">
-      {/* Left — Cappy on a warm teal stage */}
+      {/* Left   Cappy on a warm teal stage */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 to-primary-800 text-neutral-0 flex flex-col items-center justify-center gap-xl px-lg py-3xl md:py-4xl order-1">
         {/* faint oversized morse-dash texture, mirrored from the Landing hero */}
         <svg
@@ -116,7 +116,7 @@ export function Onboarding() {
           <ProductPreview className="w-full" />
         </motion.div>
 
-        {/* Cappy's welcome — the existing MascotMoment message, now a proper
+        {/* Cappy's welcome   the existing MascotMoment message, now a proper
             speech bubble beside the full-size figure rather than a squeezed banner. */}
         <motion.div
           className="relative w-full max-w-sm"
@@ -134,13 +134,13 @@ export function Onboarding() {
                 className="h-8 w-8 shrink-0 rounded-full"
               />
             }
-            message="Hi, I'm Cappy! We'll take this at your pace — there's no clock running and no wrong way to learn. Ready to sign your first letter?"
+            message="Hi, I'm Cappy! We'll take this at your pace   there's no clock running and no wrong way to learn. Ready to sign your first letter?"
             className="shadow-lg"
           />
         </motion.div>
       </section>
 
-      {/* Right — welcome copy, checklist, CTA */}
+      {/* Right   welcome copy, checklist, CTA */}
       <section className="flex items-center justify-center px-lg py-3xl md:py-4xl order-2">
         <motion.div
           className="w-full max-w-md flex flex-col gap-xl"
@@ -166,11 +166,11 @@ export function Onboarding() {
             variants={item}
             className="text-base text-neutral-600 text-center md:text-left"
           >
-            A calm, encouraging way to learn American Sign Language — one letter
+            A calm, encouraging way to learn American Sign Language   one letter
             at a time.
           </motion.p>
 
-          {/* Checklist — brand-tinted icon chips, staggered in */}
+          {/* Checklist   brand-tinted icon chips, staggered in */}
           <motion.ul
             variants={reduced ? staggerChildrenReduced : staggerChildren}
             className="flex flex-col gap-md"

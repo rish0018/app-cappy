@@ -6,30 +6,30 @@
 
 ---
 
-## Current Status — Last Updated
+## Current Status   Last Updated
 
 | Phase | Script | Status | Notes |
 | ----- | ------ | ------ | ----- |
-| 1 — Dataset Inspection | `inspect_dataset.py` | ✅ Complete | 87,000 images, 29 classes verified |
-| 2 — Landmark Extraction | `extract_landmarks.py` | ✅ Complete | Resume checkpoint, per-class logging, graceful shutdown |
-| 3 — Normalization | `normalize_landmarks.py` | ✅ Complete | Wrist-relative + max-norm scale — matches inference exactly |
-| 4 — EDA | — | ⬜ Not started | |
-| 5 — Model Training | `train_model.py` | ✅ Complete | Random Forest, 300 trees, 98.9% validation accuracy |
-| 6 — Evaluation | `evaluate_model.py` | ✅ Complete | Per-class CSV, misclassification table, confusion matrix |
-| 7 — Webcam Testing | `webcam_test.py` | ✅ Complete | Top-5 panel, smoothed confidence, live bounding box |
-| 8 — TF.js Export | `export_tfjs.py` | ⬜ Not started | |
-| 9 — React Integration | — | ⬜ Not started | |
-| 10 — Educational Layer | — | ⬜ Not started | |
+| 1   Dataset Inspection | `inspect_dataset.py` | ✅ Complete | 87,000 images, 29 classes verified |
+| 2   Landmark Extraction | `extract_landmarks.py` | ✅ Complete | Resume checkpoint, per-class logging, graceful shutdown |
+| 3   Normalization | `normalize_landmarks.py` | ✅ Complete | Wrist-relative + max-norm scale   matches inference exactly |
+| 4   EDA |   | ⬜ Not started | |
+| 5   Model Training | `train_model.py` | ✅ Complete | Random Forest, 300 trees, 98.9% validation accuracy |
+| 6   Evaluation | `evaluate_model.py` | ✅ Complete | Per-class CSV, misclassification table, confusion matrix |
+| 7   Webcam Testing | `webcam_test.py` | ✅ Complete | Top-5 panel, smoothed confidence, live bounding box |
+| 8   TF.js Export | `export_tfjs.py` | ⬜ Not started | |
+| 9   React Integration |   | ⬜ Not started | |
+| 10   Educational Layer |   | ⬜ Not started | |
 
 ### Key decisions made
 
 - **Normalization pipeline confirmed.** Raw coordinates from `extract_landmarks.py` must pass through `normalize_landmarks.py` before training. The normalization (wrist subtraction + max-landmark-distance scaling) is mathematically identical between training and live inference. Skipping this step was the root cause of low webcam confidence in earlier testing.
-- **Confidence is now smoothed.** `webcam_test.py` tracks `(index, confidence)` pairs across a 7-frame history window. The displayed confidence is the average of frames that voted for the smoothed prediction — not a raw single-frame value.
+- **Confidence is now smoothed.** `webcam_test.py` tracks `(index, confidence)` pairs across a 7-frame history window. The displayed confidence is the average of frames that voted for the smoothed prediction   not a raw single-frame value.
 - **Top-5 candidate panel added.** See the Top-5 Acceptance Policy section below for how this feeds into the educational UX.
 
 ---
 
-## Version 1.0 — Machine Learning Roadmap
+## Version 1.0   Machine Learning Roadmap
 
 > **Location**
 >
@@ -212,7 +212,7 @@ Advantages:
 
 ---
 
-# Phase 1 — Dataset Research ✅
+# Phase 1   Dataset Research ✅
 
 ## Objective
 
@@ -229,13 +229,13 @@ Understand the dataset before writing ML code.
 
 ### Deliverables
 
-* ✅ Dataset downloaded — 87,000 images, 200×200px, 29 classes.
-* ✅ Dataset report — `inspect_dataset.py` produces per-class counts and corrupt file list.
+* ✅ Dataset downloaded   87,000 images, 200×200px, 29 classes.
+* ✅ Dataset report   `inspect_dataset.py` produces per-class counts and corrupt file list.
 * ✅ Initial experiment log.
 
 ---
 
-# Phase 2 — MediaPipe Extraction ✅
+# Phase 2   MediaPipe Extraction ✅
 
 ## Objective
 
@@ -249,33 +249,33 @@ Image → MediaPipe → 21 Hand Landmarks → CSV
 
 ### Tasks
 
-* ✅ `extract_landmarks.py` — production-quality scaffold.
+* ✅ `extract_landmarks.py`   production-quality scaffold.
 
 The script:
 
 * ✅ Reads every image.
 * ✅ Detects a hand with MediaPipe.
 * ✅ Extracts and saves 21 landmarks per image.
-* ✅ Skips invalid/unreadable images — logs them separately.
+* ✅ Skips invalid/unreadable images   logs them separately.
 * ✅ Distinguishes failed reads vs no-hand-detected.
-* ✅ Resume checkpoint (`progress.json`) — safe to interrupt and rerun.
+* ✅ Resume checkpoint (`progress.json`)   safe to interrupt and rerun.
 * ✅ Per-class breakdown in final summary.
 
 ### Deliverables
 
-* ✅ `datasets/csv/landmarks_raw.csv` — label + 63 raw coordinates per row.
+* ✅ `datasets/csv/landmarks_raw.csv`   label + 63 raw coordinates per row.
 
 ---
 
-# Phase 3 — Data Normalization ✅
+# Phase 3   Data Normalization ✅
 
 Raw coordinates must never be used directly for training.
 
 ### What is applied
 
 ```text
-1. Translate  — subtract wrist (landmark 0) from all 21 points
-2. Scale      — divide all points by the max landmark-to-wrist distance
+1. Translate    subtract wrist (landmark 0) from all 21 points
+2. Scale        divide all points by the max landmark-to-wrist distance
 ```
 
 This makes every sample invariant to:
@@ -297,7 +297,7 @@ if scale > 0:
     pts = pts / scale
 ```
 
-This was verified mathematically — zero difference between training and inference normalization.
+This was verified mathematically   zero difference between training and inference normalization.
 
 ### Deliverables
 
@@ -306,7 +306,7 @@ This was verified mathematically — zero difference between training and infere
 
 ---
 
-# Phase 4 — Exploratory Data Analysis
+# Phase 4   Exploratory Data Analysis
 
 Before training.
 
@@ -328,7 +328,7 @@ Only after understanding the data should training begin.
 
 ---
 
-# Phase 5 — Model Training ✅
+# Phase 5   Model Training ✅
 
 Version 1 uses a Random Forest as the baseline classifier.
 
@@ -345,7 +345,7 @@ Version 1 uses a Random Forest as the baseline classifier.
 * ✅ `models/random_forest.pkl`
 * ✅ `models/scaler.pkl`
 * ✅ `models/label_encoder.pkl`
-* ✅ `experiments/EXP-001/` — config + metrics logged
+* ✅ `experiments/EXP-001/`   config + metrics logged
 
 ### Next model (Phase 8 prerequisite)
 
@@ -353,7 +353,7 @@ Random Forest cannot be exported to TensorFlow.js. Before Phase 8, the model mus
 
 ---
 
-# Phase 6 — Model Evaluation ✅
+# Phase 6   Model Evaluation ✅
 
 ### Current results (EXP-001)
 
@@ -381,15 +381,15 @@ All targets met.
 
 ---
 
-# Phase 7 — Real Webcam Testing ✅
+# Phase 7   Real Webcam Testing ✅
 
 ### Current webcam_test.py features
 
 * MediaPipe skeleton drawn with default landmark style
-* Bounding box — green when confidence ≥ 40%, grey when uncertain
-* Top-5 candidate panel (right side of frame) — letter, confidence bar, percentage
-* Smoothed prediction — 7-frame mode vote
-* Smoothed confidence — average confidence of frames that voted for the winner
+* Bounding box   green when confidence ≥ 40%, grey when uncertain
+* Top-5 candidate panel (right side of frame)   letter, confidence bar, percentage
+* Smoothed prediction   7-frame mode vote
+* Smoothed confidence   average confidence of frames that voted for the winner
 * FPS counter
 
 ### Testing checklist
@@ -409,7 +409,7 @@ All targets met.
 
 ## Rationale
 
-ASL hand geometry is genuinely ambiguous for certain letter pairs (M/N, R/U, K/P). Requiring the model to be 100% certain on the top-1 prediction before accepting a user's attempt is too strict — it penalises the user for the model's inherent uncertainty, not for a wrong hand shape.
+ASL hand geometry is genuinely ambiguous for certain letter pairs (M/N, R/U, K/P). Requiring the model to be 100% certain on the top-1 prediction before accepting a user's attempt is too strict   it penalises the user for the model's inherent uncertainty, not for a wrong hand shape.
 
 The top-5 panel already exists in the webcam UI. The same ranked probability list that drives the display also drives the acceptance check.
 
@@ -418,9 +418,9 @@ The top-5 panel already exists in the webcam UI. The same ranked probability lis
 | Tier | Condition | Feedback shown to user |
 | ---- | --------- | ---------------------- |
 | ✅ Strong | Correct letter is top-1 AND confidence ≥ 60% | "Perfect" |
-| 🟡 Accepted | Correct letter is top-1 but confidence < 60% | "Good — hold it a little steadier" |
-| 🟡 Accepted | Correct letter is top-2 to top-5 | "Close — the model sees it" |
-| ❌ Rejected | Correct letter not in top-5 | "Try again — adjust your hand position" |
+| 🟡 Accepted | Correct letter is top-1 but confidence < 60% | "Good   hold it a little steadier" |
+| 🟡 Accepted | Correct letter is top-2 to top-5 | "Close   the model sees it" |
+| ❌ Rejected | Correct letter not in top-5 | "Try again   adjust your hand position" |
 
 ## Implementation note
 
@@ -435,19 +435,19 @@ No model changes required. This is purely a UI/UX policy layer.
 
 ---
 
-# Lesson UX Design — Reference Image + Practice + Test
+# Lesson UX Design   Reference Image + Practice + Test
 
 ## Overview
 
 Each letter lesson has two stages:
 
 ```text
-Stage 1 — Learn
+Stage 1   Learn
     Show reference image from the Kaggle test set
     User studies and replicates the hand shape
-    Model runs live — accepted when top-5 contains the target letter
+    Model runs live   accepted when top-5 contains the target letter
 
-Stage 2 — Test
+Stage 2   Test
     Reference image hidden
     User must produce the letter from memory
     Stricter acceptance: top-1 only, confidence ≥ 60%
@@ -455,7 +455,7 @@ Stage 2 — Test
 
 ## Reference image source
 
-The Kaggle dataset includes a small hand-curated test set — one image per letter — stored at:
+The Kaggle dataset includes a small hand-curated test set   one image per letter   stored at:
 
 ```
 app-cappy/apps/training/datasets/raw/asl_alphabet/test/
@@ -468,7 +468,7 @@ Example path for letter A:
 datasets/raw/asl_alphabet/test/A_test.jpg
 ```
 
-## Stage 1 — Learn flow
+## Stage 1   Learn flow
 
 ```text
 Show reference image (A_test.jpg)
@@ -489,7 +489,7 @@ Model runs predict_proba()
             │         NO  → show hint, keep trying
 ```
 
-## Stage 2 — Test flow
+## Stage 2   Test flow
 
 ```text
 Reference image hidden
@@ -512,7 +512,7 @@ Model runs predict_proba()
 
 ---
 
-# Phase 8 — TensorFlow.js Export
+# Phase 8   TensorFlow.js Export
 
 Once the model is approved:
 
@@ -538,7 +538,7 @@ This model will later be consumed by the React application.
 
 ---
 
-# Phase 9 — React Integration
+# Phase 9   React Integration
 
 Only after Phase 8 is complete.
 
@@ -578,7 +578,7 @@ Educational feedback comes later.
 
 ---
 
-# Phase 10 — Educational Layer
+# Phase 10   Educational Layer
 
 Once prediction is reliable.
 
@@ -754,14 +754,14 @@ Before integrating into the web application:
 * [x] Normalized dataset created.
 * [x] Model trained.
 * [x] Metrics meet targets (98.9% across all four metrics).
-* [x] Webcam testing completed — top-5 panel, smoothed confidence live.
+* [x] Webcam testing completed   top-5 panel, smoothed confidence live.
 * [ ] Fix `evaluate_model.py` LabelEncoder bug.
 * [ ] Replace Random Forest with TensorFlow MLP for browser export.
 * [ ] TensorFlow.js export verified.
 * [ ] Git commits documented.
 * [ ] Experiment logs completed.
-* [ ] Lesson UX — Stage 1 (Learn with reference image) implemented in React.
-* [ ] Lesson UX — Stage 2 (Test without reference image) implemented in React.
+* [ ] Lesson UX   Stage 1 (Learn with reference image) implemented in React.
+* [ ] Lesson UX   Stage 2 (Test without reference image) implemented in React.
 
 Only after every item is complete should work begin on the React learning interface.
 
@@ -773,4 +773,4 @@ The outcome of this training pipeline is **not simply an AI model**.
 
 It is a production-ready, browser-compatible ASL alphabet recognition engine that becomes the foundation of Cappy's educational platform.
 
-Once this milestone is achieved, every future feature—including word recognition, sentence recognition, Braille, Morse, adaptive learning, and the AI tutor—will build upon this foundation.
+Once this milestone is achieved, every future feature including word recognition, sentence recognition, Braille, Morse, adaptive learning, and the AI tutor will build upon this foundation.

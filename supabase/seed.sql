@@ -1,15 +1,15 @@
--- Cappy — seed data
+-- Cappy   seed data
 --
 -- Implements docs/DB_SETUP_GUIDE.md §4: the Phase-1 "ASL Alphabet" course,
 -- one unit, and lessons/exercises for the first letter group (A, S, E per
--- AI_project_bible.md §12 "Letter Groupings" — grouped by hand-shape
+-- AI_project_bible.md §12 "Letter Groupings"   grouped by hand-shape
 -- similarity, not alphabetically), plus a handful of achievement rows.
 --
 -- Explicit UUIDs are used (instead of gen_random_uuid()) so this file is
 -- idempotent via `on conflict do nothing` and so FK references between
 -- courses -> units -> lessons -> exercises are simple literal values
 -- rather than requiring CTEs. Run via `supabase db reset` (local) or
--- `psql` against a real project once provisioned — see
+-- `psql` against a real project once provisioned   see
 -- docs/BACKEND_SSO_SETUP.md §4.
 
 -- ============================================================================
@@ -25,7 +25,7 @@ values (
 on conflict (id) do nothing;
 
 -- ============================================================================
--- Unit: Group 1 — A, S, E (similar closed-fist hand shapes)
+-- Unit: Group 1   A, S, E (similar closed-fist hand shapes)
 -- ============================================================================
 insert into public.units (id, course_id, title, order_index, description)
 values (
@@ -33,7 +33,7 @@ values (
   '00000000-0000-0000-0000-000000000001',
   'Group 1: A, S, E',
   0,
-  'The first hand-shape group — three closed-fist signs that build foundational finger control.'
+  'The first hand-shape group   three closed-fist signs that build foundational finger control.'
 )
 on conflict (id) do nothing;
 
@@ -90,7 +90,7 @@ on conflict (id) do nothing;
 -- Exercises
 -- ============================================================================
 
--- Lesson 1 (observe) — one observe exercise per letter
+-- Lesson 1 (observe)   one observe exercise per letter
 insert into public.exercises (id, lesson_id, exercise_type, content, difficulty, order_index)
 values
   ('00000000-0000-0000-0000-000000000301', '00000000-0000-0000-0000-000000000201', 'observe',
@@ -101,7 +101,7 @@ values
     '{"letter": "E", "videoUrl": "/assets/asl/letters/E.mp4", "instructions": "Curl your fingers down to touch your thumb, palm facing out."}', 1, 2)
 on conflict (id) do nothing;
 
--- Lesson 2 (perform) — one camera-validation exercise per letter
+-- Lesson 2 (perform)   one camera-validation exercise per letter
 insert into public.exercises (id, lesson_id, exercise_type, content, difficulty, order_index)
 values
   ('00000000-0000-0000-0000-000000000311', '00000000-0000-0000-0000-000000000202', 'camera-validation',
@@ -112,7 +112,7 @@ values
     '{"letter": "E", "targetConfidence": 0.90, "holdMs": 1500}', 2, 2)
 on conflict (id) do nothing;
 
--- Lesson 3 (recall) — multiple-choice quiz questions
+-- Lesson 3 (recall)   multiple-choice quiz questions
 insert into public.exercises (id, lesson_id, exercise_type, content, difficulty, order_index)
 values
   ('00000000-0000-0000-0000-000000000321', '00000000-0000-0000-0000-000000000203', 'multiple-choice',
@@ -124,7 +124,7 @@ values
 on conflict (id) do nothing;
 
 -- ============================================================================
--- Achievements — meaningful milestones only (AI_project_bible.md §12)
+-- Achievements   meaningful milestones only (AI_project_bible.md §12)
 -- ============================================================================
 insert into public.achievements (id, name, description, icon)
 values

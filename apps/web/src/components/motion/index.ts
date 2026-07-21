@@ -2,7 +2,7 @@ import type { Variants } from "framer-motion";
 import { OVERSHOOT_EASE, CATCH_EASE } from "@cappy/ui";
 
 /**
- * Quiet Signals motion module — three named variant families that replace
+ * Quiet Signals motion module   three named variant families that replace
  * the single scroll-fade in the old Reveal component. Structural reveals
  * decelerate into place with a pronounced "catch" (custom bezier), while
  * only celebratory moments (badges, XP, streaks, quiz-correct) get a
@@ -72,7 +72,7 @@ export const staggerItemReduced: Variants = {
 };
 
 /**
- * Reward/status moments only — new badge unlocked, XP gain, streak
+ * Reward/status moments only   new badge unlocked, XP gain, streak
  * increment, quiz-correct feedback. Never for body text or page chrome.
  */
 export const scaleIn: Variants = {

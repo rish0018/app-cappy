@@ -5,7 +5,7 @@ import { PhoneCard } from "../PhoneCard";
 
 const WEEK = [true, true, true, true, true, false, false];
 
-/** Screen 6 — Progress: letter mastery, a small calendar streak, growing quietly. */
+/** Screen 6   Progress: letter mastery, a small calendar streak, growing quietly. */
 export function ProgressScreen() {
   return (
     <div className="flex h-full flex-col gap-4 px-6 py-2">
@@ -31,7 +31,7 @@ export function ProgressScreen() {
           <StreakBadge streakDays={5} className="self-start" />
         </PhoneCard>
 
-        <p className="text-center text-[0.8rem] text-[#877a68]">Day 5 of a quiet streak — steady wins.</p>
+        <p className="text-center text-[0.8rem] text-[#877a68]">Day 5 of a quiet streak   steady wins.</p>
       </div>
     </div>
   );

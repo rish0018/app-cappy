@@ -10,7 +10,7 @@ export interface ConfidenceIndicatorLabelOverride {
 
 export interface ConfidenceIndicatorProps {
   tier: ConfidenceTier;
-  /** Overrides default (ASL) label/icon per tier — e.g. Morse send/receive screens use their own wording. */
+  /** Overrides default (ASL) label/icon per tier   e.g. Morse send/receive screens use their own wording. */
   labels?: Partial<Record<ConfidenceTier, ConfidenceIndicatorLabelOverride>>;
 }
 

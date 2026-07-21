@@ -2,25 +2,25 @@
 activate python env .venv\Scripts\activate.bat for cmd 
 for powershell .\.venv\Scripts\Activate.ps1
 
-## Current Status — 2026-07-17
+## Current Status   2026-07-17
 
-> **Note:** as of this update, the entire pipeline below was re-run from scratch. The 2026-07-04 status table below had claimed "Complete" for extraction/training, but the actual model file and processed CSV were not present on disk anywhere in the repo — only summary reports had survived. Everything below is now backed by real artifacts.
+> **Note:** as of this update, the entire pipeline below was re-run from scratch. The 2026-07-04 status table below had claimed "Complete" for extraction/training, but the actual model file and processed CSV were not present on disk anywhere in the repo   only summary reports had survived. Everything below is now backed by real artifacts.
 
 | Phase | Status | Notes |
 | ----- | ------ | ----- |
 | Dataset inspection | ✅ Complete | 87,000 images and 29 classes verified |
 | Landmark extraction | ✅ Complete | Re-run on all 87,000 images: 63,581 successful detections, 0 failures. Ported `extract_landmarks.py` from the legacy `mp.solutions.hands` API (removed in the installed MediaPipe build) to the current Tasks API (`HandLandmarker`), and fixed a stale dataset path. Also fixed a quadratic-slowdown bug in the resume-checkpoint writer. |
 | Normalization | ✅ Complete | Wrist-relative + max-norm scaling, `datasets/csv/landmarks_normalized.csv` (63,582 rows). |
-| Model training | ✅ Complete | Random Forest baseline (`models/random_forest.pkl`): **98.7% validation accuracy** (`nothing` class excluded — it's "no hand visible" by definition, not a landmark-classifiable target). A Keras MLP (128→64→28, dropout 0.2) was also trained for TF.js export, since sklearn's RandomForest can't be converted to TF.js directly: **98.8% validation accuracy**. |
+| Model training | ✅ Complete | Random Forest baseline (`models/random_forest.pkl`): **98.7% validation accuracy** (`nothing` class excluded   it's "no hand visible" by definition, not a landmark-classifiable target). A Keras MLP (128→64→28, dropout 0.2) was also trained for TF.js export, since sklearn's RandomForest can't be converted to TF.js directly: **98.8% validation accuracy**. |
 | Evaluation | ✅ Complete | Per-class metrics, confusion matrix, and misclassification report generated for the RF baseline; see `experiments/EXP-002` and `EXP-003`. |
-| Webcam testing | ⬜ Not re-verified this pass | `webcam_test.py` exists but wasn't re-run in this session — verify against the freshly retrained model before relying on this row. |
+| Webcam testing | ⬜ Not re-verified this pass | `webcam_test.py` exists but wasn't re-run in this session   verify against the freshly retrained model before relying on this row. |
 | TensorFlow.js export | ✅ Complete | `scripts/export_tfjs.py` converts the Keras MLP to `exports/tensorflowjs/` (graph model + weights + `preprocessing.json` with the scaler mean/scale and label list, since TF.js can't load sklearn's pickle format). |
-| React integration | ✅ Complete (web) | `apps/web/src/ml/` loads the exported model + MediaPipe's browser `HandLandmarker`, replicates the training normalization exactly, and implements `packages/core`'s `HandPosePredictor` contract. Wired into `apps/web/src/screens/LessonPractice.tsx` — live webcam → prediction + confidence, per Phase 9 scope. **Mobile integration is a follow-up** (react-native TF.js is a different runtime; `apps/mobile/app/lesson/[id]/practice.tsx` still has its `HandPosePredictor` TODO). |
+| React integration | ✅ Complete (web) | `apps/web/src/ml/` loads the exported model + MediaPipe's browser `HandLandmarker`, replicates the training normalization exactly, and implements `packages/core`'s `HandPosePredictor` contract. Wired into `apps/web/src/screens/LessonPractice.tsx`   live webcam → prediction + confidence, per Phase 9 scope. **Mobile integration is a follow-up** (react-native TF.js is a different runtime; `apps/mobile/app/lesson/[id]/practice.tsx` still has its `HandPosePredictor` TODO). |
 | Educational layer | ⬜ Pending | Lesson UX and acceptance flow remain to be built |
 
 The detailed implementation notes, decisions, and acceptance policy live in [datasets/README.md](datasets/README.md).
 
-## Version 1.0 — Machine Learning Roadmap
+## Version 1.0   Machine Learning Roadmap
 
 > **Location**
 >
@@ -203,7 +203,7 @@ Advantages:
 
 ---
 
-# Phase 1 — Dataset Research
+# Phase 1   Dataset Research
 
 ## Objective
 
@@ -226,7 +226,7 @@ Understand the dataset before writing ML code.
 
 ---
 
-# Phase 2 — MediaPipe Extraction
+# Phase 2   MediaPipe Extraction
 
 ## Objective
 
@@ -274,7 +274,7 @@ CSV containing:
 
 ---
 
-# Phase 3 — Data Normalization
+# Phase 3   Data Normalization
 
 Raw coordinates should never be used directly.
 
@@ -298,7 +298,7 @@ Normalized CSV dataset.
 
 ---
 
-# Phase 4 — Exploratory Data Analysis
+# Phase 4   Exploratory Data Analysis
 
 Before training.
 
@@ -320,7 +320,7 @@ Only after understanding the data should training begin.
 
 ---
 
-# Phase 5 — Model Training
+# Phase 5   Model Training
 
 Version 1 should begin with a lightweight classifier.
 
@@ -336,7 +336,7 @@ The simplest model that achieves excellent performance is the preferred solution
 
 ---
 
-# Phase 6 — Model Evaluation
+# Phase 6   Model Evaluation
 
 Evaluate using:
 
@@ -359,7 +359,7 @@ If these metrics are not achieved, improve the dataset before changing the model
 
 ---
 
-# Phase 7 — Real Webcam Testing
+# Phase 7   Real Webcam Testing
 
 Testing on validation data is not enough.
 
@@ -381,7 +381,7 @@ The model should perform consistently under realistic conditions.
 
 ---
 
-# Phase 8 — TensorFlow.js Export
+# Phase 8   TensorFlow.js Export
 
 Once the model is approved:
 
@@ -407,7 +407,7 @@ This model will later be consumed by the React application.
 
 ---
 
-# Phase 9 — React Integration
+# Phase 9   React Integration
 
 Only after Phase 8 is complete.
 
@@ -447,7 +447,7 @@ Educational feedback comes later.
 
 ---
 
-# Phase 10 — Educational Layer
+# Phase 10   Educational Layer
 
 Once prediction is reliable.
 
@@ -638,4 +638,4 @@ The outcome of this training pipeline is **not simply an AI model**.
 
 It is a production-ready, browser-compatible ASL alphabet recognition engine that becomes the foundation of Cappy's educational platform.
 
-Once this milestone is achieved, every future feature—including word recognition, sentence recognition, Braille, Morse, adaptive learning, and the AI tutor—will build upon this foundation.
+Once this milestone is achieved, every future feature including word recognition, sentence recognition, Braille, Morse, adaptive learning, and the AI tutor will build upon this foundation.

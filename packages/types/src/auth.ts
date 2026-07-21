@@ -1,7 +1,7 @@
 /**
  * Auth types for the Supabase-backed auth flows described in
  * docs/AI_project_bible.md §9 ("Auth") and docs/DB_SETUP_GUIDE.md §7. v1
- * providers: email/password + Google OAuth + Apple Sign-In (SSO) — see
+ * providers: email/password + Google OAuth + Apple Sign-In (SSO)   see
  * docs/BACKEND_SSO_SETUP.md for provider configuration. No enterprise/SAML
  * SSO in scope.
  */
@@ -36,7 +36,7 @@ export interface SignupCredentials {
   displayName: string;
 }
 
-/** v1 social providers only — see docs/AI_project_bible.md §9. */
+/** v1 social providers only   see docs/AI_project_bible.md §9. */
 export type OAuthProvider = "google" | "apple";
 
 export interface AuthState {

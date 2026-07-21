@@ -24,7 +24,7 @@
   grid-area: blocks;
 }
 
-/* Small screens can't fit the full 280px phone beside the cards — render it
+/* Small screens can't fit the full 280px phone beside the cards   render it
    at full size and scale the whole thing down so the screens inside keep
    their intended layout. The wrapper height reserves the scaled footprint
    (frame is ~607px tall unscaled; 0.56 * 607 ≈ 340px). */

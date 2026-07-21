@@ -54,7 +54,7 @@ export class TfjsHandPosePredictor implements HandPosePredictor {
   private preprocessing: Preprocessing | null = null;
   private loadPromise: Promise<void> | null = null;
 
-  /** Loads the model + preprocessing config. Safe to call multiple times — subsequent calls await the same load. */
+  /** Loads the model + preprocessing config. Safe to call multiple times   subsequent calls await the same load. */
   async load(): Promise<void> {
     if (this.model && this.preprocessing) return;
     if (!this.loadPromise) {

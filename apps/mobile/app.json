@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#3e948c"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.cappy.mobile"
@@ -30,6 +32,7 @@
     "plugins": [
       "expo-router",
       "expo-dev-client",
+      "expo-apple-authentication",
       [
         "expo-splash-screen",
         {
@@ -37,7 +40,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#3e948c"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "extra": {
       "eas": {

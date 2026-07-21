@@ -1,6 +1,6 @@
 /**
  * Shared motion easing constants for @cappy/ui and consuming apps.
- * Single source of truth — see apps/web/src/components/motion/index.ts
+ * Single source of truth   see apps/web/src/components/motion/index.ts
  * for the full variant library built on top of these.
  */
 

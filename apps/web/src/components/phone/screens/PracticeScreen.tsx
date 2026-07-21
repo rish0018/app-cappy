@@ -6,7 +6,7 @@ const LANDMARKS = [
   [48, 30], [40, 42], [56, 42], [34, 58], [62, 58], [48, 66],
 ];
 
-/** Screen 4 — Practice: camera preview, gentle hand-tracking overlay, confidence feedback. */
+/** Screen 4   Practice: camera preview, gentle hand-tracking overlay, confidence feedback. */
 export function PracticeScreen() {
   return (
     <div className="flex h-full flex-col gap-4 px-6 py-2">

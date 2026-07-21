@@ -115,7 +115,7 @@ export const mockAchievements: Achievement[] = [
   { id: "ach-group-ae", name: "A-E Mastered", description: "Mastered the A–E letter group.", icon: "🅰️" },
   { id: "ach-perfect-quiz", name: "Sharp Eye", description: "Scored 100% on a quiz.", icon: "🎯" },
   { id: "ach-night-owl", name: "Night Owl", description: "Practiced after 9pm five times.", icon: "🦉" },
-  { id: "ach-comeback", name: "Welcome Back", description: "Returned after a break — no judgment here.", icon: "🌤️" },
+  { id: "ach-comeback", name: "Welcome Back", description: "Returned after a break   no judgment here.", icon: "🌤️" },
 ];
 
 export const mockUserAchievements: UserAchievement[] = [

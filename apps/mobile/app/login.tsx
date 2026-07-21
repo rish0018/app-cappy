@@ -1,4 +1,5 @@
-import { signInWithOAuth, signInWithPassword } from "@cappy/api";
+import { signInWithAppleIdToken, signInWithOAuth, signInWithPassword } from "@cappy/api";
+import * as AppleAuthentication from "expo-apple-authentication";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
@@ -7,6 +8,7 @@ import { Button } from "../src/components/Button";
 import { Divider } from "../src/components/Divider";
 import { Input } from "../src/components/Input";
 import { SSOButton } from "../src/components/SSOButton";
+import { isAppleCancellation } from "../src/lib/appleAuth";
 
 let logoSource: number | null = null;
 try {
@@ -54,11 +56,33 @@ export default function LoginScreen() {
     setFormNotice(undefined);
     setSsoLoading(provider);
     try {
-      await signInWithOAuth(provider);
+      // Apple requires the native in-app sign-in sheet on iOS when any other
+      // third-party login (Google) is also offered (App Store Review
+      // Guideline 4.8)   see docs/BACKEND_SSO_SETUP.md §5c. Android/web keep
+      // using the OAuth redirect.
+      if (provider === "apple" && Platform.OS === "ios") {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          ],
+        });
+        if (!credential.identityToken) {
+          throw new Error("Apple did not return an identity token");
+        }
+        await signInWithAppleIdToken(credential.identityToken);
+      } else {
+        await signInWithOAuth(provider);
+      }
       router.replace("/(tabs)");
     } catch (err) {
+      // Apple reports user-initiated cancellation as ERR_REQUEST_CANCELED  
+      // treat it as a silent no-op rather than an error message.
+      if (isAppleCancellation(err)) {
+        return;
+      }
       setFormNotice("We couldn't finish that sign-in. Let's give it another go.");
-      console.warn(`[login] signInWithOAuth(${provider}) failed`, err);
+      console.warn(`[login] SSO sign-in (${provider}) failed`, err);
     } finally {
       setSsoLoading(null);
     }

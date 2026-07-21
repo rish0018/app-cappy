@@ -6,7 +6,7 @@
  * gitignored and wasn't present on disk here), so no actual images have
  * been copied in yet. Drop `<letter>.jpg` files into this folder (a.jpg,
  * b.jpg, ... z.jpg) and they'll be picked up automatically via
- * import.meta.glob below — no code changes needed elsewhere.
+ * import.meta.glob below   no code changes needed elsewhere.
  */
 const modules = import.meta.glob<{ default: string }>("./*.jpg", { eager: true });
 

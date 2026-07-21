@@ -35,7 +35,7 @@ export interface EditorialBlock {
 }
 
 export interface LearnPracticeRememberProps {
-  /** The hero heading content (logo, tagline, H1, subcopy, CTA) — rendered above the blocks, same column. */
+  /** The hero heading content (logo, tagline, H1, subcopy, CTA)   rendered above the blocks, same column. */
   hero: React.ReactNode;
   blocks: EditorialBlock[];
   className?: string;
@@ -45,7 +45,7 @@ export interface LearnPracticeRememberProps {
  * The page's whole upper-half centerpiece: one phone, pinned in view, that
  * runs continuously from the hero header down through Learn / Practice /
  * Remember and releases right at "Pick your path". An IntersectionObserver
- * watches a thin band at the vertical center of the viewport — whichever
+ * watches a thin band at the vertical center of the viewport   whichever
  * card (or the hero itself) crosses it becomes "active", and the phone's
  * screen cluster switches to match (see STORY_GROUPS). While the hero is
  * active the phone autoplays the full seven-screen story; each card narrows
@@ -80,7 +80,7 @@ export function LearnPracticeRemember({ hero, blocks, className = "" }: LearnPra
   return (
     <section
       ref={sectionRef}
-      // overflow-x-clip (NOT overflow-hidden) — it clips the hero's
+      // overflow-x-clip (NOT overflow-hidden)   it clips the hero's
       // off-canvas morse texture without creating a scroll container,
       // which would silently disable the phone column's position:sticky.
       className={["relative overflow-x-clip bg-primary-900 text-neutral-0", className].join(" ")}

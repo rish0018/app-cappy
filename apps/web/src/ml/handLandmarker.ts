@@ -35,7 +35,7 @@ async function getLandmarker(): Promise<HandLandmarker> {
  * Detects a single hand's landmarks in a video frame. Returns null if no
  * hand is detected (the caller should skip prediction entirely in that
  * case, matching how the training data's "nothing" class was excluded from
- * the classifier — see apps/training/scripts/train_tfjs_model.py).
+ * the classifier   see apps/training/scripts/train_tfjs_model.py).
  */
 export async function detectHandLandmarks(
   video: HTMLVideoElement,

@@ -1,5 +1,5 @@
 /**
- * Static mock data for the Morse module — mirrors the pattern in
+ * Static mock data for the Morse module   mirrors the pattern in
  * mockData.ts, but built from MORSE_GROUPS/MORSE_MAP rather than ASL's
  * LETTER_GROUPS, since Morse has its own parallel type set.
  */
@@ -23,7 +23,7 @@ export const mockMorseUnits: MorseUnit[] = MORSE_GROUPS.map((group, index) => ({
   description:
     group.characters.length > 0
       ? `Learn to send and receive ${group.characters.join(", ")}.`
-      : "Bonus prosigns — put everything together.",
+      : "Bonus prosigns   put everything together.",
 }));
 
 export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, groupIndex) => {
@@ -34,7 +34,7 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
     {
       id: `${group.id}-send`,
       unitId,
-      title: `${group.label} — Sending`,
+      title: `${group.label}   Sending`,
       description: "Tap and hold the key to send each pattern.",
       exerciseType: "send" as const,
       characters,
@@ -45,7 +45,7 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
     {
       id: `${group.id}-receive`,
       unitId,
-      title: `${group.label} — Receiving`,
+      title: `${group.label}   Receiving`,
       description: "Listen to the pattern and pick the right character.",
       exerciseType: "receive" as const,
       characters,
@@ -56,7 +56,7 @@ export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, grou
     {
       id: `${group.id}-checkout`,
       unitId,
-      title: `${group.label} — Checkout`,
+      title: `${group.label}   Checkout`,
       description: "A mixed review to confirm you've got this level down.",
       exerciseType: "checkout" as const,
       characters,

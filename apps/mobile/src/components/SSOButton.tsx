@@ -21,7 +21,7 @@ const PROVIDER_ICON: Record<OAuthProvider, keyof typeof Ionicons.glyphMap> = {
 /**
  * Google / Apple sign-in button. Apple's Human Interface Guidelines call for
  * a solid black (or white outline) pill with the Apple mark and "Continue
- * with Apple" text — we approximate that with NativeWind here rather than
+ * with Apple" text   we approximate that with NativeWind here rather than
  * pulling in expo-apple-authentication's native button, which isn't wired
  * up in this workspace yet. Swap in `AppleAuthenticationButton` once that
  * dependency is added, without changing this component's props.

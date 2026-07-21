@@ -1,8 +1,8 @@
 /**
- * "Sending" exercise contract — a learner taps/holds an input to reproduce
+ * "Sending" exercise contract   a learner taps/holds an input to reproduce
  * a Morse pattern; the UI records raw press durations and this module
  * classifies + scores them. Standard International Morse timing ratios:
- * dash = 3x dot, intra-character gap = 1x dot (ignored here — only press
+ * dash = 3x dot, intra-character gap = 1x dot (ignored here   only press
  * durations are scored, not the gaps between them, to keep v1 forgiving).
  */
 import type { MorseCharacter } from "@cappy/types";
@@ -18,7 +18,7 @@ export interface TapEvent {
 
 /**
  * Classifies a single press duration as a dot or dash. The midpoint between
- * a dot (1 unit) and a dash (3 units) is 2 units — used as the cutoff.
+ * a dot (1 unit) and a dash (3 units) is 2 units   used as the cutoff.
  */
 export function classifyTap(durationMs: number, unitMs: number = DEFAULT_UNIT_MS): "." | "-" {
   return durationMs >= unitMs * 2 ? "-" : ".";

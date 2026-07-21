@@ -5,7 +5,7 @@ export interface MascotMomentIllustrationProps {
 }
 
 /**
- * Capybara resting against a giant braille cell like a pillow — the
+ * Capybara resting against a giant braille cell like a pillow   the
  * closing/CTA warmth beat. Distinct from the packages/ui MascotMoment
  * component (which is a message-with-icon widget); this is the artwork.
  */

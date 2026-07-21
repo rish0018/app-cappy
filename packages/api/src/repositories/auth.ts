@@ -27,7 +27,7 @@ function mapAuthUser(user: SupabaseUser): AuthUser {
       user.email ??
       "",
     createdAt: user.created_at,
-    totalXp: 0, // Not tracked on auth.users — see profile.ts getProfile() for the real value.
+    totalXp: 0, // Not tracked on auth.users   see profile.ts getProfile() for the real value.
     emailVerified: user.email_confirmed_at != null,
   };
 }
@@ -76,9 +76,9 @@ export async function signInWithPassword(credentials: LoginCredentials): Promise
  * Kicks off the OAuth redirect flow for Google/Apple. On web this
  * redirects the browser; on mobile the caller must complete the flow via
  * `expo-web-browser`/`expo-auth-session` (Apple additionally supports
- * native `expo-apple-authentication` — see docs/BACKEND_SSO_SETUP.md §2).
+ * native `expo-apple-authentication`   see docs/BACKEND_SSO_SETUP.md §2).
  * Resolves once the redirect has been initiated, not once the user has
- * finished authenticating — call `getSession()`/`onAuthStateChange()`
+ * finished authenticating   call `getSession()`/`onAuthStateChange()`
  * after the redirect completes.
  */
 export async function signInWithOAuth(
@@ -92,6 +92,41 @@ export async function signInWithOAuth(
   });
 
   if (error) throw error;
+}
+
+/**
+ * Native Apple Sign-In (iOS only). Exchanges the identity token returned by
+ * `expo-apple-authentication`'s `signInAsync()` for a Supabase session via
+ * `signInWithIdToken`, per docs/BACKEND_SSO_SETUP.md §5c. This is distinct
+ * from `signInWithOAuth('apple')` above, which is the web-redirect flow used
+ * on Android/web   the native flow never redirects, it hands Supabase a
+ * signed JWT directly.
+ */
+export async function signInWithAppleIdToken(idToken: string, nonce?: string): Promise<Session> {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase.auth.signInWithIdToken({
+    provider: "apple",
+    token: idToken,
+    nonce,
+  });
+
+  if (error) throw error;
+  return mapSession(data.session);
+}
+
+/**
+ * Detects Supabase's rate-limit errors (e.g. `over_email_send_rate_limit`,
+ * hit whenever the default/free email provider's very low hourly cap on
+ * outgoing auth emails is exceeded   a real, expected Supabase limitation,
+ * not an app bug). Screens should show a specific "try again shortly"
+ * message for this rather than swallowing it into a generic error, since
+ * unlike most auth errors, it isn't about anything the user did wrong.
+ */
+export function isAuthRateLimitError(err: unknown): boolean {
+  if (!err || typeof err !== "object") return false;
+  const code = "code" in err ? String((err as { code?: unknown }).code ?? "") : "";
+  const status = "status" in err ? (err as { status?: unknown }).status : undefined;
+  return code.includes("rate_limit") || status === 429;
 }
 
 export async function signOut(): Promise<void> {
@@ -109,7 +144,7 @@ export async function getSession(): Promise<Session | null> {
 
 /**
  * Subscribes to auth state changes (sign-in, sign-out, token refresh).
- * Returns an unsubscribe function — callers must invoke it on unmount to
+ * Returns an unsubscribe function   callers must invoke it on unmount to
  * avoid leaking the listener.
  */
 export function onAuthStateChange(

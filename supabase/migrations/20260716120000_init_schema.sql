@@ -1,4 +1,4 @@
--- Cappy — initial schema migration
+-- Cappy   initial schema migration
 --
 -- Implements docs/DB_SETUP_GUIDE.md §2, cross-checked field-by-field against
 -- packages/types/src/{user,curriculum,progress,letters}.ts. Columns are
@@ -6,7 +6,7 @@
 --
 -- NOTE: this migration is written by hand (no Supabase CLI available in this
 -- environment) but follows the exact structure `supabase migration new
--- init_schema` would have produced. There is no live Supabase project yet —
+-- init_schema` would have produced. There is no live Supabase project yet  
 -- this has not been applied anywhere. Run `supabase db push` once a real
 -- project is linked (see docs/BACKEND_SSO_SETUP.md §4).
 
@@ -16,7 +16,7 @@
 create extension if not exists "pgcrypto"; -- gen_random_uuid()
 
 -- ============================================================================
--- users — public profile table, 1:1 with auth.users
+-- users   public profile table, 1:1 with auth.users
 -- Source type: User (packages/types/src/user.ts)
 -- ============================================================================
 create table if not exists public.users (
@@ -30,12 +30,12 @@ create table if not exists public.users (
 comment on table public.users is 'Public profile row per Supabase Auth user. 1:1 with auth.users via id FK.';
 
 -- ============================================================================
--- Curriculum tables — separate from user-progress tables per
+-- Curriculum tables   separate from user-progress tables per
 -- AI_project_bible.md §9 ("Key Rules"): curriculum updates must never
 -- corrupt progress data. Public-read, no client-write (see RLS migration).
 -- ============================================================================
 
--- courses — Source type: Course (curriculum.ts)
+-- courses   Source type: Course (curriculum.ts)
 create table if not exists public.courses (
   id          uuid primary key default gen_random_uuid(),
   title       text not null,
@@ -43,7 +43,7 @@ create table if not exists public.courses (
   order_index integer not null
 );
 
--- units — Source type: Unit (curriculum.ts)
+-- units   Source type: Unit (curriculum.ts)
 create table if not exists public.units (
   id          uuid primary key default gen_random_uuid(),
   course_id   uuid not null references public.courses (id) on delete cascade,
@@ -54,7 +54,7 @@ create table if not exists public.units (
 
 create index if not exists idx_units_course_id on public.units (course_id);
 
--- lessons — Source type: Lesson (curriculum.ts)
+-- lessons   Source type: Lesson (curriculum.ts)
 create table if not exists public.lessons (
   id                 uuid primary key default gen_random_uuid(),
   unit_id            uuid not null references public.units (id) on delete cascade,
@@ -74,7 +74,7 @@ create table if not exists public.lessons (
 
 create index if not exists idx_lessons_unit_id on public.lessons (unit_id);
 
--- exercises — Source type: Exercise (curriculum.ts)
+-- exercises   Source type: Exercise (curriculum.ts)
 create table if not exists public.exercises (
   id            uuid primary key default gen_random_uuid(),
   lesson_id     uuid not null references public.lessons (id) on delete cascade,
@@ -90,7 +90,7 @@ create table if not exists public.exercises (
 
 create index if not exists idx_exercises_lesson_id on public.exercises (lesson_id);
 
--- achievements — Source type: Achievement (progress.ts). Reference table,
+-- achievements   Source type: Achievement (progress.ts). Reference table,
 -- not per-user. "Meaningful milestones only" per AI_project_bible.md §12.
 create table if not exists public.achievements (
   id          uuid primary key default gen_random_uuid(),
@@ -100,10 +100,10 @@ create table if not exists public.achievements (
 );
 
 -- ============================================================================
--- User-progress tables — RLS-protected, one row (or set of rows) per user.
+-- User-progress tables   RLS-protected, one row (or set of rows) per user.
 -- ============================================================================
 
--- user_progress — Source type: UserProgress (progress.ts)
+-- user_progress   Source type: UserProgress (progress.ts)
 create table if not exists public.user_progress (
   user_id               uuid not null references public.users (id) on delete cascade,
   lesson_id             uuid not null references public.lessons (id) on delete cascade,
@@ -121,7 +121,7 @@ create table if not exists public.user_progress (
 create index if not exists idx_user_progress_user_id on public.user_progress (user_id);
 create index if not exists idx_user_progress_lesson_id on public.user_progress (lesson_id);
 
--- lesson_progress — Source type: LessonProgress (progress.ts)
+-- lesson_progress   Source type: LessonProgress (progress.ts)
 create table if not exists public.lesson_progress (
   user_id             uuid not null references public.users (id) on delete cascade,
   lesson_id           uuid not null references public.lessons (id) on delete cascade,
@@ -134,7 +134,7 @@ create table if not exists public.lesson_progress (
 create index if not exists idx_lesson_progress_user_id on public.lesson_progress (user_id);
 create index if not exists idx_lesson_progress_lesson_id on public.lesson_progress (lesson_id);
 
--- letter_mastery — Source type: LetterMastery (progress.ts). The foundation
+-- letter_mastery   Source type: LetterMastery (progress.ts). The foundation
 -- of adaptive learning per AI_project_bible.md §9.
 create table if not exists public.letter_mastery (
   user_id        uuid not null references public.users (id) on delete cascade,
@@ -149,7 +149,7 @@ create table if not exists public.letter_mastery (
 
 create index if not exists idx_letter_mastery_user_id on public.letter_mastery (user_id);
 
--- streaks — Source type: Streak (progress.ts)
+-- streaks   Source type: Streak (progress.ts)
 create table if not exists public.streaks (
   user_id          uuid primary key references public.users (id) on delete cascade,
   current_streak   integer not null default 0,
@@ -157,7 +157,7 @@ create table if not exists public.streaks (
   last_active_date date
 );
 
--- user_achievements — Source type: UserAchievement (progress.ts)
+-- user_achievements   Source type: UserAchievement (progress.ts)
 create table if not exists public.user_achievements (
   user_id        uuid not null references public.users (id) on delete cascade,
   achievement_id uuid not null references public.achievements (id) on delete cascade,
@@ -168,7 +168,7 @@ create table if not exists public.user_achievements (
 create index if not exists idx_user_achievements_user_id on public.user_achievements (user_id);
 create index if not exists idx_user_achievements_achievement_id on public.user_achievements (achievement_id);
 
--- daily_activity — Source type: Statistics (progress.ts)
+-- daily_activity   Source type: Statistics (progress.ts)
 create table if not exists public.daily_activity (
   user_id            uuid not null references public.users (id) on delete cascade,
   date               date not null,

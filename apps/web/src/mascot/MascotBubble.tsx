@@ -36,7 +36,7 @@ const ORIGIN_BY_TAIL: Record<MascotBubbleTail, string> = {
 };
 
 /**
- * Cappy's speech bubble — tethered above the figure inside the same anchor
+ * Cappy's speech bubble   tethered above the figure inside the same anchor
  * wrapper. Scales in from the tail's origin with the celebratory overshoot
  * bezier, holds (lifetime owned by mascotStore), then fades out. This is
  * the one part of the mascot layer that must remain announced to

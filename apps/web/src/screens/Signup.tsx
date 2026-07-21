@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, Divider, Input, SSOButton } from "@cappy/ui";
-import { signInWithOAuth, signUp } from "@cappy/api";
+import { isAuthRateLimitError, signInWithOAuth, signUp } from "@cappy/api";
 import logoMark from "../assets/logo-mark-circular.png";
 import { scaleIn, scaleInReduced } from "../components/motion";
 
@@ -21,23 +21,37 @@ export function Signup() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
+  const [checkEmail, setCheckEmail] = React.useState(false);
   const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | "apple" | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setCheckEmail(false);
 
     if (password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Let's make that password a little longer — at least ${MIN_PASSWORD_LENGTH} characters keeps your account safe.`);
+      setError(`Let's make that password a little longer   at least ${MIN_PASSWORD_LENGTH} characters keeps your account safe.`);
       return;
     }
 
     setPendingProvider("password");
     try {
-      await signUp({ email, password, displayName: displayName || email.split("@")[0] || email });
-      navigate("/onboarding");
-    } catch {
-      setError("We couldn't create your account just yet. Let's try that once more.");
+      const session = await signUp({ email, password, displayName: displayName || email.split("@")[0] || email });
+      if (session) {
+        navigate("/onboarding");
+      } else {
+        // No session back means Supabase requires email confirmation before
+        // sign-in   the account exists, but signing in now would just throw
+        // "Email not confirmed". Tell the user what to do next instead of
+        // silently pushing them into a screen that isn't actually signed in.
+        setCheckEmail(true);
+      }
+    } catch (err) {
+      setError(
+        isAuthRateLimitError(err)
+          ? "We're sending a lot of emails right now   please wait a few minutes and try again."
+          : "We couldn't create your account just yet. Let's try that once more.",
+      );
     } finally {
       setPendingProvider(null);
     }
@@ -112,6 +126,13 @@ export function Signup() {
             {error ? (
               <p role="alert" className="text-sm text-error-700 bg-error-100 rounded-md px-md py-sm">
                 {error}
+              </p>
+            ) : null}
+
+            {checkEmail ? (
+              <p role="status" className="text-sm text-primary-700 bg-primary-100 rounded-md px-md py-sm">
+                Almost there! We've sent a confirmation link to {email || "your email"}   open it to finish
+                setting up your account, then come back and sign in.
               </p>
             ) : null}
 

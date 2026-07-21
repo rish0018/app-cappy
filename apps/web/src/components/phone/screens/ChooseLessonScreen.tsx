@@ -3,11 +3,11 @@ import { PhoneCard } from "../PhoneCard";
 
 const SKILLS = [
   { label: "Braille", glyph: "⠃⠗", tint: "#4F7EA8" },
-  { label: "Morse Code", glyph: "···—", tint: "#3E948C" },
+  { label: "Morse Code", glyph: "··· ", tint: "#3E948C" },
   { label: "ASL", glyph: "🤟", tint: "#D9AA78" },
 ];
 
-/** Screen 2 — Choose a path: large minimal cards, one per skill. */
+/** Screen 2   Choose a path: large minimal cards, one per skill. */
 export function ChooseLessonScreen() {
   return (
     <div className="flex h-full flex-col gap-4 px-6 py-2">

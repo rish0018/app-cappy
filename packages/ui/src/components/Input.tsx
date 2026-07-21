@@ -1,11 +1,11 @@
 import * as React from "react";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  /** Visible label — always required for accessibility, no placeholder-as-label. */
+  /** Visible label   always required for accessibility, no placeholder-as-label. */
   label: string;
   /**
    * Encouraging, specific validation copy (see docs/AI_project_bible.md §3
-   * Brand Voice) — never "Invalid" or "Failed". Rendered with role="alert".
+   * Brand Voice)   never "Invalid" or "Failed". Rendered with role="alert".
    */
   error?: string;
   /** Optional supporting copy shown under the label when there's no error. */
@@ -26,7 +26,7 @@ function useStableId(prefix: string, providedId?: string): string {
 /**
  * Text input with visible label, error, and hint slots. Meets the same
  * 44px touch target and spacing scale as Button. Error state uses the
- * `error` color token (technical/validation issues only — never repurposed
+ * `error` color token (technical/validation issues only   never repurposed
  * for lesson "wrong answer" feedback, per docs/AI_project_bible.md §11).
  */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -74,6 +74,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = "Input";
 
-/** Alias — some call sites read more naturally as "TextField". */
+/** Alias   some call sites read more naturally as "TextField". */
 export const TextField = Input;
 export type TextFieldProps = InputProps;

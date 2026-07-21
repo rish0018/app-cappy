@@ -39,7 +39,7 @@ function GoogleIcon() {
   );
 }
 
-/** Simplified Apple glyph — monochrome, inherits currentColor. */
+/** Simplified Apple glyph   monochrome, inherits currentColor. */
 function AppleIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -54,7 +54,7 @@ const ICONS: Record<SSOProvider, () => React.ReactElement> = {
 };
 
 /**
- * Third-party sign-in button. Purely presentational + click handler —
+ * Third-party sign-in button. Purely presentational + click handler  
  * wiring to `signInWithOAuth(provider)` happens at the call site so this
  * component stays framework/backend agnostic.
  */

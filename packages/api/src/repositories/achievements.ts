@@ -60,7 +60,7 @@ export async function getUserAchievements(userId: string): Promise<UserAchieveme
  * Records an achievement unlock. Idempotent: unlocking an already-unlocked
  * achievement is a no-op that returns the existing row, per
  * AI_project_bible.md §9 ("Achievements are event-driven; backend records
- * them, frontend presents them") — the backend, not the caller, is
+ * them, frontend presents them")   the backend, not the caller, is
  * responsible for not double-recording.
  */
 export async function unlockAchievement(userId: string, achievementId: string): Promise<UserAchievement> {

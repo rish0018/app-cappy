@@ -46,7 +46,7 @@ export function LessonPractice() {
             className="h-14 w-14 rounded-full"
           />
           <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-            Step 2 of 3 — Practice
+            Step 2 of 3   Practice
           </span>
           <h1 className="font-display text-2xl font-bold text-neutral-800">
             Show me the sign for "{letter}"
@@ -69,7 +69,7 @@ export function LessonPractice() {
                 <img src={practiceCappy} alt="" aria-hidden="true" className="h-20 w-20 rounded-full" />
                 <span className="text-neutral-300 text-sm px-md text-center">
                   {status === "loading" && "Getting your camera ready…"}
-                  {status === "no-camera" && "We need camera access to see your signing — check your browser permissions."}
+                  {status === "no-camera" && "We need camera access to see your signing   check your browser permissions."}
                   {status === "error" && "We couldn't start the camera just yet. Let's try refreshing."}
                   {status === "idle" && "Camera preview will appear here"}
                 </span>
@@ -84,10 +84,10 @@ export function LessonPractice() {
                 {!prediction
                   ? "Show your hand to the camera to get started."
                   : prediction.letter !== letter
-                    ? `Looks like "${prediction.letter}" so far — try shaping it a bit more like "${letter}".`
+                    ? `Looks like "${prediction.letter}" so far   try shaping it a bit more like "${letter}".`
                     : score >= 0.9
-                      ? "Beautiful form — you've got this letter down."
-                      : "Nice attempt — try adjusting your hand angle a little and give it another go."}
+                      ? "Beautiful form   you've got this letter down."
+                      : "Nice attempt   try adjusting your hand angle a little and give it another go."}
               </p>
             </>
           )}

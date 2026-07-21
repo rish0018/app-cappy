@@ -6,7 +6,7 @@ export interface DividerProps {
   className?: string;
 }
 
-/** Horizontal rule with optional centered label — used to split auth methods. */
+/** Horizontal rule with optional centered label   used to split auth methods. */
 export function Divider({ label, className = "" }: DividerProps) {
   if (!label) {
     return <hr className={["border-neutral-200", className].join(" ")} />;

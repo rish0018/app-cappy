@@ -1,5 +1,5 @@
 /**
- * "Receiving" exercise support — converts a dot/dash pattern into an audio
+ * "Receiving" exercise support   converts a dot/dash pattern into an audio
  * timeline the UI plays back (tone on/off segments), per standard timing
  * ratios: dot = 1 unit tone, dash = 3 units tone, gap between symbols
  * within a character = 1 unit silence.

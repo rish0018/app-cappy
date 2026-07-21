@@ -1,5 +1,5 @@
 /**
- * Word-level Morse support — builds on the single-character helpers in
+ * Word-level Morse support   builds on the single-character helpers in
  * sending.ts/receiving.ts to handle whole words and short phrases, per
  * standard International Morse timing ratios:
  *   symbol gap (within a character) = 1 unit of silence
@@ -68,7 +68,7 @@ export function wordToAudioTimeline(word: string, unitMs: number = DEFAULT_UNIT_
 }
 
 /**
- * A press-and-release plus the silence that preceded it — the raw material
+ * A press-and-release plus the silence that preceded it   the raw material
  * for word-level sending, where the gaps carry as much meaning as the taps.
  * The first tap of an attempt has gapBeforeMs = 0.
  */
