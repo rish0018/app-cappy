@@ -6,6 +6,7 @@ import { ALL_LETTERS, type Letter } from "@cappy/types";
 import { mockLessonById } from "../mockData";
 import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../components/motion";
 import { useMascotReaction } from "../mascot/mascotStore";
+import { ReferenceImage } from "../components/ReferenceImage";
 
 function pickChoices(answer: Letter): Letter[] {
   const others = ALL_LETTERS.filter((letter) => letter !== answer).slice(0, 3);
@@ -86,15 +87,7 @@ export function LessonQuiz() {
       <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>
         <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
           <h1 className="font-display text-2xl font-bold text-neutral-800">Which letter is this sign?</h1>
-          <div
-            role="img"
-            aria-label="Sign to identify"
-            className="w-48 h-48 rounded-lg bg-neutral-800 flex items-center justify-center"
-          >
-            <span className="text-7xl text-neutral-0" aria-hidden="true">
-              🤟
-            </span>
-          </div>
+          <ReferenceImage letter={answer} className="w-48" alt="Sign to identify" />
 
           <div className="grid grid-cols-2 gap-sm w-full max-w-xs">
             {choices.map((choice) => (

@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Card, ProgressBar, StreakBadge, XPBadge } from "@cappy/ui";
+import { Button, Card, ProgressBar, StreakBadge, XPBadge } from "@cappy/ui";
+import { signOut } from "@cappy/api";
 import { ALL_LETTERS } from "@cappy/types";
 import { mockLetterMastery, mockStreak, mockUser } from "../mockData";
 import {
@@ -55,10 +57,29 @@ const PROFILE_STATS = (letterCount: number, repCount: number) => [
 ];
 
 export function Profile() {
+  const navigate = useNavigate();
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
   const item = reduced ? staggerItemReduced : staggerItem;
+  const [signingOut, setSigningOut] = React.useState(false);
+  const [signOutNotice, setSignOutNotice] = React.useState<string | null>(null);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    setSignOutNotice(null);
+    try {
+      await signOut();
+      navigate("/login");
+    } catch {
+      // Auth backend isn't configured yet in dev   let the learner leave
+      // the screen anyway rather than trapping them behind a broken call.
+      console.warn("[Profile] signOut() failed   auth backend likely not configured yet.");
+      setSignOutNotice("We couldn't reach your account just now, but you're free to head back to sign in.");
+    } finally {
+      setSigningOut(false);
+    }
+  }
 
   const letterCount = mockLetterMastery.filter((m) => m.masteryScore >= 0.85).length;
   const repCount = mockLetterMastery.reduce((sum, m) => sum + m.practiceCount, 0);
@@ -142,6 +163,29 @@ export function Profile() {
             label="Larger text"
             description="Increases the base text size across the app."
           />
+        </Card>
+      </motion.section>
+
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={fade}
+      >
+        <h2 className="font-display text-lg font-bold text-neutral-800 mb-md">Account</h2>
+        <Card variant="outline" className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-md">
+          <div>
+            <p className="font-medium text-neutral-800">Sign out</p>
+            <p className="text-sm text-neutral-500">You can always sign back in to keep learning.</p>
+            {signOutNotice ? (
+              <p role="status" className="text-sm text-neutral-500 mt-xs">
+                {signOutNotice}
+              </p>
+            ) : null}
+          </div>
+          <Button variant="secondary" onClick={handleSignOut} disabled={signingOut}>
+            {signingOut ? "Signing out…" : "Sign out"}
+          </Button>
         </Card>
       </motion.section>
     </div>

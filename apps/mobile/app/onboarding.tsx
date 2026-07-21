@@ -31,7 +31,7 @@ export default function OnboardingScreen() {
         </Text>
       </View>
       <View className="px-2xl pb-2xl">
-        <Button label="Let's get started" variant="secondary" fullWidth onPress={() => router.replace("/(tabs)")} />
+        <Button label="Let's get started" variant="secondary" fullWidth onPress={() => router.replace("/login")} />
       </View>
     </SafeAreaView>
   );

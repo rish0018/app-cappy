@@ -37,6 +37,8 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="signup" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="lesson/[id]/demo" options={{ headerShown: true, title: "Demo" }} />
         <Stack.Screen name="lesson/[id]/practice" options={{ headerShown: true, title: "Practice" }} />

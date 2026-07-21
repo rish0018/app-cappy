@@ -24,15 +24,18 @@ import time
 
 import cv2
 import mediapipe as mp
+from mediapipe.tasks.python import BaseOptions
+from mediapipe.tasks.python.vision import HandLandmarker, HandLandmarkerOptions, RunningMode
 from tqdm import tqdm
 
 # ----------------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parent.parent
-DATASET = ROOT/"datasets"/"raw"/"asl_alphabet"/"train"
+DATASET = ROOT/"datasets"/"raw"/"asl_alphabet"/"asl_alphabet_train"/"asl_alphabet_train"
 CSV_DIR = ROOT/"datasets"/"csv"
 PROC_DIR = ROOT/"datasets"/"processed"
+HAND_LANDMARKER_MODEL = ROOT/"models"/"mediapipe"/"hand_landmarker.task"
 
 CSV_FILE = CSV_DIR/"landmarks_raw.csv"
 PROGRESS = PROC_DIR/"progress.json"
@@ -117,10 +120,13 @@ def save_progress():
 # ----------------------------------------------------------------------------
 # MediaPipe init
 # ----------------------------------------------------------------------------
-hands = mp.solutions.hands.Hands(
-    static_image_mode=True,
-    max_num_hands=1,
-    min_detection_confidence=MIN_DETECTION_CONFIDENCE,
+hands = HandLandmarker.create_from_options(
+    HandLandmarkerOptions(
+        base_options=BaseOptions(model_asset_path=str(HAND_LANDMARKER_MODEL)),
+        running_mode=RunningMode.IMAGE,
+        num_hands=1,
+        min_hand_detection_confidence=MIN_DETECTION_CONFIDENCE,
+    )
 )
 
 # ----------------------------------------------------------------------------
@@ -178,12 +184,13 @@ for label, path in tqdm(images, desc="Extracting landmarks"):
         continue
 
     rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    result = hands.process(rgb)
+    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
+    result = hands.detect(mp_image)
 
-    if result.multi_hand_landmarks:
-        lm = result.multi_hand_landmarks[0]
+    if result.hand_landmarks:
+        lm = result.hand_landmarks[0]
         row = [label]
-        for p in lm.landmark:
+        for p in lm:
             row.extend([p.x, p.y, p.z])
         writer.writerow(row)
         csvf.flush()
@@ -197,7 +204,8 @@ for label, path in tqdm(images, desc="Extracting landmarks"):
 
     processed.add(rel)
     last_image = rel
-    save_progress()
+    if len(processed) % 200 == 0:
+        save_progress()
 
 # ----------------------------------------------------------------------------
 # Cleanup

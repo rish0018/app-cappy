@@ -1,9 +1,12 @@
 import * as React from "react";
 import { Route, Routes } from "react-router-dom";
 import { NavLayout } from "./components/NavLayout";
+import { RequireAuth } from "./components/RequireAuth";
 import { MascotLayer } from "./mascot/MascotLayer";
 import { Loader } from "./components/Loader";
 import { Landing } from "./screens/Landing";
+import { Login } from "./screens/Login";
+import { Signup } from "./screens/Signup";
 import { Onboarding } from "./screens/Onboarding";
 import { Dashboard } from "./screens/Dashboard";
 import { LessonList } from "./screens/LessonList";
@@ -43,23 +46,27 @@ export default function App() {
     <>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
-        <Route element={<NavLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/lessons" element={<LessonList />} />
-          <Route path="/lessons/:id/demo" element={<LessonDemo />} />
-          <Route path="/lessons/:id/practice" element={<LessonPractice />} />
-          <Route path="/lessons/:id/quiz" element={<LessonQuiz />} />
-          <Route path="/lessons/:id/review" element={<LessonReview />} />
-          <Route path="/morse" element={<MorseDashboard />} />
-          <Route path="/morse/levels" element={<MorseLevelList />} />
-          <Route path="/morse/levels/:id/learn" element={<MorseLearn />} />
-          <Route path="/morse/levels/:id/send" element={<MorseSend />} />
-          <Route path="/morse/levels/:id/receive" element={<MorseReceive />} />
-          <Route path="/morse/levels/:id/checkout" element={<MorseCheckout />} />
-          <Route path="/morse/words/:stageId" element={<MorseWords />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/profile" element={<Profile />} />
+        <Route element={<RequireAuth />}>
+          <Route element={<NavLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/lessons" element={<LessonList />} />
+            <Route path="/lessons/:id/demo" element={<LessonDemo />} />
+            <Route path="/lessons/:id/practice" element={<LessonPractice />} />
+            <Route path="/lessons/:id/quiz" element={<LessonQuiz />} />
+            <Route path="/lessons/:id/review" element={<LessonReview />} />
+            <Route path="/morse" element={<MorseDashboard />} />
+            <Route path="/morse/levels" element={<MorseLevelList />} />
+            <Route path="/morse/levels/:id/learn" element={<MorseLearn />} />
+            <Route path="/morse/levels/:id/send" element={<MorseSend />} />
+            <Route path="/morse/levels/:id/receive" element={<MorseReceive />} />
+            <Route path="/morse/levels/:id/checkout" element={<MorseCheckout />} />
+            <Route path="/morse/words/:stageId" element={<MorseWords />} />
+            <Route path="/achievements" element={<Achievements />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
         </Route>
       </Routes>
       <MascotLayer />

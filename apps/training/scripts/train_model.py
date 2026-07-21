@@ -15,6 +15,11 @@ MODELS=ROOT/'models'; REPORTS=ROOT/'reports'; EXPERIMENTS=ROOT/'experiments'
 for d in [MODELS,REPORTS,EXPERIMENTS]: d.mkdir(exist_ok=True)
 
 df=pd.read_csv(DATA)
+# Drop classes with too few samples to stratify-split (e.g. "nothing", which by
+# definition has no hand landmarks to learn from and isn't a real classification
+# target for a hand-landmark model anyway).
+counts=df['label'].value_counts()
+df=df[df['label'].isin(counts[counts>=10].index)]
 X=df.iloc[:,1:].values
 y=df.iloc[:,0].values
 enc=LabelEncoder(); y=enc.fit_transform(y)

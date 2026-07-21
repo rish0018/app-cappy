@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ProgressBar } from "@cappy/ui";
 import { mockLessonById } from "../mockData";
 import { fadeUp, fadeUpReduced } from "../components/motion";
+import { ReferenceImage } from "../components/ReferenceImage";
 
 /** One primary action per screen: watch the demo, then move on. */
 export function LessonDemo() {
@@ -34,15 +35,7 @@ export function LessonDemo() {
             Watch the sign for "{letter}"
           </h1>
 
-          <div
-            role="img"
-            aria-label={`Video demonstration of the ASL sign for ${letter}`}
-            className="w-full aspect-video rounded-lg bg-neutral-800 flex items-center justify-center"
-          >
-            <span className="text-7xl text-neutral-0" aria-hidden="true">
-              🤟
-            </span>
-          </div>
+          <ReferenceImage letter={letter} />
 
           <p className="text-neutral-600 max-w-sm">
             Take your time. Watch it as many times as you like   there's no rush.

@@ -1,0 +1,11 @@
+{
+    "model": "KerasMLP",
+    "layers": [
+        128,
+        64,
+        28
+    ],
+    "dropout": 0.2,
+    "optimizer": "adam",
+    "note": "Trained for browser TF.js export; RandomForest baseline (train_model.py) kept as the offline-accuracy reference."
+}

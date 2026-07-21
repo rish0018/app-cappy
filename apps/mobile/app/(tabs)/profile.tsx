@@ -1,7 +1,10 @@
+import { signOut } from "@cappy/api";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Button } from "../../src/components/Button";
 import { Card } from "../../src/components/Card";
 import { ProgressBar } from "../../src/components/ProgressBar";
 import { mockLetterGroups, mockLetterMastery, mockStreak, mockUser } from "../../src/mockData";
@@ -12,6 +15,22 @@ const TEXT_SIZES: TextSize[] = ["small", "medium", "large"];
 export default function ProfileScreen() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [textSize, setTextSize] = useState<TextSize>("medium");
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    try {
+      await signOut();
+      router.replace("/login");
+    } catch (err) {
+      // Fail open: with no live Supabase project configured yet, still let
+      // the learner return to the sign-in screen instead of getting stuck.
+      console.warn("[profile] signOut() unavailable, navigating to /login anyway:", err);
+      router.replace("/login");
+    } finally {
+      setSigningOut(false);
+    }
+  }
 
   const overallMastery = Math.round(
     Object.values(mockLetterMastery).reduce((sum, m) => sum + m.masteryScore, 0) /
@@ -104,6 +123,20 @@ export default function ProfileScreen() {
               </Pressable>
             ))}
           </View>
+        </Card>
+
+        <Card className="mb-lg">
+          <Text className="mb-xs text-base font-bold text-neutral-800">Sign out</Text>
+          <Text className="mb-md text-sm text-neutral-500">
+            Your progress is saved   you can pick right back up next time.
+          </Text>
+          <Button
+            label={signingOut ? "Signing out…" : "Sign out"}
+            variant="outline"
+            fullWidth
+            onPress={handleSignOut}
+            disabled={signingOut}
+          />
         </Card>
       </ScrollView>
     </SafeAreaView>

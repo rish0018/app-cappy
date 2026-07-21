@@ -4,11 +4,16 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
-    "@cappy/types": "workspace:*"
+    "@cappy/types": "workspace:*",
+    "@supabase/supabase-js": "^2.45.4"
   },
   "devDependencies": {
     "@cappy/config": "workspace:*",
+    "@types/node": "^20.14.0",
     "typescript": "^5.5.4"
   }
 }
