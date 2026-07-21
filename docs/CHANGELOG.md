@@ -2,19 +2,19 @@
 
 ## Unreleased
 
-<<<<<<< HEAD
+
 ### Morse Code   words & staged curriculum
 - Added word-level Morse logic to `@cappy/core` (`morse/words.ts`): word/phrase → per-letter patterns, full audio timelines with standard 3-unit letter gaps and 7-unit word gaps, gap classification for tap streams, and `validateWordSendAttempt` for scoring word-level sending (shared by web and mobile).
 - Added the word & phrase curriculum to `@cappy/types` (`MORSE_WORD_STAGES`): five active stages (First Words, Everyday Words, Full Alphabet Words, Short Phrases, On the Air). Active stages are now immediately testable.
 - New `/morse/words/:stageId` practice screen (listen to a whole word, pick it, pattern revealed per letter after answering), with the unlock guard simplified so all active stages are accessible during testing.
 - Added a dedicated Morse learn lesson before each practice block so learners can review dot/dash patterns and hear the sounds for every character.
 - Redesigned the Morse learn screen to use a two-column review layout and simplified the action flow to a single Practice button.
-=======
+
 ### Bug fixes from real-device/browser testing (2026-07-21, part 2)
 - **Fixed `apps/mobile` failing to bundle at all**: `expo run:android`/`expo start` errored with `Unable to resolve module ./node_modules/expo-router/entry` (a 404 on the dev server's own entry-bundle request). Root cause: Expo's dev server requests the `main: "expo-router/entry"` entry point as a literal *relative path* (`./node_modules/expo-router/entry`) from the project root, not a bare specifier — relative-path resolution never consults `resolver.nodeModulesPaths`/hierarchical lookup (only bare imports do), so with this repo's pnpm hoisted layout (`apps/mobile/node_modules` has no local `expo-router` — it's hoisted to the workspace root) that literal path never resolves, even though `require.resolve("expo-router/entry")` succeeds fine from the same directory. Fixed in `apps/mobile/metro.config.js` with a custom `resolver.resolveRequest` that re-resolves any unresolvable `./node_modules/<pkg>/...` request as a bare specifier instead. Verified against a real running Metro server (not just a code read): confirmed the exact 404 first, then confirmed a real HTTP 200 + valid ~9MB bundle after the fix, with a fully fresh cache and no manual `node_modules` changes.
 - **Fixed web signup showing a generic, unhelpful error** for Supabase's `over_email_send_rate_limit` (429) — a real, expected limitation of the default/free email provider's very low hourly send cap (easily exhausted between testing and real signups), not an app bug. Added `isAuthRateLimitError()` to `packages/api/src/repositories/auth.ts`; both Signup screens now show "We're sending a lot of emails right now — please wait a few minutes and try again" specifically for this case instead of the generic message.
 
->>>>>>> 215ed43 (Fixed node modules issue in mobile app)
+
 ### Bug fixes from real-device/browser testing (2026-07-21)
 - **Fixed a real bug that let unauthenticated users straight into the app**: `packages/api/src/client.ts`'s env-var reader used `(import.meta as any)?.env`   Vite's dev server statically pattern-matches the literal, unwrapped `import.meta.env` expression to inject real env values; the optional-chaining (`?.`) form defeats that match and silently evaluates to `undefined` even with a valid `.env.local`. This made `createSupabaseClient()` always throw "not configured," which made every route guard fail open. Confirmed via a headless-browser repro before and after the fix   `/lessons/:id/demo` now correctly redirects an unauthenticated visitor to `/login`, with zero console warnings once actually authenticated.
 - **Fixed `apps/mobile/android/gradlew` missing its executable bit** (`git ls-files -s` shows it's tracked as mode `100644`)   this breaks `expo run:android` with `spawn .../gradlew EACCES` on every fresh clone. Fixed locally (`chmod +x`); **needs `git update-index --chmod=+x apps/mobile/android/gradlew` committed** so this doesn't regress for the next person who clones the repo.
