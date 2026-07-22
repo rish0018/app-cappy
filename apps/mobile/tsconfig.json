@@ -11,6 +11,7 @@
     ],
     "types": [
       "react",
+      "node",
       "nativewind/types"
     ],
     "paths": {
