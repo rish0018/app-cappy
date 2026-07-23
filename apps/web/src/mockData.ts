@@ -52,24 +52,35 @@ export const mockUnits: Unit[] = LETTER_GROUPS.map((group, index) => ({
   description: `Learn to fingerspell ${group.letters.join(", ")}.`,
 }));
 
-export const mockLessons: Lesson[] = LETTER_GROUPS.flatMap((group, groupIndex) => {
-  const unitId = `unit-${group.id}`;
-  return group.letters.map((letter, letterIndex) => ({
-    id: `lesson-${group.id}-${letter.toLowerCase()}`,
-    unitId,
-    title: `The Letter ${letter}`,
-    description: `Watch, practice, and quiz yourself on the sign for ${letter}.`,
-    lessonType: LESSON_TYPE_BY_INDEX[letterIndex % LESSON_TYPE_BY_INDEX.length]!,
-    difficulty: groupIndex + 1,
-    estimatedMinutes: 4,
-    xpReward: 20,
-    orderIndex: letterIndex,
-  }));
-});
+/**
+ * One lesson per 5-letter group ("5-at-once" teaching   see PROJECT_BIBLE
+ * §129/§131). Previously this was one lesson per letter
+ * (`lesson-${group.id}-${letter}`); the id shape changed to
+ * `lesson-${group.id}` (e.g. "lesson-a-e"). Anything keyed to the old
+ * per-letter ids (only mockUserProgress below, in this mock-data-only repo)
+ * is regenerated alongside this change   flag any real persisted progress
+ * data outside mock data for a migration map before shipping.
+ */
+export const mockLessons: Lesson[] = LETTER_GROUPS.map((group, groupIndex) => ({
+  id: `lesson-${group.id}`,
+  unitId: `unit-${group.id}`,
+  title: `Letters ${group.label}`,
+  description: `Learn all ${group.letters.length} signs in this group together: ${group.letters.join(", ")}.`,
+  lessonType: LESSON_TYPE_BY_INDEX[groupIndex % LESSON_TYPE_BY_INDEX.length]!,
+  difficulty: groupIndex + 1,
+  estimatedMinutes: 4 + group.letters.length,
+  xpReward: 20 * group.letters.length,
+  orderIndex: 0,
+}));
 
 /** Convenience lookup used by the lesson-player routes. */
 export const mockLessonById: Record<string, Lesson> = Object.fromEntries(
   mockLessons.map((lesson) => [lesson.id, lesson]),
+);
+
+/** The set of letters taught by each group lesson, keyed by lesson id. */
+export const mockLessonLetters: Record<string, Letter[]> = Object.fromEntries(
+  LETTER_GROUPS.map((group) => [`lesson-${group.id}`, group.letters]),
 );
 
 export const mockActiveLessonId = mockLessons[3]?.id ?? mockLessons[0]!.id;

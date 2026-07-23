@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Button, Card, ProgressBar } from "@cappy/ui";
 import { ALL_LETTERS, type Letter } from "@cappy/types";
-import { mockLessonById } from "../mockData";
+import { mockLessonById, mockLessonLetters } from "../mockData";
 import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../components/motion";
 import { useMascotReaction } from "../mascot/mascotStore";
 import { ReferenceImage } from "../components/ReferenceImage";
@@ -21,7 +21,8 @@ export function LessonQuiz() {
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [secondsLeft, setSecondsLeft] = React.useState(15);
   const [feedback, setFeedback] = React.useState<"correct" | "incorrect" | null>(null);
-  const totalQuestions = 5;
+  const letters = lesson ? mockLessonLetters[lesson.id] ?? [] : [];
+  const totalQuestions = letters.length || 5;
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
@@ -37,7 +38,7 @@ export function LessonQuiz() {
     return <p className="text-neutral-600">Lesson not found.</p>;
   }
 
-  const answer = lesson.title.replace("The Letter ", "") as Letter;
+  const answer = letters[questionIndex % letters.length]!;
   const choices = React.useMemo(() => pickChoices(answer), [answer, questionIndex]);
 
   const advance = () => {

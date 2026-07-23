@@ -1,7 +1,9 @@
 # Progress   Cappy
 
-**Last updated:** 2026-07-17
+**Last updated:** 2026-07-23
 **Status:** Backend (schema/RLS/API wiring) and auth UI (login/signup/SSO buttons/route guards) are now implemented in code on both web and mobile, awaiting a live Supabase project + real keys to actually connect. TF.js browser integration is still pending (see §2).
+
+**Uncommitted on this branch right now:** a visual redesign is in the working tree but not yet committed — ASL lessons restructured from one-per-letter to one-per-5-letter-group, themed per-route backgrounds, and a new achievements "bookshelf" screen. See `docs/CHANGELOG.md`'s "Visual redesign" entry for the full list; the "What's Done" section below still describes the pre-redesign, per-letter lesson structure until this lands.
 
 ---
 

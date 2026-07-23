@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ConfidenceIndicator, ProgressBar } from "@cappy/ui";
 import practiceCappy from "../assets/characters/character_practice_cappy.png";
 import thinkingCappy from "../assets/characters/character_thinking_cappy.png";
-import { mockLessonById } from "../mockData";
+import { mockLessonById, mockLessonLetters } from "../mockData";
 import { fadeUp, fadeUpReduced } from "../components/motion";
 import { useHandPosePrediction } from "../ml/useHandPosePrediction";
 
@@ -23,12 +23,15 @@ export function LessonPractice() {
   const fade = reduced ? fadeUpReduced : fadeUp;
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const { status, prediction } = useHandPosePrediction(videoRef);
+  const [letterIndex, setLetterIndex] = React.useState(0);
 
   if (!lesson) {
     return <p className="text-neutral-600">Lesson not found.</p>;
   }
 
-  const letter = lesson.title.replace("The Letter ", "");
+  const letters = mockLessonLetters[lesson.id] ?? [];
+  const letter = letters[letterIndex] ?? letters[0] ?? "";
+  const isLastLetter = letterIndex >= letters.length - 1;
   const score = prediction?.confidence ?? 0;
 
   return (
@@ -51,6 +54,9 @@ export function LessonPractice() {
           <h1 className="font-display text-2xl font-bold text-neutral-800">
             Show me the sign for "{letter}"
           </h1>
+          <p className="text-xs font-semibold text-neutral-500">
+            Letter {letterIndex + 1} of {letters.length}
+          </p>
 
           <div
             role="group"
@@ -93,8 +99,18 @@ export function LessonPractice() {
           )}
 
           <div className="flex gap-sm w-full max-w-xs">
-            <Button variant="primary" className="flex-1" onClick={() => navigate(`/lessons/${lesson.id}/quiz`)}>
-              Next
+            <Button
+              variant="primary"
+              className="flex-1"
+              onClick={() => {
+                if (isLastLetter) {
+                  navigate(`/lessons/${lesson.id}/quiz`);
+                } else {
+                  setLetterIndex((i) => i + 1);
+                }
+              }}
+            >
+              {isLastLetter ? "Next" : "Next letter"}
             </Button>
           </div>
         </Card>

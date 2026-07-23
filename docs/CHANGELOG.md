@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Visual redesign   themed backgrounds, ASL "5-letter groups", achievements bookshelf (in progress, uncommitted)
+- **ASL curriculum restructured from one lesson per letter to one lesson per 5-letter group** (`apps/web/src/mockData.ts`, `apps/mobile/src/mockData.ts`): lesson ids changed shape from `lesson-${group.id}-${letter}` to `lesson-${group.id}` (e.g. `lesson-a-e`), so all mock progress/streak data tied to per-letter ids was regenerated. **No real persisted progress exists yet (still pre-launch/mock-data-only), so this is safe now but would need a migration map if done after a live Supabase project has real user progress.**
+- `LessonList.tsx` (web) and `lessons.tsx` (mobile) rebuilt as a card grid ("Levels") mirroring `MorseDashboard`'s level-card style, replacing the old per-letter dashed-path layout; added the same `STATE_CHIP` (locked/active/completed) convention used by Morse so both curricula read as one family.
+- New `apps/web/src/lessonBackgrounds.ts` / mobile equivalent: `ASL_LESSON_BACKGROUNDS` maps each 5-letter group lesson id to a distinct backdrop scene, shown on both the lesson-list card and the lesson-step pages.
+- `NavLayout.tsx` (web) now picks a themed background per authenticated route (`backgroundFor()`): ASL lesson-step routes get their group's scene (falling back to a shared default), `/morse*` routes share one constellation backdrop, and `/dashboard`, `/achievements`, `/profile` each get their own scene.
+- New per-letter reference/background art assets added under `apps/mobile/assets/background_*.jpg` and corresponding web `scene_*.png` assets; 4 new Cappy character prompts added to `brand-assets/Cappy_Brand_Prompt_Library_v1.txt` (Signing, Encouraging, Greeting, Listening Cappy) documenting the art direction behind the new imagery.
+- Achievements screen (web) rebuilt around a new `apps/web/src/screens/achievements/BookshelfLibrary.tsx` + `libraryData.ts`, replacing the flat `AchievementBadge` grid with a bookshelf metaphor; mobile's achievements tab updated to match.
+- Mobile `Loader.tsx` reworked to use `SafeAreaView`/`Dimensions` instead of a fixed-size `Image`, fixing slide sizing on devices with different screen dimensions/notches.
+- Misc: `packages/ui/src/components/Card.tsx`, `DashboardDock.tsx`, `(tabs)/_layout.tsx`, `Login`/`Signup` (both apps), `LessonDemo`/`LessonQuiz`/`LessonPractice`/`review.tsx`, `MorseDashboard.tsx`, and both `tailwind.config` files touched in support of the above (background layering, spacing/token tweaks).
+- **Not yet committed as of this entry** — this whole section describes the working tree's uncommitted diff on `Feature/backend`, written retroactively because the branch had moved forward without a matching docs/changelog update. Verify web/mobile typecheck and a manual click-through before committing; `docs/PROGRESS.md` §1 "What's Done" still describes the pre-redesign, per-letter lesson structure and needs a follow-up pass once this lands.
 
 ### Morse Code   words & staged curriculum
 - Added word-level Morse logic to `@cappy/core` (`morse/words.ts`): word/phrase → per-letter patterns, full audio timelines with standard 3-unit letter gaps and 7-unit word gaps, gap classification for tap streams, and `validateWordSendAttempt` for scoring word-level sending (shared by web and mobile).

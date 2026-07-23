@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Button, Card, MorseSequenceDisplay, ProgressBar } from "@cappy/ui";
+import { Button, Card, MascotFigure, MorseSequenceDisplay, ProgressBar } from "@cappy/ui";
 import { MORSE_GROUPS, MORSE_MAP, type MorseWordStage } from "@cappy/types";
 import {
   averageMasteryForCharacters,
@@ -50,14 +50,24 @@ export function MorseDashboard() {
 
   return (
     <div className="flex flex-col gap-3xl">
-      <motion.section initial="hidden" animate="visible" variants={fade}>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
-          Taps and tones
-        </p>
-        <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">Morse Code</h1>
-        <p className="text-neutral-600">
-          Six character levels, then whole words   five new letters and numbers at a time.
-        </p>
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+        className="relative overflow-hidden rounded-xl border border-primary-100 bg-gradient-to-br from-primary-50 to-neutral-0 px-lg py-xl sm:px-xl"
+      >
+        <div className="relative z-10 max-w-lg">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
+            Taps and tones
+          </p>
+          <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">Morse Code</h1>
+          <p className="text-neutral-600">
+            Six character levels, then whole words   five new letters and numbers at a time.
+          </p>
+        </div>
+        <div className="hidden sm:block absolute -right-4 -bottom-4 opacity-90 pointer-events-none">
+          <MascotFigure pose="mentor" size="md" />
+        </div>
       </motion.section>
 
       <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>

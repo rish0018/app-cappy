@@ -68,25 +68,46 @@ export interface MockLesson extends Lesson {
   completionPercentage: number;
 }
 
-export const mockUnits: MockUnit[] = [
-  { id: "unit-1", courseId: "course-asl", title: "First Signs, A–E", orderIndex: 0, description: "Learn to fingerspell letters A through E.", status: "completed" },
-  { id: "unit-2", courseId: "course-asl", title: "Building Momentum, F–J", orderIndex: 1, description: "Keep the streak going with F through J.", status: "in-progress" },
-  { id: "unit-3", courseId: "course-asl", title: "Halfway There, K–O", orderIndex: 2, description: "The middle stretch of the alphabet.", status: "not-started" },
-  { id: "unit-4", courseId: "course-asl", title: "Steady Progress, P–T", orderIndex: 3, description: "Four more letters to confident fingerspelling.", status: "not-started" },
-  { id: "unit-5", courseId: "course-asl", title: "The Final Stretch, U–Z", orderIndex: 4, description: "Finish the alphabet strong.", status: "not-started" },
-];
+const UNIT_TAGLINES: Record<string, string> = {
+  "a-e": "First Signs",
+  "f-j": "Building Momentum",
+  "k-o": "Halfway There",
+  "p-t": "Steady Progress",
+  "u-z": "The Final Stretch",
+};
 
-export const mockLessons: MockLesson[] = [
-  { id: "lesson-1", unitId: "unit-1", title: "Meet A, B, C", description: "Observe and recognize your first three letters.", lessonType: "observe", difficulty: 1, estimatedMinutes: 5, xpReward: 20, orderIndex: 0, status: "completed", completionPercentage: 100 },
-  { id: "lesson-2", unitId: "unit-1", title: "Practice A–C", description: "Use the camera to check your hand shapes.", lessonType: "perform", difficulty: 1, estimatedMinutes: 6, xpReward: 25, orderIndex: 1, status: "completed", completionPercentage: 100 },
-  { id: "lesson-3", unitId: "unit-1", title: "D and E", description: "Add two more letters to your set.", lessonType: "recognize", difficulty: 2, estimatedMinutes: 5, xpReward: 20, orderIndex: 2, status: "completed", completionPercentage: 100 },
-  { id: "lesson-4", unitId: "unit-2", title: "Meet F, G, H", description: "Observe and recognize F through H.", lessonType: "observe", difficulty: 2, estimatedMinutes: 6, xpReward: 25, orderIndex: 0, status: "completed", completionPercentage: 100 },
-  { id: "lesson-5", unitId: "unit-2", title: "Practice F–H", description: "Camera practice for F, G, and H.", lessonType: "perform", difficulty: 2, estimatedMinutes: 7, xpReward: 30, orderIndex: 1, status: "in-progress", completionPercentage: 40 },
-  { id: "lesson-6", unitId: "unit-2", title: "I and J", description: "Round out this group with I and J.", lessonType: "recall", difficulty: 2, estimatedMinutes: 6, xpReward: 25, orderIndex: 2, status: "not-started", completionPercentage: 0 },
-  { id: "lesson-7", unitId: "unit-2", title: "Mixed Review, F–J", description: "A relaxed review of everything so far.", lessonType: "mixed-review", difficulty: 2, estimatedMinutes: 8, xpReward: 35, orderIndex: 3, status: "not-started", completionPercentage: 0 },
-];
+export const mockUnits: MockUnit[] = LETTER_GROUPS.map((group, index) => ({
+  id: `unit-${group.id}`,
+  courseId: "course-asl",
+  title: `${UNIT_TAGLINES[group.id] ?? group.label}, ${group.label}`,
+  orderIndex: index,
+  description: `Learn to fingerspell letters ${group.label}.`,
+  status: index === 0 ? "completed" : index === 1 ? "in-progress" : "not-started",
+}));
 
-export const CONTINUE_LESSON_ID = "lesson-5";
+/**
+ * One lesson per 5-letter group ("5-at-once" teaching   PROJECT_BIBLE
+ * §129/§131), all learned/practiced/quizzed together in a single lesson
+ * instead of one lesson per letter. Id shape changed from `lesson-<n>` to
+ * `lesson-${group.id}` (e.g. "lesson-a-e")   this is mock data regenerated
+ * alongside the change, so no persisted progress needs a migration map, but
+ * flag this id-shape change if any real backend ever keys off it.
+ */
+export const mockLessons: MockLesson[] = LETTER_GROUPS.map((group, index) => ({
+  id: `lesson-${group.id}`,
+  unitId: `unit-${group.id}`,
+  title: `Letters ${group.label}`,
+  description: `Learn all ${group.letters.length} signs in this group together: ${group.letters.join(", ")}.`,
+  lessonType: index % 2 === 0 ? "observe" : "perform",
+  difficulty: index + 1,
+  estimatedMinutes: 4 + group.letters.length,
+  xpReward: 20 * group.letters.length,
+  orderIndex: 0,
+  status: index === 0 ? "completed" : index === 1 ? "in-progress" : "not-started",
+  completionPercentage: index === 0 ? 100 : index === 1 ? 40 : 0,
+}));
+
+export const CONTINUE_LESSON_ID = mockLessons[1]!.id;
 
 export const mockAchievements: (Achievement & { unlockedAt: string | null })[] = [
   { id: "ach-1", name: "First Lesson", description: "Completed your very first lesson.", icon: "footsteps", unlockedAt: "2026-06-01T10:00:00.000Z" },

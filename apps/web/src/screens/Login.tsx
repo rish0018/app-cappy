@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, Divider, Input, SSOButton } from "@cappy/ui";
 import { signInWithOAuth, signInWithPassword } from "@cappy/api";
 import logoMark from "../assets/logo-mark-circular.png";
+import sceneCuriosityDesk from "../assets/scene_curiosity_desk.png";
 import { scaleIn, scaleInReduced } from "../components/motion";
 
 /**
@@ -52,8 +53,12 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary-50 px-lg py-2xl">
-      <motion.div className="max-w-md w-full" initial="hidden" animate="visible" variants={step}>
+    <div
+      className="relative min-h-screen flex items-center justify-center bg-primary-50 bg-cover bg-center px-lg py-2xl"
+      style={{ backgroundImage: `url(${sceneCuriosityDesk})` }}
+    >
+      <div className="absolute inset-0 bg-white/70" aria-hidden="true" />
+      <motion.div className="relative max-w-md w-full" initial="hidden" animate="visible" variants={step}>
         <Card variant="feature" className="flex flex-col gap-xl">
           <div className="text-center">
             <img src={logoMark} alt="" aria-hidden="true" className="h-14 w-14 rounded-full mx-auto mb-lg" />

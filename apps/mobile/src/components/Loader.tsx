@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, Easing, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  Easing,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SLIDES = [
   require("../../assets/scene_cappy_universe.png"),
@@ -92,28 +100,46 @@ export function Loader({ onDone }: LoaderProps) {
 
   return (
     <Animated.View
-      style={[StyleSheet.absoluteFill, styles.container, { opacity: containerOpacity }]}
+      style={[
+        StyleSheet.absoluteFill,
+        styles.container,
+        { opacity: containerOpacity },
+      ]}
       accessibilityRole="progressbar"
       accessibilityLabel="Loading Cappy"
     >
       <Animated.Image
         source={SLIDES[activeIndex]}
-        style={[StyleSheet.absoluteFill, styles.slide, { opacity: slideOpacity }]}
+        style={[
+          StyleSheet.absoluteFill,
+          styles.slide,
+          { opacity: slideOpacity },
+        ]}
         resizeMode="cover"
       />
       <View style={[StyleSheet.absoluteFill, styles.overlay]} />
 
-      <View style={styles.content}>
-        <Animated.Image source={LOGO} style={[styles.logo, { opacity: logoOpacity }]} resizeMode="contain" />
-        <Text style={styles.title}>Cappy</Text>
-        <Text style={styles.subtitle}>Braille · Morse Code · ASL</Text>
-        <View style={styles.progressTrack}>
-          <Animated.View style={[styles.progressFill, { width: barWidth }]} />
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.content}>
+          <Animated.Image
+            source={LOGO}
+            style={[styles.logo, { opacity: logoOpacity }]}
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>Cappy</Text>
+          <Text style={styles.subtitle}>Braille · Morse Code · ASL</Text>
+          <View style={styles.progressTrack}>
+            <Animated.View style={[styles.progressFill, { width: barWidth }]} />
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Animated.View>
   );
 }
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const LOGO_SIZE = Math.min(96, SCREEN_WIDTH * 0.24);
+const PROGRESS_TRACK_WIDTH = Math.min(192, SCREEN_WIDTH * 0.5);
 
 const styles = StyleSheet.create({
   container: {
@@ -128,15 +154,21 @@ const styles = StyleSheet.create({
   overlay: {
     backgroundColor: "rgba(28, 63, 60, 0.6)",
   },
+  safeArea: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   content: {
     alignItems: "center",
     gap: 16,
     paddingHorizontal: 24,
   },
   logo: {
-    height: 96,
-    width: 96,
-    borderRadius: 48,
+    height: LOGO_SIZE,
+    width: LOGO_SIZE,
+    borderRadius: LOGO_SIZE / 2,
   },
   title: {
     fontSize: 20,
@@ -151,7 +183,7 @@ const styles = StyleSheet.create({
   progressTrack: {
     marginTop: 8,
     height: 4,
-    width: 192,
+    width: PROGRESS_TRACK_WIDTH,
     borderRadius: 2,
     overflow: "hidden",
     backgroundColor: "rgba(255,255,255,0.2)",
