@@ -4,12 +4,17 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
   "dependencies": {
     "@cappy/shared": "workspace:*",
     "@cappy/types": "workspace:*"
   },
   "devDependencies": {
     "@cappy/config": "workspace:*",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
   }
 }

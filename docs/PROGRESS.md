@@ -3,7 +3,7 @@
 **Last updated:** 2026-07-23
 **Status:** Backend (schema/RLS/API wiring) and auth UI (login/signup/SSO buttons/route guards) are now implemented in code on both web and mobile, awaiting a live Supabase project + real keys to actually connect. TF.js browser integration is still pending (see §2).
 
-**2026-07-23 update:** the visual redesign (5-letter lesson groups, themed backgrounds, achievements bookshelf) is now committed — see `docs/CHANGELOG.md`. **A live Supabase project now exists and is wired in** (project ref `cewsjfxtvhxvawsfgxpf`): schema + RLS migrations are applied, seed data is live and confirmed queryable, and `.env`/`.env.local` files in root/`apps/web`/`apps/mobile` hold real project URL + publishable key. Auth flows (signup/login against the real backend) still need a manual smoke test — see `docs/DB_SETUP_GUIDE.md` §7-8.
+**2026-07-24 update:** the visual redesign (5-letter lesson groups, themed backgrounds, achievements bookshelf) is committed. **A live Supabase project exists and is fully wired in** (project ref `cewsjfxtvhxvawsfgxpf`): schema + RLS migrations applied, seed data live, `.env`/`.env.local` files hold real project URL + publishable key, and **email/password signup → confirm → login → logout is now verified working end-to-end against the real project**. Remaining backend gap: Google/Apple OAuth providers aren't configured in the Supabase dashboard yet (auth settings show both `false`), so SSO buttons are still UI-only.
 
 ---
 
@@ -78,16 +78,15 @@ Same 9 screens ported to native, mirroring web's visual language:
 - `packages/ui` (web) and `apps/mobile/src/components` (native) are two separate implementations kept visually in sync only by convention + shared tokens   there is no single shared native component package (`packages/ui-native`) yet. Low risk today (one app each), but will need consolidating if a second native surface is ever added.
 
 ### Engineering hygiene
-- No unit tests written yet for any package or app (Definition of Done in PROJECT_BIBLE requires this).
-- No CI/CD (GitHub Actions) configured   lint/typecheck/test-on-PR and deploy-on-merge don't exist yet.
+- **✅ Unit tests added (2026-07-24)** for the framework-agnostic logic in `packages/core`, `packages/shared`, `packages/api` using vitest (pinned to v1.6, since v4 requires vite 6+ and both apps are still on vite 5): XP/streak/letter-ordering calculations, confidence classification, Morse tap-scoring, `toDayKey`/`clamp`, `isAuthRateLimitError`, and `createSupabaseClient`'s configured/not-configured behavior. 44 tests total, all passing (`pnpm test`). UI components and app screens are not covered yet   only the pure logic layer.
+- **✅ CI added (2026-07-24):** `.github/workflows/ci.yml` runs `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test` on every PR/push to `main`/`develop`. No deploy-on-merge step yet   out of scope for this pass.
 - No ADRs written to `docs/adr/` yet, despite PROJECT_BIBLE §14 requiring them for decisions like this scaffold.
 - `apps/training` currently only has dataset-download/inspect scripts   no actual training pipeline code.
 
 ---
 
 ## 3. Suggested Next Steps (in rough priority order)
-1. Stand up Supabase project + schema + RLS, wire `packages/api`.
-2. Build auth screens (login/signup) + route guards in both apps.
-3. Once your model is trained and exported, implement `HandPosePredictor` for web (TF.js) and mobile (TFLite) and wire real camera capture.
-4. Add basic unit tests + a CI workflow.
-5. Decide whether to extract `packages/ui-native` once/if a second native surface is justified.
+1. Configure Google + Apple OAuth providers in the Supabase dashboard (currently deferred; email/password auth is live and verified).
+2. Solve real-time hand-landmark extraction on React Native (documented, unresolved gap   model-loading is done, nothing feeds it real landmarks yet).
+3. Expand test coverage beyond the pure-logic layer (component/UI tests) and write the first ADRs for decisions already made (backend choice, monorepo scaffold, lesson-group restructure).
+4. Decide whether to extract `packages/ui-native` once/if a second native surface is justified.

@@ -121,11 +121,11 @@ Per `docs/GUIDE.md` §6 (already stubbed, waiting on this work):
 
 **Est. time: 2–3 hrs** (screens + route guards; OAuth redirect config is the fiddly part)
 
-- Email/password: use Supabase Auth's built-in `signUp`/`signInWithPassword` via the client from step 6.
-- Google OAuth: configure the Google provider in Supabase dashboard (Authentication → Providers), then set up redirect URIs for both web (your Vercel domain + localhost) and mobile (Expo's auth session redirect scheme).
+- Email/password: use Supabase Auth's built-in `signUp`/`signInWithPassword` via the client from step 6. **✅ Verified (2026-07-24)**   real signup + email confirmation + login confirmed working against the live project.
+- Google OAuth: configure the Google provider in Supabase dashboard (Authentication → Providers), then set up redirect URIs for both web (your Vercel domain + localhost) and mobile (Expo's auth session redirect scheme). **Still not configured** (`auth/v1/settings` shows `google: false`, `apple: false` as of 2026-07-23).
 - Build minimal login/signup screens in both apps (currently absent   see `docs/PROGRESS.md` → "Product surfaces not yet built") and a route guard that redirects unauthenticated users.
 
-**Checkpoint:** You can sign up, log in, log out, and hit a route guard on both web and mobile against the real project. See `docs/BACKEND_SSO_SETUP.md` §6 for the full smoke-test checklist.
+**Checkpoint:** ✅ Email/password signup → confirm → log in → log out confirmed working end-to-end on web against the real project (2026-07-24). Google/Apple SSO still needs provider configuration before it can be smoke-tested. See `docs/BACKEND_SSO_SETUP.md` §6 for the full checklist.
 
 ---
 

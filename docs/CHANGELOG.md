@@ -2,11 +2,17 @@
 
 ## Unreleased
 
+### Engineering hygiene   unit tests + CI
+- Added vitest (pinned to `^1.6.0`   v4 requires vite 6+, incompatible with the apps' current vite 5) to `packages/core`, `packages/shared`, `packages/api`, each with a `test` script and a `test` task wired into `turbo.json`/root `pnpm test`.
+- 44 new tests covering the framework-agnostic logic layer: XP calculation (`calculateLessonXp`/`calculateReviewXp`), streak updates (`updateStreak`, including same-day idempotency and gap-reset behavior), letter-group ordering/unlock logic, ML confidence classification (`classifyConfidence`), Morse tap classification and send-attempt scoring, `@cappy/shared`'s `clamp`/`toDayKey`, and `@cappy/api`'s `isAuthRateLimitError` + `createSupabaseClient` (configured/not-configured/memoization behavior).
+- Added `.github/workflows/ci.yml`: runs `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm test` on every PR/push to `main`/`develop`. `lint` currently has no packages with a `lint` script wired up yet, so it's a no-op that exits 0   filling that in is a natural follow-up once ESLint configs are added per-package.
+- Scope: pure logic only, not UI components or screens   `apps/web`/`apps/mobile` and `packages/ui` still have zero test coverage.
+
 ### Backend   live Supabase project provisioned and wired in
 - Provisioned a real Supabase project (`cewsjfxtvhxvawsfgxpf`), linked via `supabase link`. Schema + RLS migrations (`supabase/migrations/20260716120000_init_schema.sql`, `20260716120001_rls_policies.sql`) were already applied on this project; `supabase db diff --linked` confirmed no drift.
 - Populated real `.env` (root), `apps/web/.env.local`, `apps/mobile/.env.local` with the live project URL and publishable (anon-equivalent) key; all confirmed gitignored.
 - Verified end-to-end against the live project: `GET /rest/v1/courses` returns the real seeded "ASL Alphabet" course; `GET /rest/v1/user_progress` correctly returns `[]` under RLS for the unauthenticated anon key (filtered, not errored). `pnpm --filter @cappy/api typecheck` and `pnpm --filter @cappy/mobile typecheck` pass.
-- **Not yet done:** a real signup/login smoke test through the app UI against this project (`docs/DB_SETUP_GUIDE.md` §7-8), and Google/Apple OAuth provider configuration in the Supabase dashboard.
+- **Verified (2026-07-24):** real signup → email confirmation → login → logout confirmed working end-to-end on web against the live project. **Still not done:** Google/Apple OAuth provider configuration in the Supabase dashboard (auth settings show both `false` as of this writing), so SSO buttons remain UI-only.
 - **Found, not fixed:** `pnpm --filter @cappy/web typecheck` currently fails on pre-existing errors unrelated to this backend work   framer-motion `Transition` typing in `LessonScreen.tsx`/`PracticeScreen.tsx` (phone-mockup component, likely a `type: "spring"` needing `as const`), and a possibly-undefined string passed into `MorseLearn.tsx`. Left as a follow-up rather than folded into this backend task.
 
 ### Visual redesign   themed backgrounds, ASL "5-letter groups", achievements bookshelf (in progress, uncommitted)
