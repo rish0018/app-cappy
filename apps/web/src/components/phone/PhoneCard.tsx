@@ -4,10 +4,11 @@ export interface PhoneCardProps {
   children: React.ReactNode;
   className?: string;
   tone?: "paper" | "tint";
+  onClick?: () => void;
 }
 
 /** Shared "premium paper resting on cream" surface used across every phone screen. */
-export function PhoneCard({ children, className = "", tone = "paper" }: PhoneCardProps) {
+export function PhoneCard({ children, className = "", tone = "paper", onClick }: PhoneCardProps) {
   return (
     <div
       className={[
@@ -21,6 +22,7 @@ export function PhoneCard({ children, className = "", tone = "paper" }: PhoneCar
             ? "0 1px 2px rgba(43,38,32,0.05), 0 8px 20px -12px rgba(43,38,32,0.18)"
             : "inset 0 1px 2px rgba(43,38,32,0.04)",
       }}
+      onClick={onClick}
     >
       {children}
     </div>

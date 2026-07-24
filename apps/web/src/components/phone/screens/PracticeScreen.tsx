@@ -16,7 +16,7 @@ const springTransition = {
   type: "spring",
   stiffness: 90,
   damping: 15,
-};
+} as const;
 
 /** Screen 4: Practice - Emphatic, forgiving, and dynamic */
 export function PracticeScreen() {

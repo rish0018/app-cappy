@@ -17,7 +17,7 @@ const springTransition = {
   stiffness: 120,
   damping: 20,
   mass: 1,
-};
+} as const;
 
 export function LessonScreen() {
   return (

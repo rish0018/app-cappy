@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Backend   live Supabase project provisioned and wired in
+- Provisioned a real Supabase project (`cewsjfxtvhxvawsfgxpf`), linked via `supabase link`. Schema + RLS migrations (`supabase/migrations/20260716120000_init_schema.sql`, `20260716120001_rls_policies.sql`) were already applied on this project; `supabase db diff --linked` confirmed no drift.
+- Populated real `.env` (root), `apps/web/.env.local`, `apps/mobile/.env.local` with the live project URL and publishable (anon-equivalent) key; all confirmed gitignored.
+- Verified end-to-end against the live project: `GET /rest/v1/courses` returns the real seeded "ASL Alphabet" course; `GET /rest/v1/user_progress` correctly returns `[]` under RLS for the unauthenticated anon key (filtered, not errored). `pnpm --filter @cappy/api typecheck` and `pnpm --filter @cappy/mobile typecheck` pass.
+- **Not yet done:** a real signup/login smoke test through the app UI against this project (`docs/DB_SETUP_GUIDE.md` §7-8), and Google/Apple OAuth provider configuration in the Supabase dashboard.
+- **Found, not fixed:** `pnpm --filter @cappy/web typecheck` currently fails on pre-existing errors unrelated to this backend work   framer-motion `Transition` typing in `LessonScreen.tsx`/`PracticeScreen.tsx` (phone-mockup component, likely a `type: "spring"` needing `as const`), and a possibly-undefined string passed into `MorseLearn.tsx`. Left as a follow-up rather than folded into this backend task.
+
 ### Visual redesign   themed backgrounds, ASL "5-letter groups", achievements bookshelf (in progress, uncommitted)
 - **ASL curriculum restructured from one lesson per letter to one lesson per 5-letter group** (`apps/web/src/mockData.ts`, `apps/mobile/src/mockData.ts`): lesson ids changed shape from `lesson-${group.id}-${letter}` to `lesson-${group.id}` (e.g. `lesson-a-e`), so all mock progress/streak data tied to per-letter ids was regenerated. **No real persisted progress exists yet (still pre-launch/mock-data-only), so this is safe now but would need a migration map if done after a live Supabase project has real user progress.**
 - `LessonList.tsx` (web) and `lessons.tsx` (mobile) rebuilt as a card grid ("Levels") mirroring `MorseDashboard`'s level-card style, replacing the old per-letter dashed-path layout; added the same `STATE_CHIP` (locked/active/completed) convention used by Morse so both curricula read as one family.
