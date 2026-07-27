@@ -62,7 +62,7 @@ export function MorseDashboard() {
           </p>
           <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">Morse Code</h1>
           <p className="text-neutral-600">
-            Six character levels, then whole words   five new letters and numbers at a time.
+            Character levels, then whole words and sentences   five new letters and numbers at a time.
           </p>
         </div>
         <div className="hidden sm:block absolute -right-4 -bottom-4 opacity-90 pointer-events-none">
@@ -143,7 +143,7 @@ export function MorseDashboard() {
                     </div>
                   ) : (
                     <div className="flex items-center gap-md rounded-lg bg-neutral-50 px-md py-sm">
-                      <span className="text-sm text-neutral-600">SOS · AR · KN</span>
+                      <span className="text-sm text-neutral-600">{(group.prosigns ?? []).join(" · ")}</span>
                     </div>
                   )}
 
