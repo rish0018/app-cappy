@@ -74,6 +74,11 @@ Same 9 screens ported to native, mirroring web's visual language:
 - No error/empty/loading states designed yet (screens assume mock data is always present).
 - No responsive/tablet layout pass on web beyond default Tailwind behavior.
 
+### ML   real-time hand-landmark detection on Android
+- **✅ Implemented and verified on-device (2026-07-27):** `apps/mobile/android/app/src/main/java/com/cappy/mobile/HandLandmarksFrameProcessorPlugin.kt` wraps MediaPipe Tasks Vision's `HandLandmarker` as a native `react-native-vision-camera` (v4) frame-processor plugin, feeding real 21-point landmarks into `RNHandPosePredictor` (see that file's header comment for the two real bugs fixed to get here: a YUV-vs-RGBA image-format mismatch, and a Float-vs-Double JSI marshaling error). Verified end-to-end on an Android emulator using real webcam-passthrough video (not synthetic/mock frames): `ConfidenceIndicator` on the practice screen responded live to an actual hand entering and leaving frame.
+- **Not verified:** a physical Android device (only an emulator was available), and iOS entirely — no Swift equivalent of the plugin exists yet. `docs/BACKEND_SSO_SETUP.md`-style porting from the reference implementation (lukaszkurantdev/blog-hand-landmarks, which does have an iOS Swift version using the same MediaPipe HandLandmarker) is the natural next step for iOS parity.
+- Chose `react-native-vision-camera` **v4**, not the latest v5 — v5 requires React Native's New Architecture (Nitro modules), which this app doesn't have enabled (`newArchEnabled=false`); v4 uses the older, well-documented `FrameProcessorPlugin`/`FrameProcessorPluginRegistry` API and matches the available reference implementation.
+
 ### Cross-cutting design system gap
 - `packages/ui` (web) and `apps/mobile/src/components` (native) are two separate implementations kept visually in sync only by convention + shared tokens   there is no single shared native component package (`packages/ui-native`) yet. Low risk today (one app each), but will need consolidating if a second native surface is ever added.
 
@@ -87,6 +92,6 @@ Same 9 screens ported to native, mirroring web's visual language:
 
 ## 3. Suggested Next Steps (in rough priority order)
 1. Configure Google + Apple OAuth providers in the Supabase dashboard (currently deferred; email/password auth is live and verified).
-2. Solve real-time hand-landmark extraction on React Native (documented, unresolved gap   model-loading is done, nothing feeds it real landmarks yet).
-3. Expand test coverage beyond the pure-logic layer (component/UI tests) and write the first ADRs for decisions already made (backend choice, monorepo scaffold, lesson-group restructure).
+2. Verify Android hand-landmark detection on a physical device (only an emulator was available this session), then port the same MediaPipe HandLandmarker approach to iOS (Swift) for parity.
+3. Expand test coverage beyond the pure-logic layer (component/UI tests) and write the first ADRs for decisions already made (backend choice, monorepo scaffold, lesson-group restructure, vision-camera v4 over v5).
 4. Decide whether to extract `packages/ui-native` once/if a second native surface is justified.

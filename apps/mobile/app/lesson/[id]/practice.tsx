@@ -1,12 +1,13 @@
-import { CameraView, useCameraPermissions } from "expo-camera";
-import type { ConfidenceTier } from "@cappy/core";
+import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
+import { classifyConfidence, type ConfidenceTier } from "@cappy/core";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../../../src/components/Button";
 import { ConfidenceIndicator } from "../../../src/components/ConfidenceIndicator";
 import { mockLessons } from "../../../src/mockData";
+import { useHandPosePrediction } from "../../../src/ml/useHandPosePrediction";
 
 const thinkingCappy = require("../../../assets/characters/character_thinking_cappy.png");
 const practiceCappy = require("../../../assets/characters/character_practice_cappy.png");
@@ -19,37 +20,16 @@ const ENCOURAGEMENT_COPY: Record<ConfidenceTier, string> = {
   low: "Let's look at the demonstration once more.",
 };
 
-const MOCK_TIER_CYCLE = ["low", "medium", "high"] as const satisfies readonly ConfidenceTier[];
+const WAITING_COPY = "Show your hand sign inside the frame.";
 
 export default function LessonPracticeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = mockLessons.find((l) => l.id === id) ?? mockLessons[0]!;
-  const [permission, requestPermission] = useCameraPermissions();
+  const { hasPermission, requestPermission } = useCameraPermission();
+  const device = useCameraDevice("front");
+  const { status, prediction, frameProcessor } = useHandPosePrediction();
 
-  // Mock confidence state   cycles through tiers to preview the UI. Replace
-  // with the real predictor output once ML inference is wired in.
-  const [tierIndex, setTierIndex] = useState(0);
-  const tier = MOCK_TIER_CYCLE[tierIndex % MOCK_TIER_CYCLE.length]!;
-
-  // TODO: onFrame inference hook   replace mock with real HandPosePredictor
-  // from @cappy/core. That predictor consumes MediaPipe hand landmarks and
-  // returns { letter, confidence }; classifyConfidence() from @cappy/core
-  // then maps the score to a ConfidenceTier for ConfidenceIndicator below.
-  // TODO: onFrame inference hook. `RNHandPosePredictor` (../../../src/ml/rnPredictor.ts)
-  // implements the model-loading + inference half against @cappy/core's
-  // HandPosePredictor contract (verified: loads the bundled TF.js model via
-  // tfjs-react-native and runs predict() given HandLandmarks input).
-  // What's still missing is a source of that HandLandmarks input on RN  
-  // the web app gets it from @mediapipe/tasks-vision (WASM, browser-only,
-  // no RN equivalent shipped anywhere as of this writing). See the header
-  // comment in rnPredictor.ts for the options considered and why none were
-  // implemented this session. Once a landmark source exists, feed its
-  // output through RNHandPosePredictor.predict() and
-  // classifyConfidence() from @cappy/core to drive ConfidenceIndicator below.
-
-  if (!permission) {
-    return <View className="flex-1 bg-neutral-900" />;
-  }
+  const tier = prediction ? classifyConfidence(prediction.confidence) : null;
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900" edges={["bottom"]}>
@@ -62,8 +42,14 @@ export default function LessonPracticeScreen() {
       </View>
 
       <View className="mx-lg my-lg flex-1 overflow-hidden rounded-lg bg-black">
-        {permission.granted ? (
-          <CameraView style={{ flex: 1 }} facing="front" />
+        {hasPermission && device ? (
+          <Camera
+            style={{ flex: 1 }}
+            device={device}
+            isActive={true}
+            frameProcessor={frameProcessor}
+            pixelFormat="yuv"
+          />
         ) : (
           <View className="flex-1 items-center justify-center px-xl">
             <Image
@@ -81,17 +67,16 @@ export default function LessonPracticeScreen() {
 
       <View className="px-lg pb-lg">
         <View className="mb-md">
-          <ConfidenceIndicator tier={tier} />
+          {tier ? (
+            <ConfidenceIndicator tier={tier} />
+          ) : (
+            <Text className="text-sm text-neutral-300">
+              {status === "loading" ? "Loading hand detector…" : WAITING_COPY}
+            </Text>
+          )}
         </View>
-        <Text className="mb-lg text-base text-white">{ENCOURAGEMENT_COPY[tier]}</Text>
-        <View className="flex-row gap-sm">
-          <Button
-            label="Cycle mock confidence"
-            variant="outline"
-            onPress={() => setTierIndex((i) => i + 1)}
-          />
-          <Button label="Finish practice" onPress={() => router.push(`/lesson/${lesson.id}/quiz`)} />
-        </View>
+        <Text className="mb-lg text-base text-white">{tier ? ENCOURAGEMENT_COPY[tier] : WAITING_COPY}</Text>
+        <Button label="Finish practice" onPress={() => router.push(`/lesson/${lesson.id}/quiz`)} />
       </View>
     </SafeAreaView>
   );

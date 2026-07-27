@@ -193,6 +193,11 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // MediaPipe Tasks Vision (HandLandmarker) for the handLandmarks vision-camera
+    // frame processor plugin (see HandLandmarksFrameProcessorPlugin.kt). Model file
+    // lives at src/main/assets/hand_landmarker.task.
+    implementation("com.google.mediapipe:tasks-vision:0.10.14")
 }
 
 if (rnVersion < versionToNumber(0, 75, 0)) {
