@@ -6,6 +6,7 @@ import { MORSE_MAP } from "@cappy/types";
 import { tapsToPattern, validateSendAttempt, type TapEvent } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
 import { fadeUp, fadeUpReduced } from "../../components/motion";
+import { useProgressRecorder } from "../../hooks/useProgressRecorder";
 
 const SEND_COPY = {
   high: { text: "Sent perfectly!", icon: "✓" },
@@ -27,6 +28,7 @@ export function MorseSend() {
   const [result, setResult] = React.useState<ReturnType<typeof validateSendAttempt> | null>(null);
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
+  const { recordMorseCharacterAttempt } = useProgressRecorder();
 
   if (!lesson) {
     return <p className="text-neutral-600">Lesson not found.</p>;
@@ -40,7 +42,9 @@ export function MorseSend() {
   };
 
   const checkAttempt = () => {
-    setResult(validateSendAttempt(taps, character));
+    const attempt = validateSendAttempt(taps, character);
+    setResult(attempt);
+    void recordMorseCharacterAttempt(character, "send", attempt.correct);
   };
 
   const nextCharacter = () => {

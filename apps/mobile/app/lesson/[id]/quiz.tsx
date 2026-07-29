@@ -10,6 +10,7 @@ import {
   mockQuizQuestions,
   mockQuizTimeSeconds,
 } from "../../../src/mockData";
+import { useProgressRecorder } from "../../../src/hooks/useProgressRecorder";
 
 export default function LessonQuizScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -18,6 +19,8 @@ export default function LessonQuizScreen() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [secondsLeft, setSecondsLeft] = useState(mockQuizTimeSeconds);
+  const { recordLessonProgress, recordDailyActivity } = useProgressRecorder();
+  const correctCountRef = React.useRef(0);
 
   const question = mockQuizQuestions[questionIndex % mockQuizQuestions.length]!;
 
@@ -30,7 +33,19 @@ export default function LessonQuizScreen() {
   const isLast = questionIndex === mockQuizQuestions.length - 1;
 
   const handleNext = () => {
+    if (selected === question.correctIndex) correctCountRef.current += 1;
     if (isLast) {
+      const accuracy = correctCountRef.current / mockQuizQuestions.length;
+      void recordLessonProgress({
+        lessonId: lesson.id,
+        status: "completed",
+        attempts: 1,
+        completionPercentage: 100,
+        score: Math.round(accuracy * 100),
+        startedAt: null,
+        completedAt: new Date().toISOString(),
+      });
+      void recordDailyActivity();
       router.push(`/lesson/${lesson.id}/review`);
       return;
     }

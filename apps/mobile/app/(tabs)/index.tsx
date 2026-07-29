@@ -17,6 +17,7 @@ import {
   mockUser,
   mockXpToday,
 } from "../../src/mockData";
+import { useAdaptiveRecommendation } from "../../src/hooks/useAdaptiveRecommendation";
 
 function masteryColorClass(score: number): string {
   if (score >= 80) return "bg-primary-500";
@@ -26,6 +27,7 @@ function masteryColorClass(score: number): string {
 
 export default function HomeScreen() {
   const continueLesson = mockLessons.find((l) => l.id === CONTINUE_LESSON_ID)!;
+  const recommendation = useAdaptiveRecommendation();
 
   return (
     <ImageBackground
@@ -53,6 +55,24 @@ export default function HomeScreen() {
                 <XPBadge totalXp={mockUser.totalXp} />
               </View>
             </View>
+
+            {recommendation?.reviewDue && (
+              <Card className="mb-lg border-l-4 border-l-warning-500">
+                <Text className="text-xs font-semibold uppercase tracking-wide text-warning-600">
+                  Review due
+                </Text>
+                <Text className="mt-xs text-sm text-neutral-700">
+                  A quick revisit of {recommendation.reviewLetters.join(", ")} would help these stick.
+                </Text>
+                <View className="mt-md">
+                  <Button
+                    label="Review now"
+                    variant="secondary"
+                    onPress={() => router.push(`/lesson/${continueLesson.id}/review`)}
+                  />
+                </View>
+              </Card>
+            )}
 
             <Card className="mb-lg">
               <Text className="text-sm font-semibold text-neutral-500">

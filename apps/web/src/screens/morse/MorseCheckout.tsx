@@ -16,6 +16,7 @@ import {
   staggerItemReduced,
 } from "../../components/motion";
 import { reactTo } from "../../mascot/mascotStore";
+import { useProgressRecorder } from "../../hooks/useProgressRecorder";
 
 const CHECKOUT_XP = 30;
 const CHECKOUT_ACCURACY = 92;
@@ -57,6 +58,7 @@ export function MorseCheckout() {
   const lesson = id ? mockMorseLessonById[id] : undefined;
   const [completed, setCompleted] = React.useState(false);
   const reduced = useReducedMotion();
+  const { recordLessonProgress, recordDailyActivity } = useProgressRecorder();
 
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
@@ -128,6 +130,16 @@ export function MorseCheckout() {
               onClick={() => {
                 setCompleted(true);
                 reactTo("unitComplete");
+                void recordLessonProgress({
+                  lessonId: lesson.id,
+                  status: "completed",
+                  attempts: 1,
+                  completionPercentage: 100,
+                  score: CHECKOUT_ACCURACY,
+                  startedAt: null,
+                  completedAt: new Date().toISOString(),
+                });
+                void recordDailyActivity();
               }}
             >
               Mark level complete

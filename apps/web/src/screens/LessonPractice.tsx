@@ -7,6 +7,7 @@ import thinkingCappy from "../assets/characters/character_thinking_cappy.png";
 import { mockLessonById, mockLessonLetters } from "../mockData";
 import { fadeUp, fadeUpReduced } from "../components/motion";
 import { useHandPosePrediction } from "../ml/useHandPosePrediction";
+import { useProgressRecorder } from "../hooks/useProgressRecorder";
 
 /**
  * Guided practice screen. Runs a live webcam feed through MediaPipe +
@@ -24,6 +25,7 @@ export function LessonPractice() {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const { status, prediction } = useHandPosePrediction(videoRef);
   const [letterIndex, setLetterIndex] = React.useState(0);
+  const { recordLetterAttempt } = useProgressRecorder();
 
   if (!lesson) {
     return <p className="text-neutral-600">Lesson not found.</p>;
@@ -103,6 +105,9 @@ export function LessonPractice() {
               variant="primary"
               className="flex-1"
               onClick={() => {
+                if (prediction && letter) {
+                  void recordLetterAttempt(letter, prediction.letter === letter, score);
+                }
                 if (isLastLetter) {
                   navigate(`/lessons/${lesson.id}/quiz`);
                 } else {

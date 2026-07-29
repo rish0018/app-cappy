@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ProgressBar } from "@cappy/ui";
 import { mockLessonById, mockLetterMastery, mockWeakLetters } from "../mockData";
+import type { Letter } from "@cappy/types";
 import {
   fadeUp,
   fadeUpReduced,
@@ -11,6 +12,7 @@ import {
   staggerItem,
   staggerItemReduced,
 } from "../components/motion";
+import { useReviewSet } from "../hooks/useReviewSet";
 
 const SESSION_XP = 45;
 const SESSION_ACCURACY = 88;
@@ -60,7 +62,13 @@ export function LessonReview() {
     return <p className="text-neutral-600">Lesson not found.</p>;
   }
 
-  const reviewLetters = mockWeakLetters.length > 0 ? mockWeakLetters : ["A", "B"];
+  const fallbackLetters: Letter[] = mockWeakLetters.length > 0 ? mockWeakLetters : ["A", "B"];
+  const fallbackReviewItems = fallbackLetters.map((letter) => ({
+    letter,
+    dueLabel: "Due today",
+    masteryScore: Math.round((mockLetterMastery.find((m) => m.letter === letter)?.masteryScore ?? 0) * 100),
+  }));
+  const reviewItems = useReviewSet(fallbackReviewItems);
 
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-xl">
@@ -112,30 +120,27 @@ export function LessonReview() {
         variants={stagger}
         transition={{ delayChildren: 0.2 }}
       >
-        {reviewLetters.map((letter, i) => {
-          const mastery = mockLetterMastery.find((m) => m.letter === letter);
-          return (
-            <motion.div key={letter} custom={i} variants={item}>
-              <Card variant="surface" className="flex items-center justify-between gap-md">
-                <div className="flex items-center gap-md">
-                  <span
-                    aria-hidden="true"
-                    className="flex items-center justify-center w-12 h-12 rounded-full bg-tan-100 text-tan-600 font-display font-bold text-lg"
-                  >
-                    {letter}
-                  </span>
-                  <div>
-                    <p className="font-semibold text-neutral-800">Letter {letter}</p>
-                    <p className="text-sm text-neutral-500">
-                      Mastery {Math.round((mastery?.masteryScore ?? 0) * 100)}%
-                    </p>
-                  </div>
+        {reviewItems.map((reviewItem, i) => (
+          <motion.div key={reviewItem.letter} custom={i} variants={item}>
+            <Card variant="surface" className="flex items-center justify-between gap-md">
+              <div className="flex items-center gap-md">
+                <span
+                  aria-hidden="true"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-tan-100 text-tan-600 font-display font-bold text-lg"
+                >
+                  {reviewItem.letter}
+                </span>
+                <div>
+                  <p className="font-semibold text-neutral-800">Letter {reviewItem.letter}</p>
+                  <p className="text-sm text-neutral-500">
+                    {reviewItem.dueLabel}   Mastery {reviewItem.masteryScore}%
+                  </p>
                 </div>
-                <Button variant="secondary">Review</Button>
-              </Card>
-            </motion.div>
-          );
-        })}
+              </div>
+              <Button variant="secondary">Review</Button>
+            </Card>
+          </motion.div>
+        ))}
       </motion.div>
 
       <Button variant="primary" reward className="w-full" onClick={() => navigate("/dashboard")}>

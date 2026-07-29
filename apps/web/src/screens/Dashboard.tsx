@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { MascotFigure } from "@cappy/ui";
+import { Button, Card, MascotFigure } from "@cappy/ui";
+import { useAdaptiveRecommendation } from "../hooks/useAdaptiveRecommendation";
 import { LETTER_GROUPS } from "@cappy/types";
 import {
   mockActiveLessonId,
@@ -50,6 +51,7 @@ export function Dashboard() {
   const activeLesson = mockLessonById[mockActiveLessonId]!;
   const activeProgress = mockUserProgress.find((p) => p.lessonId === activeLesson.id);
   const weekTotal = mockWeeklyMinutes.reduce((a, b) => a + b, 0);
+  const recommendation = useAdaptiveRecommendation();
 
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
@@ -78,6 +80,22 @@ export function Dashboard() {
           <MascotFigure pose="curious" size="md" />
         </div>
       </motion.section>
+
+      {recommendation?.reviewDue && (
+        <motion.div initial="hidden" animate="visible" variants={fade}>
+          <Card variant="surface" className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-md">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-warning-600">Review due</p>
+              <p className="text-neutral-700 mt-xs">
+                A quick revisit of {recommendation.reviewLetters.join(", ")} would help these stick.
+              </p>
+            </div>
+            <Button variant="secondary" onClick={() => navigate(`/lessons/${activeLesson.id}/review`)}>
+              Review now
+            </Button>
+          </Card>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-xl items-start">
         <div className="lg:col-span-3">

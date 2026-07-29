@@ -7,6 +7,7 @@ import { mockLessonById, mockLessonLetters } from "../mockData";
 import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../components/motion";
 import { useMascotReaction } from "../mascot/mascotStore";
 import { ReferenceImage } from "../components/ReferenceImage";
+import { useProgressRecorder } from "../hooks/useProgressRecorder";
 
 function pickChoices(answer: Letter): Letter[] {
   const others = ALL_LETTERS.filter((letter) => letter !== answer).slice(0, 3);
@@ -27,6 +28,8 @@ export function LessonQuiz() {
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
   const react = useMascotReaction();
+  const { recordLetterAttempt, recordLessonProgress, recordDailyActivity } = useProgressRecorder();
+  const correctCountRef = React.useRef(0);
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
@@ -44,6 +47,17 @@ export function LessonQuiz() {
   const advance = () => {
     setFeedback(null);
     if (questionIndex + 1 >= totalQuestions) {
+      const accuracy = correctCountRef.current / totalQuestions;
+      void recordLessonProgress({
+        lessonId: lesson.id,
+        status: "completed",
+        attempts: 1,
+        completionPercentage: 100,
+        score: Math.round(accuracy * 100),
+        startedAt: null,
+        completedAt: new Date().toISOString(),
+      });
+      void recordDailyActivity();
       navigate(`/lessons/${lesson.id}/review`);
       return;
     }
@@ -54,8 +68,10 @@ export function LessonQuiz() {
   const handleAnswer = (choice: Letter) => {
     if (feedback) return;
     const isCorrect = choice === answer;
+    if (isCorrect) correctCountRef.current += 1;
     setFeedback(isCorrect ? "correct" : "incorrect");
     react(isCorrect ? "correct" : "wrong");
+    void recordLetterAttempt(answer, isCorrect, isCorrect ? 0.85 : 0.35);
     window.setTimeout(advance, isCorrect ? 700 : 500);
   };
 

@@ -8,8 +8,11 @@ import { Card } from "../../../src/components/Card";
 import { MascotMoment } from "../../../src/components/MascotMoment";
 import { ProgressBar } from "../../../src/components/ProgressBar";
 import { mockReviewItems } from "../../../src/mockData";
+import { useReviewSet } from "../../../src/hooks/useReviewSet";
 
 export default function LessonReviewScreen() {
+  const reviewItems = useReviewSet(mockReviewItems);
+
   return (
     <ImageBackground
       source={require("../../../assets/background_desk.jpg")}
@@ -35,8 +38,8 @@ export default function LessonReviewScreen() {
             </View>
 
             <View className="gap-sm">
-              {mockReviewItems.map((item) => (
-                <Card key={item.id} className="flex-row items-center">
+              {reviewItems.map((item) => (
+                <Card key={item.letter} className="flex-row items-center">
                   <View className="mr-md h-11 w-11 items-center justify-center rounded-full bg-primary-100">
                     <Text className="text-lg font-bold text-primary-700">
                       {item.letter}

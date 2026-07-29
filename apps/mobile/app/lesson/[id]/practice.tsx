@@ -8,6 +8,7 @@ import { Button } from "../../../src/components/Button";
 import { ConfidenceIndicator } from "../../../src/components/ConfidenceIndicator";
 import { mockLessons } from "../../../src/mockData";
 import { useHandPosePrediction } from "../../../src/ml/useHandPosePrediction";
+import { useProgressRecorder } from "../../../src/hooks/useProgressRecorder";
 
 const thinkingCappy = require("../../../assets/characters/character_thinking_cappy.png");
 const practiceCappy = require("../../../assets/characters/character_practice_cappy.png");
@@ -28,6 +29,7 @@ export default function LessonPracticeScreen() {
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("front");
   const { status, prediction, frameProcessor } = useHandPosePrediction();
+  const { recordLetterAttempt } = useProgressRecorder();
 
   const tier = prediction ? classifyConfidence(prediction.confidence) : null;
 
@@ -76,7 +78,15 @@ export default function LessonPracticeScreen() {
           )}
         </View>
         <Text className="mb-lg text-base text-white">{tier ? ENCOURAGEMENT_COPY[tier] : WAITING_COPY}</Text>
-        <Button label="Finish practice" onPress={() => router.push(`/lesson/${lesson.id}/quiz`)} />
+        <Button
+          label="Finish practice"
+          onPress={() => {
+            if (prediction) {
+              void recordLetterAttempt(prediction.letter, tier === "high", prediction.confidence);
+            }
+            router.push(`/lesson/${lesson.id}/quiz`);
+          }}
+        />
       </View>
     </SafeAreaView>
   );

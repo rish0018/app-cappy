@@ -34,6 +34,7 @@ export function MascotMoment({ message, subMessage, iconSource }: MascotMomentPr
         <Image
           source={source as number}
           onError={() => setImageFailed(true)}
+          resizeMode="contain"
           className="mr-md h-14 w-14 rounded-full"
           accessibilityIgnoresInvertColors
         />
