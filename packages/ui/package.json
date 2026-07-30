@@ -14,7 +14,8 @@
   "dependencies": {
     "@cappy/core": "workspace:*",
     "@cappy/types": "workspace:*",
-    "framer-motion": "^12.42.2"
+    "framer-motion": "^12.42.2",
+    "lucide-react": "^1.23.0"
   },
   "devDependencies": {
     "@cappy/config": "workspace:*",

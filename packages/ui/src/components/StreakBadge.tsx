@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion, useAnimationControls, useReducedMotion, type Variants } from "framer-motion";
+import { Flame } from "lucide-react";
 
 export interface StreakBadgeProps {
   streakDays: number;
@@ -45,7 +46,7 @@ export function StreakBadge({ streakDays, className = "" }: StreakBadgeProps) {
         className,
       ].join(" ")}
     >
-      <span aria-hidden="true">🔥</span>
+      <Flame aria-hidden="true" size={14} fill={isActive ? "currentColor" : "none"} strokeWidth={2} />
       {isActive ? `${streakDays} day${streakDays === 1 ? "" : "s"}` : "Start a streak"}
     </motion.span>
   );

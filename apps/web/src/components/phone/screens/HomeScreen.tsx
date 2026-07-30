@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Play, Flame } from "lucide-react";
 import { PhoneCard } from "../PhoneCard";
 
 export function HomeScreen({ onNavigate }: { onNavigate?: (screen: string) => void }) {
@@ -45,7 +46,7 @@ export function HomeScreen({ onNavigate }: { onNavigate?: (screen: string) => vo
             </span>
             {/* Friendly, rounded play button */}
             <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#F8F4EE] text-[#3E948C] shadow-sm transition-transform duration-300 group-hover:scale-110">
-              ▶
+              <Play size={18} fill="currentColor" />
             </div>
           </div>
         </PhoneCard>
@@ -55,7 +56,7 @@ export function HomeScreen({ onNavigate }: { onNavigate?: (screen: string) => vo
           
           {/* Daily Streak Card: Warm Sand/Cream */}
           <PhoneCard className="flex flex-col items-center justify-center rounded-[24px] border border-[#F8F4EE]/60 bg-[#F8F4EE] p-5 shadow-[0_8px_24px_rgba(122,84,56,0.05)]">
-            <span className="text-2xl">🔥</span>
+            <Flame size={24} className="text-[#D9AA78]" fill="currentColor" />
             <span className="mt-2 font-display text-xl font-bold text-[#7A5438]">12 Days</span>
             <span className="text-[0.7rem] font-medium text-[#CEC1AE]">Current Streak</span>
           </PhoneCard>

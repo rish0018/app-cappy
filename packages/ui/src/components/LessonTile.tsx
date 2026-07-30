@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
+import { Lock, Play, Check, type LucideIcon } from "lucide-react";
 import { OVERSHOOT_EASE } from "../motion";
 
 export type LessonTileState = "locked" | "active" | "completed";
@@ -17,10 +18,10 @@ const STATE_CLASSES: Record<LessonTileState, string> = {
   completed: "bg-success-100 text-success-700 hover:bg-success-100/80",
 };
 
-const STATE_ICON: Record<LessonTileState, string> = {
-  locked: "🔒",
-  active: "▶",
-  completed: "✓",
+const STATE_ICON: Record<LessonTileState, LucideIcon> = {
+  locked: Lock,
+  active: Play,
+  completed: Check,
 };
 
 /**
@@ -31,6 +32,7 @@ const STATE_ICON: Record<LessonTileState, string> = {
  */
 export function LessonTile({ title, state, onSelect, className = "" }: LessonTileProps) {
   const isLocked = state === "locked";
+  const StateIcon = STATE_ICON[state];
   const reduced = useReducedMotion();
   const controls = useAnimationControls();
   const prevState = React.useRef(state);
@@ -74,9 +76,7 @@ export function LessonTile({ title, state, onSelect, className = "" }: LessonTil
         className,
       ].join(" ")}
     >
-      <span aria-hidden="true" className="text-xl">
-        {STATE_ICON[state]}
-      </span>
+      <StateIcon aria-hidden size={20} />
       <span className="text-sm">{title}</span>
     </motion.button>
   );

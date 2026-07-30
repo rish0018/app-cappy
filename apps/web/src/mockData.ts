@@ -120,13 +120,19 @@ export const mockWeakLetters: Letter[] = mockLetterMastery
   .slice(0, 5)
   .map((entry) => entry.letter);
 
+/**
+ * `icon` is unused by BookshelfLibrary.tsx (it renders a Cappy pose via
+ * ACHIEVEMENT_POSE, keyed by id -- see screens/achievements/libraryData.ts)
+ * but is kept populated here since it's part of the shared Achievement
+ * shape mirrored from the DB row.
+ */
 export const mockAchievements: Achievement[] = [
-  { id: "ach-first-lesson", name: "First Steps", description: "Completed your first lesson.", icon: "🌱" },
-  { id: "ach-streak-7", name: "Week Warrior", description: "Kept a 7-day streak going.", icon: "🔥" },
-  { id: "ach-group-ae", name: "A-E Mastered", description: "Mastered the A–E letter group.", icon: "🅰️" },
-  { id: "ach-perfect-quiz", name: "Sharp Eye", description: "Scored 100% on a quiz.", icon: "🎯" },
-  { id: "ach-night-owl", name: "Night Owl", description: "Practiced after 9pm five times.", icon: "🦉" },
-  { id: "ach-comeback", name: "Welcome Back", description: "Returned after a break   no judgment here.", icon: "🌤️" },
+  { id: "ach-first-lesson", name: "First Steps", description: "Completed your first lesson.", icon: "curious" },
+  { id: "ach-streak-7", name: "Week Warrior", description: "Kept a 7-day streak going.", icon: "practice" },
+  { id: "ach-group-ae", name: "A-E Mastered", description: "Mastered the A–E letter group.", icon: "mentor" },
+  { id: "ach-perfect-quiz", name: "Sharp Eye", description: "Scored 100% on a quiz.", icon: "celebration" },
+  { id: "ach-night-owl", name: "Night Owl", description: "Practiced after 9pm five times.", icon: "thinking" },
+  { id: "ach-comeback", name: "Welcome Back", description: "Returned after a break   no judgment here.", icon: "curious" },
 ];
 
 export const mockUserAchievements: UserAchievement[] = [

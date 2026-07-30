@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PawPrint } from "lucide-react";
 
 export type MascotContext = "onboarding" | "milestone" | "mistake-explanation" | "explore";
 
@@ -37,11 +38,7 @@ export function MascotMoment({ context, message, className = "", icon }: MascotM
         className,
       ].join(" ")}
     >
-      {icon ?? (
-        <span aria-hidden="true" className="text-3xl leading-none">
-          🐹
-        </span>
-      )}
+      {icon ?? <PawPrint aria-hidden size={28} />}
       <p className="text-base">{message}</p>
     </div>
   );

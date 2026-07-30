@@ -1,10 +1,11 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { Award } from "lucide-react";
 
 export interface AchievementBadgeProps {
   name: string;
   description: string;
-  icon?: string;
+  icon?: React.ReactNode;
   unlocked?: boolean;
   className?: string;
 }
@@ -18,7 +19,7 @@ export interface AchievementBadgeProps {
 export function AchievementBadge({
   name,
   description,
-  icon = "🏅",
+  icon = <Award aria-hidden size={24} />,
   unlocked = true,
   className = "",
 }: AchievementBadgeProps) {

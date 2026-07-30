@@ -20,12 +20,16 @@ export function AchievementBadge({ name, description, icon, poseSource, unlocked
       accessibilityLabel={`${name}, ${unlocked ? "unlocked" : "locked"}. ${description}`}
       className={`w-[47%] items-center rounded-lg border border-neutral-200 bg-white p-lg ${unlocked ? "" : "opacity-50"}`}
     >
-      <View className={`mb-sm h-14 w-14 items-center justify-center overflow-hidden rounded-full ${unlocked ? "bg-accent-100" : "bg-neutral-100"}`}>
+      <View className={`mb-sm h-14 w-14 items-center justify-end overflow-hidden rounded-full ${unlocked ? "bg-accent-100" : "bg-neutral-100"}`}>
         {poseSource ? (
+          // Pose art is full-body, bottom-anchored, transparent above the
+          // character -- rendering it 2x the visible box and bottom-aligning
+          // crops in on the figure instead of shrinking the whole (mostly
+          // empty) frame into the circle.
           <Image
             source={poseSource}
             resizeMode="contain"
-            className="h-full w-full"
+            className="h-28 w-28"
             accessibilityIgnoresInvertColors
           />
         ) : (

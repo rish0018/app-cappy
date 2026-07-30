@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ImageOff } from "lucide-react";
 import { getAslSampleImage } from "../assets/asl-samples";
 
 export interface ReferenceImageProps {
@@ -35,8 +36,8 @@ export function ReferenceImage({ letter, className = "", alt }: ReferenceImagePr
           className,
         ].join(" ")}
       >
-        <span className="text-7xl text-neutral-0" aria-hidden="true">
-          🤟
+        <span className="text-neutral-0" aria-hidden="true">
+          <ImageOff size={48} />
         </span>
       </div>
     );

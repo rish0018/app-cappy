@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Hand, Zap } from "lucide-react";
 import { AchievementBadge, XPBadge } from "@cappy/ui";
 import { PhoneCard } from "../PhoneCard";
 
@@ -13,8 +14,8 @@ export function DashboardScreen() {
 
       <div className="flex flex-1 flex-col justify-center gap-3">
         <div className="grid grid-cols-2 gap-2.5">
-          <AchievementBadge name="First Sign" description="You signed your first letter" icon="🖐️" />
-          <AchievementBadge name="Quick Learner" description="Five lessons in one day" icon="⚡" />
+          <AchievementBadge name="First Sign" description="You signed your first letter" icon={<Hand size={24} />} />
+          <AchievementBadge name="Quick Learner" description="Five lessons in one day" icon={<Zap size={24} />} />
         </div>
 
         <PhoneCard className="flex items-center justify-between">

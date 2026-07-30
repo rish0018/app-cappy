@@ -152,15 +152,19 @@ function BookSpine({
     >
       <span
         className={[
-          "mb-sm flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-white/70",
+          "mb-sm flex h-8 w-8 items-end justify-center overflow-hidden rounded-full bg-white/70",
           unlocked ? "" : "grayscale opacity-50",
         ].join(" ")}
         aria-hidden="true"
       >
+        {/* Pose art is full-body, bottom-anchored, transparent above the
+            character -- rendering it 2x the visible box and bottom-aligning
+            crops in on the figure instead of shrinking the whole (mostly
+            empty) frame into the circle. */}
         <img
           src={achievementIconSrc(achievement.id)}
           alt=""
-          className="h-full w-full object-contain object-top"
+          className="h-16 w-16 object-contain object-bottom"
         />
       </span>
       {unlocked ? (

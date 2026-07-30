@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Hand } from "lucide-react";
 import { PhoneCard } from "../PhoneCard";
 
 // Brand Palette derived from the Cappy guidelines
@@ -28,12 +29,12 @@ const SKILLS = [
     bgTint: `${colors.deepTeal}26`,
     description: "Tap the rhythms" 
   },
-  { 
-    label: "ASL", 
-    glyph: "🤟", 
-    tint: colors.warmSand, 
+  {
+    label: "ASL",
+    glyph: <Hand size={22} />,
+    tint: colors.warmSand,
     bgTint: `${colors.warmSand}33`,
-    description: "Shape the signs" 
+    description: "Shape the signs"
   },
 ];
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion } from "framer-motion";
+import { Hand } from "lucide-react";
 
 // Physics-based animation configurations
 const springTransition = {
@@ -52,8 +53,8 @@ export function LessonScreen() {
             repeat: Infinity 
           }}
         >
-          <span className="text-[5rem] leading-none drop-shadow-md">
-            🤟
+          <span className="text-[#4F7EA8] drop-shadow-md">
+            <Hand size={80} strokeWidth={1.5} />
           </span>
         </motion.div>
       </motion.div>

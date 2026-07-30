@@ -1,11 +1,12 @@
 import * as React from "react";
+import { Check, Timer, RotateCcw, type LucideIcon } from "lucide-react";
 import { classifyConfidence, type ConfidenceTier } from "@cappy/core";
 
 export type { ConfidenceTier };
 
 export interface ConfidenceTierCopy {
   text: string;
-  icon: string;
+  icon: LucideIcon;
 }
 
 export interface ConfidenceIndicatorProps {
@@ -17,9 +18,9 @@ export interface ConfidenceIndicatorProps {
 }
 
 const DEFAULT_TIER_COPY: Record<ConfidenceTier, ConfidenceTierCopy> = {
-  high: { text: "Nice! Sign recognized.", icon: "✓" },
-  medium: { text: "Close   hold the sign a little longer.", icon: "⏱" },
-  low: { text: "Not quite   let's see the demo again.", icon: "↻" },
+  high: { text: "Nice! Sign recognized.", icon: Check },
+  medium: { text: "Close   hold the sign a little longer.", icon: Timer },
+  low: { text: "Not quite   let's see the demo again.", icon: RotateCcw },
 };
 
 const TIER_CLASSES: Record<ConfidenceTier, string> = {
@@ -36,6 +37,7 @@ export function ConfidenceIndicator({ score, copy: copyOverride, className = "" 
   const tier = classifyConfidence(score);
   const copy = { ...DEFAULT_TIER_COPY[tier], ...copyOverride?.[tier] };
   const classes = TIER_CLASSES[tier];
+  const Icon = copy.icon;
 
   return (
     <div
@@ -46,7 +48,7 @@ export function ConfidenceIndicator({ score, copy: copyOverride, className = "" 
         className,
       ].join(" ")}
     >
-      <span aria-hidden="true">{copy.icon}</span>
+      <Icon aria-hidden size={16} />
       <span>{copy.text}</span>
     </div>
   );

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
+import { Check, Timer, RotateCcw } from "lucide-react";
 import { Button, Card, ConfidenceIndicator, MorseKeyer, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
 import { tapsToPattern, validateSendAttempt, type TapEvent } from "@cappy/core";
@@ -9,9 +10,9 @@ import { fadeUp, fadeUpReduced } from "../../components/motion";
 import { useProgressRecorder } from "../../hooks/useProgressRecorder";
 
 const SEND_COPY = {
-  high: { text: "Sent perfectly!", icon: "✓" },
-  medium: { text: "Close   check your dot/dash timing.", icon: "⏱" },
-  low: { text: "Let's try that pattern again.", icon: "↻" },
+  high: { text: "Sent perfectly!", icon: Check },
+  medium: { text: "Close   check your dot/dash timing.", icon: Timer },
+  low: { text: "Let's try that pattern again.", icon: RotateCcw },
 };
 
 /**

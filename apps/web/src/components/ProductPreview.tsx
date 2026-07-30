@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { Lock, Play, Check, type LucideIcon } from "lucide-react";
 import { ProgressBar, XPBadge } from "@cappy/ui";
 import "./ProductPreview.css";
 
@@ -30,10 +31,11 @@ function MiniTile({ title, state }: { title: string; state: "locked" | "active" 
     active: "bg-primary-500 text-neutral-0",
     completed: "bg-success-100 text-success-700",
   };
-  const icon: Record<typeof state, string> = { locked: "🔒", active: "▶", completed: "✓" };
+  const Icon: Record<typeof state, LucideIcon> = { locked: Lock, active: Play, completed: Check };
+  const StateIcon = Icon[state];
   return (
     <div className={`flex flex-col items-center justify-center gap-xs rounded-lg p-md ${stateClasses[state]}`}>
-      <span className="text-lg">{icon[state]}</span>
+      <StateIcon size={18} />
       <span className="text-sm font-medium">{title}</span>
     </div>
   );
