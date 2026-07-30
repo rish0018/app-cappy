@@ -19,6 +19,7 @@
   "dependencies": {
     "@cappy/api": "workspace:*",
     "@cappy/core": "workspace:*",
+    "@cappy/shared": "workspace:*",
     "@cappy/types": "workspace:*",
     "@cappy/ui": "workspace:*",
     "@expo/metro-runtime": "~3.2.3",

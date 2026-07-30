@@ -11,6 +11,11 @@
  * actual training pipeline (apps/training/scripts/extract_landmarks.py +
  * normalize_landmarks.py) uses all three axes MediaPipe provides, and the
  * exported model (apps/training/exports/tensorflowjs/) expects 63 inputs.
+ *
+ * Extended 2026-07-30: word-level sign prediction via SignPredictor.
+ * The sequence model (apps/training/scripts/train_sign_model.py) takes a
+ * rolling buffer of SEQUENCE_LENGTH frames, each 126 floats (both hands,
+ * same per-frame normalization as the static alphabet model). No StandardScaler.
  */
 import type { Letter } from "@cappy/types";
 
@@ -43,4 +48,41 @@ export function classifyConfidence(score: number): ConfidenceTier {
   if (score >= CONFIDENCE_THRESHOLDS.HIGH) return "high";
   if (score >= CONFIDENCE_THRESHOLDS.MEDIUM) return "medium";
   return "low";
+}
+
+// ─── Word-level sign prediction ──────────────────────────────────────────────
+
+/**
+ * One frame of both-hand landmarks: 126 floats.
+ *   [0..62]   left_hand  — 21 × (x, y, z), wrist-relative, unit-scaled
+ *   [63..125] right_hand — 21 × (x, y, z), wrist-relative, unit-scaled
+ * Missing hands are represented as 63 zeros.
+ * Matches the layout produced by preprocess_asl_signs.py and consumed by
+ * the TF.js sign model (apps/training/exports/tensorflowjs-signs/).
+ */
+export type BothHandsFrame = number[];  // length 126
+
+/**
+ * A rolling buffer of SEQUENCE_LENGTH frames fed to the sign model.
+ * Frames are in chronological order (oldest → newest).
+ */
+export type FrameSequence = BothHandsFrame[];  // length === SEQUENCE_LENGTH
+
+/** Number of frames the sequence model expects. Must match preprocess_asl_signs.py. */
+export const SEQUENCE_LENGTH = 64;
+
+/** Features per frame: 2 hands × 21 landmarks × 3 axes. */
+export const FRAME_FEATURES = 126;
+
+/** How many new frames to collect before running the next prediction. */
+export const PREDICTION_STRIDE = 16;
+
+export interface SignPrediction {
+  /** The predicted ASL word (one of the 250 Google ASL Signs classes). */
+  sign: string;
+  confidence: number;
+}
+
+export interface SignPredictor {
+  predict(sequence: FrameSequence): Promise<SignPrediction>;
 }

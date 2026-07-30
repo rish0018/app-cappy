@@ -24,8 +24,10 @@ import {
   getStreak,
   getMorseCharacterMastery,
   upsertMorseCharacterMastery,
+  incrementDailyActivity,
 } from "@cappy/api";
 import { updateLetterMastery, updateMorseCharacterMastery, updateStreak } from "@cappy/core";
+import { toDayKey } from "@cappy/shared";
 import type { Letter, LessonStatus, MorseCharacter } from "@cappy/types";
 
 function useUserId(): string | null {
@@ -156,6 +158,10 @@ export function useProgressRecorder() {
         new Date(),
       );
       await upsertStreak({ userId, ...next });
+      // One call site fires per completed lesson/unit; each call is one more
+      // lesson completed today. Minutes/XP/letters aren't threaded through
+      // call sites yet, so only lessonsCompleted accumulates for now.
+      await incrementDailyActivity({ userId, date: toDayKey(new Date()), lessonsCompleted: 1 });
     } catch (err) {
       console.warn("[useProgressRecorder] failed to record daily activity", err);
     }

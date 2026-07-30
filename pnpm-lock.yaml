@@ -41,6 +41,9 @@ importers:
       '@cappy/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cappy/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@cappy/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -153,6 +156,9 @@ importers:
       '@cappy/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cappy/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@cappy/types':
         specifier: workspace:*
         version: link:../../packages/types
