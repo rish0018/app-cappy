@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, Divider, Input, SSOButton } from "@cappy/ui";
-import { isAuthRateLimitError, signInWithOAuth, signUp } from "@cappy/api";
+import { EmailAlreadyRegisteredError, isAuthRateLimitError, signInWithOAuth, signUp } from "@cappy/api";
 import logoMark from "../assets/logo-mark-circular.png";
 import sceneCuriosityDesk from "../assets/scene_curiosity_desk.png";
 import { scaleIn, scaleInReduced } from "../components/motion";
@@ -23,7 +23,7 @@ export function Signup() {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [checkEmail, setCheckEmail] = React.useState(false);
-  const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | "apple" | null>(null);
+  const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -48,26 +48,33 @@ export function Signup() {
         setCheckEmail(true);
       }
     } catch (err) {
-      setError(
-        isAuthRateLimitError(err)
-          ? "We're sending a lot of emails right now   please wait a few minutes and try again."
-          : "We couldn't create your account just yet. Let's try that once more.",
-      );
+      if (err instanceof EmailAlreadyRegisteredError) {
+        setError("Looks like you already have an account with that email   try signing in instead.");
+      } else {
+        setError(
+          isAuthRateLimitError(err)
+            ? "We're sending a lot of emails right now   please wait a few minutes and try again."
+            : "We couldn't create your account just yet. Let's try that once more.",
+        );
+      }
     } finally {
       setPendingProvider(null);
     }
   }
 
-  async function handleOAuth(provider: "google" | "apple") {
+  async function handleOAuth(provider: "google") {
     setError(null);
     setPendingProvider(provider);
     try {
-      await signInWithOAuth(provider);
-      navigate("/onboarding");
+      // signInWithOAuth() redirects the browser away immediately -- it
+      // resolves once the redirect starts, not once auth completes (see
+      // packages/api/src/repositories/auth.ts), so navigate("/onboarding")
+      // here would never actually run. Supabase instead redirects the
+      // browser straight back to this URL post-auth once redirectTo is set
+      // (falls back to the dashboard-less Site URL otherwise).
+      await signInWithOAuth(provider, `${window.location.origin}/onboarding`);
     } catch {
-      setError(
-        `We couldn't connect to ${provider === "google" ? "Google" : "Apple"} just now. Mind trying again in a moment?`,
-      );
+      setError("We couldn't connect to Google just now. Mind trying again in a moment?");
     } finally {
       setPendingProvider(null);
     }
@@ -92,11 +99,6 @@ export function Signup() {
               provider="google"
               disabled={pendingProvider !== null}
               onClick={() => handleOAuth("google")}
-            />
-            <SSOButton
-              provider="apple"
-              disabled={pendingProvider !== null}
-              onClick={() => handleOAuth("apple")}
             />
           </div>
 

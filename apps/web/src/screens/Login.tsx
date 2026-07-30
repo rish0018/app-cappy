@@ -19,7 +19,7 @@ export function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
-  const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | "apple" | null>(null);
+  const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -37,16 +37,19 @@ export function Login() {
     }
   }
 
-  async function handleOAuth(provider: "google" | "apple") {
+  async function handleOAuth(provider: "google") {
     setError(null);
     setPendingProvider(provider);
     try {
-      await signInWithOAuth(provider);
-      navigate("/dashboard");
+      // signInWithOAuth() redirects the browser away immediately -- it
+      // resolves once the redirect starts, not once auth completes (see
+      // packages/api/src/repositories/auth.ts), so navigate("/dashboard")
+      // here would never actually run. Supabase instead redirects the
+      // browser straight back to this URL post-auth once redirectTo is set
+      // (falls back to the dashboard-less Site URL otherwise).
+      await signInWithOAuth(provider, `${window.location.origin}/dashboard`);
     } catch {
-      setError(
-        `We couldn't connect to ${provider === "google" ? "Google" : "Apple"} just now. Mind trying again in a moment?`,
-      );
+      setError("We couldn't connect to Google just now. Mind trying again in a moment?");
     } finally {
       setPendingProvider(null);
     }
@@ -71,11 +74,6 @@ export function Login() {
               provider="google"
               disabled={pendingProvider !== null}
               onClick={() => handleOAuth("google")}
-            />
-            <SSOButton
-              provider="apple"
-              disabled={pendingProvider !== null}
-              onClick={() => handleOAuth("apple")}
             />
           </div>
 

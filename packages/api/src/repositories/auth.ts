@@ -5,7 +5,7 @@
  * decoupled from the SDK.
  *
  * v1 providers (docs/AI_project_bible.md §9, docs/BACKEND_SSO_SETUP.md):
- * email/password + Google OAuth + Apple Sign-In. No enterprise/SAML SSO.
+ * email/password + Google OAuth. No enterprise/SAML SSO.
  */
 import type {
   AuthUser,
@@ -42,6 +42,22 @@ function mapSession(session: SupabaseSession): Session {
 }
 
 /**
+ * Thrown by signUp() when the email is already registered. Supabase
+ * deliberately does NOT return an error for this   to prevent email
+ * enumeration, auth.signUp() with an existing, confirmed email returns a
+ * 200 with no session and a `user` object whose `identities` array is
+ * empty, indistinguishable from a real new signup unless you check for
+ * exactly that. Without this check, the caller would wrongly show "check
+ * your email to confirm" for someone who already has an account.
+ */
+export class EmailAlreadyRegisteredError extends Error {
+  constructor() {
+    super("An account with this email already exists");
+    this.name = "EmailAlreadyRegisteredError";
+  }
+}
+
+/**
  * Creates a new account with email/password. Supabase also inserts a row
  * into `auth.users`; the caller is responsible for creating the matching
  * `public.users` profile row (see profile.ts) once the session is
@@ -58,6 +74,9 @@ export async function signUp(credentials: SignupCredentials): Promise<Session | 
   });
 
   if (error) throw error;
+  if (data.user && data.user.identities && data.user.identities.length === 0) {
+    throw new EmailAlreadyRegisteredError();
+  }
   return data.session ? mapSession(data.session) : null;
 }
 
@@ -73,10 +92,9 @@ export async function signInWithPassword(credentials: LoginCredentials): Promise
 }
 
 /**
- * Kicks off the OAuth redirect flow for Google/Apple. On web this
- * redirects the browser; on mobile the caller must complete the flow via
- * `expo-web-browser`/`expo-auth-session` (Apple additionally supports
- * native `expo-apple-authentication`   see docs/BACKEND_SSO_SETUP.md §2).
+ * Kicks off the OAuth redirect flow for Google. On web this redirects the
+ * browser; on mobile the caller must complete the flow via
+ * `expo-web-browser`/`expo-auth-session`   see docs/BACKEND_SSO_SETUP.md §2.
  * Resolves once the redirect has been initiated, not once the user has
  * finished authenticating   call `getSession()`/`onAuthStateChange()`
  * after the redirect completes.
@@ -92,26 +110,6 @@ export async function signInWithOAuth(
   });
 
   if (error) throw error;
-}
-
-/**
- * Native Apple Sign-In (iOS only). Exchanges the identity token returned by
- * `expo-apple-authentication`'s `signInAsync()` for a Supabase session via
- * `signInWithIdToken`, per docs/BACKEND_SSO_SETUP.md §5c. This is distinct
- * from `signInWithOAuth('apple')` above, which is the web-redirect flow used
- * on Android/web   the native flow never redirects, it hands Supabase a
- * signed JWT directly.
- */
-export async function signInWithAppleIdToken(idToken: string, nonce?: string): Promise<Session> {
-  const supabase = createSupabaseClient();
-  const { data, error } = await supabase.auth.signInWithIdToken({
-    provider: "apple",
-    token: idToken,
-    nonce,
-  });
-
-  if (error) throw error;
-  return mapSession(data.session);
 }
 
 /**

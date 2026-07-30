@@ -146,3 +146,40 @@ export const mockRecentAchievementId = "ach-group-ae";
 
 export const mockWeeklyMinutes = [12, 18, 0, 22, 15, 30, 10];
 export const mockWeeklyLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+// ─── ASL Signs (word-level) curriculum ───────────────────────────────────────
+//
+// 5 semantic groups × 5 words each = 25 signs for the initial curriculum.
+// Words are lowercase Google ASL Signs dataset labels — they must match the
+// labels in apps/training/exports/tensorflowjs-signs/preprocessing.json once
+// the LSTM model is trained. Verify the labels after training before shipping.
+
+export const SIGN_WORD_GROUPS = [
+  { id: "greetings", label: "Greetings", words: ["hello", "goodbye", "please", "thank_you", "sorry"] },
+  { id: "family",    label: "Family",    words: ["mother", "father", "sister", "brother", "baby"] },
+  { id: "time",      label: "Time",      words: ["today", "tomorrow", "yesterday", "now", "later"] },
+  { id: "colors",    label: "Colors",    words: ["red", "blue", "green", "yellow", "white"] },
+  { id: "common",    label: "Common",    words: ["eat", "drink", "help", "go", "come"] },
+] as const;
+
+export const mockSignLessons: Lesson[] = SIGN_WORD_GROUPS.map((group, i) => ({
+  id:               `sign-${group.id}`,
+  unitId:           `unit-signs-${group.id}`,
+  title:            group.label,
+  description:      `Learn ${group.words.length} common ASL signs: ${group.words.join(", ")}.`,
+  lessonType:       LESSON_TYPE_BY_INDEX[i % LESSON_TYPE_BY_INDEX.length]!,
+  difficulty:       i + 1,
+  estimatedMinutes: 5 + group.words.length,
+  xpReward:         25 * group.words.length,
+  orderIndex:       i,
+}));
+
+/** Convenience lookup for sign lesson screens. */
+export const mockSignLessonById: Record<string, Lesson> = Object.fromEntries(
+  mockSignLessons.map((l) => [l.id, l]),
+);
+
+/** The set of sign words taught by each group lesson, keyed by lesson id. */
+export const mockSignLessonWords: Record<string, string[]> = Object.fromEntries(
+  SIGN_WORD_GROUPS.map((g) => [`sign-${g.id}`, [...g.words]]),
+);

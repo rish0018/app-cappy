@@ -178,7 +178,7 @@ EXPO_PUBLIC_SUPABASE_URL=...
 EXPO_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-Once you provision the project and set these, run the schema/RLS/seed migrations under `supabase/migrations/` and `supabase/seed.sql`, then follow `docs/BACKEND_SSO_SETUP.md` to configure Google + Apple OAuth. See `docs/DB_SETUP_GUIDE.md` for the full provisioning checklist.
+Once you provision the project and set these, run the schema/RLS/seed migrations under `supabase/migrations/` and `supabase/seed.sql`, then follow `docs/BACKEND_SSO_SETUP.md` to configure Google OAuth. See `docs/DB_SETUP_GUIDE.md` for the full provisioning checklist.
 
 ---
 

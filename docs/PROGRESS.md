@@ -72,13 +72,13 @@ Same 9 screens ported to native, mirroring web's visual language:
 ## 2. What's Left
 
 ### Product surfaces
-- Login/signup screens now exist on both web (`apps/web/src/screens/{Login,Signup}.tsx`) and mobile (`apps/mobile/app/{login,signup}.tsx`), with Google/Apple SSO buttons (UI only   SSO wiring depends on a live Supabase project, see Backend above).
+- Login/signup screens now exist on both web (`apps/web/src/screens/{Login,Signup}.tsx`) and mobile (`apps/mobile/app/{login,signup}.tsx`), with a Google SSO button (Apple removed, no Apple Developer Program membership   see `docs/DECISIONS.md`). Google OAuth is now configured and verified working end-to-end.
 - Route guards now exist: web's `RequireAuth` wraps the `NavLayout` route group; mobile's `useAuthGate()` in `(tabs)/_layout.tsx` redirects to `/login`. Both **fail open** (don't block navigation) if the backend throws "not configured"   this is intentional so dev stays usable pre-launch, but means there's currently no real enforcement until a live project exists.
 - Profile screens on both apps now have a working "Sign out" action.
 - ASL per-letter reference photos are wired in: `apps/web/src/assets/asl-samples/` + `ReferenceImage` component (used in `LessonDemo.tsx`), `apps/mobile/assets/asl-samples/` + `aslSamples.ts` (used in mobile's lesson `demo.tsx`, replacing the old "Demonstration video placeholder" text).
-- Settings/accessibility toggles (reduced motion, text size) are stubbed   not functionally wired to a real settings store.
+- Settings/accessibility toggles (reduced motion, high contrast, text size) now persist to a real `user_settings` table (`packages/api/src/repositories/settings.ts`) via `useUserSettings()` on both apps. Web additionally makes the settings take real effect (`MotionConfig` + `data-contrast`/`data-text-size` CSS on `<html>`, see `App.tsx`/`index.css`); mobile only persists so far   no rendering effect yet beyond the splash screen respecting the OS-level reduce-motion setting.
 - No error/empty/loading states designed yet (screens assume mock data is always present).
-- No responsive/tablet layout pass on web beyond default Tailwind behavior.
+- Responsive/tablet + high-contrast CSS passes done on web (see `Feature/backend-03`).
 
 ### ML   real-time hand-landmark detection on Android
 - **✅ Implemented and verified on-device (2026-07-27):** `apps/mobile/android/app/src/main/java/com/cappy/mobile/HandLandmarksFrameProcessorPlugin.kt` wraps MediaPipe Tasks Vision's `HandLandmarker` as a native `react-native-vision-camera` (v4) frame-processor plugin, feeding real 21-point landmarks into `RNHandPosePredictor` (see that file's header comment for the two real bugs fixed to get here: a YUV-vs-RGBA image-format mismatch, and a Float-vs-Double JSI marshaling error). Verified end-to-end on an Android emulator using real webcam-passthrough video (not synthetic/mock frames): `ConfidenceIndicator` on the practice screen responded live to an actual hand entering and leaving frame.
@@ -97,7 +97,7 @@ Same 9 screens ported to native, mirroring web's visual language:
 ---
 
 ## 3. Suggested Next Steps (in rough priority order)
-1. Configure Google + Apple OAuth providers in the Supabase dashboard (currently deferred; email/password auth is live and verified).
+1. ~~Configure Google OAuth provider in the Supabase dashboard~~ — done (2026-07-30), verified working end-to-end.
 2. Verify Android hand-landmark detection on a physical device (only an emulator was available this session), then port the same MediaPipe HandLandmarker approach to iOS (Swift) for parity.
 3. Expand test coverage beyond the pure-logic layer (component/UI tests) and write the first ADRs for decisions already made (backend choice, monorepo scaffold, lesson-group restructure, vision-camera v4 over v5).
 4. Decide whether to extract `packages/ui-native` once/if a second native surface is justified.

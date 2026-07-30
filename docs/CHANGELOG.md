@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Apple Sign-In removed from v1 (2026-07-30)
+No active Apple Developer Program membership   Google OAuth alone ships for v1 (see docs/DECISIONS.md for the full reversal entry).
+
+- Removed `signInWithAppleIdToken` (`packages/api/src/repositories/auth.ts`), `"apple"` from `OAuthProvider` (`packages/types/src/auth.ts`).
+- Removed the Apple branch/icon from both `SSOButton` components (`packages/ui`, `apps/mobile/src/components`) and the Apple button from all four Login/Signup screens (web + mobile).
+- Removed the native Apple flow from `apps/mobile/app/{login,signup}.tsx` (the `expo-apple-authentication` calls, platform branch, and `isAppleCancellation` usage), deleted `apps/mobile/src/lib/appleAuth.ts`, and removed the `expo-apple-authentication` dependency + `app.json` plugin registration.
+- Removed `docs/BACKEND_SSO_SETUP.md` §5 (Apple provider configuration) and updated cross-references in `docs/AI_project_bible.md`, `docs/PROGRESS.md`, `docs/README.md`, `docs/GUIDE.md`, `docs/DB_SETUP_GUIDE.md`.
+- **Verified:** full monorepo lint/typecheck/test (`pnpm lint`, `pnpm typecheck`, `pnpm test`) and `@cappy/web` production build all pass.
+
 ### Adaptive review AI   rule-based engine, real persistence (2026-07-28)
 Implements docs/PROJECT_BIBLE.md §C.5/§C.6/§M.11-M.12 ("Rule-Based Intelligence" / "Adaptive Learning Engine" / "Review Strategy") end-to-end   explicitly no LLM, per the bible's own scope for v1.
 

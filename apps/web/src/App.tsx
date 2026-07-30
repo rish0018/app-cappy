@@ -25,6 +25,8 @@ import { MorseReceive } from "./screens/morse/MorseReceive";
 import { MorseCheckout } from "./screens/morse/MorseCheckout";
 import { MorseLearn } from "./screens/morse/MorseLearn";
 import { MorseWords } from "./screens/morse/MorseWords";
+import { SignLessonPractice } from "./screens/SignLessonPractice";
+import { SignLessonReview } from "./screens/SignLessonReview";
 
 const INTRO_SESSION_KEY = "cappy-intro-shown";
 
@@ -94,6 +96,8 @@ function AppRoutes() {
             <Route path="/morse/levels/:id/receive" element={<MorseReceive />} />
             <Route path="/morse/levels/:id/checkout" element={<MorseCheckout />} />
             <Route path="/morse/words/:stageId" element={<MorseWords />} />
+            <Route path="/signs/:id/practice" element={<SignLessonPractice />} />
+            <Route path="/signs/:id/review"   element={<SignLessonReview />} />
             <Route path="/achievements" element={<Achievements />} />
             <Route path="/profile" element={<Profile />} />
           </Route>

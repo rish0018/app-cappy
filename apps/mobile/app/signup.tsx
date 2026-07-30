@@ -1,10 +1,4 @@
-import {
-  isAuthRateLimitError,
-  signInWithAppleIdToken,
-  signInWithOAuth,
-  signUp,
-} from "@cappy/api";
-import * as AppleAuthentication from "expo-apple-authentication";
+import { EmailAlreadyRegisteredError, isAuthRateLimitError, signInWithOAuth, signUp } from "@cappy/api";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -20,7 +14,6 @@ import { Button } from "../src/components/Button";
 import { Divider } from "../src/components/Divider";
 import { Input } from "../src/components/Input";
 import { SSOButton } from "../src/components/SSOButton";
-import { isAppleCancellation } from "../src/lib/appleAuth";
 
 export default function SignupScreen() {
   const [displayName, setDisplayName] = useState("");
@@ -35,7 +28,7 @@ export default function SignupScreen() {
     undefined,
   );
   const [loading, setLoading] = useState(false);
-  const [ssoLoading, setSsoLoading] = useState<"google" | "apple" | null>(null);
+  const [ssoLoading, setSsoLoading] = useState<"google" | null>(null);
 
   async function handleSignup() {
     setEmailError(undefined);
@@ -73,42 +66,28 @@ export default function SignupScreen() {
         );
       }
     } catch (err) {
-      setFormNotice(
-        isAuthRateLimitError(err)
-          ? "We're sending a lot of emails right now   please wait a few minutes and try again."
-          : "We couldn't finish creating your account just yet. Let's try again.",
-      );
+      if (err instanceof EmailAlreadyRegisteredError) {
+        setFormNotice("Looks like you already have an account with that email   try signing in instead.");
+      } else {
+        setFormNotice(
+          isAuthRateLimitError(err)
+            ? "We're sending a lot of emails right now   please wait a few minutes and try again."
+            : "We couldn't finish creating your account just yet. Let's try again.",
+        );
+      }
       console.warn("[signup] signUp failed", err);
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleSSO(provider: "google" | "apple") {
+  async function handleSSO(provider: "google") {
     setFormNotice(undefined);
     setSsoLoading(provider);
     try {
-      // Native Apple Sign-In on iOS, OAuth redirect everywhere else   see
-      // docs/BACKEND_SSO_SETUP.md §5c and login.tsx's handleSSO.
-      if (provider === "apple" && Platform.OS === "ios") {
-        const credential = await AppleAuthentication.signInAsync({
-          requestedScopes: [
-            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-            AppleAuthentication.AppleAuthenticationScope.EMAIL,
-          ],
-        });
-        if (!credential.identityToken) {
-          throw new Error("Apple did not return an identity token");
-        }
-        await signInWithAppleIdToken(credential.identityToken);
-      } else {
-        await signInWithOAuth(provider);
-      }
+      await signInWithOAuth(provider);
       router.replace("/(tabs)");
     } catch (err) {
-      if (isAppleCancellation(err)) {
-        return;
-      }
       setFormNotice(
         "We couldn't finish that sign-in. Let's give it another go.",
       );
@@ -208,11 +187,6 @@ export default function SignupScreen() {
                   provider="google"
                   loading={ssoLoading === "google"}
                   onPress={() => handleSSO("google")}
-                />
-                <SSOButton
-                  provider="apple"
-                  loading={ssoLoading === "apple"}
-                  onPress={() => handleSSO("apple")}
                 />
               </View>
 

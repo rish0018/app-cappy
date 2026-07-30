@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** Visible label   always required for accessibility, no placeholder-as-label. */
@@ -35,30 +36,46 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const errorId = `${inputId}-error`;
     const hintId = `${inputId}-hint`;
     const describedBy = error ? errorId : hint ? hintId : undefined;
+    const isPassword = rest.type === "password";
+    const [reveal, setReveal] = React.useState(false);
 
     return (
       <div className={["flex flex-col gap-xs", containerClassName].join(" ")}>
         <label htmlFor={inputId} className="text-sm font-medium text-neutral-700">
           {label}
         </label>
-        <input
-          ref={ref}
-          id={inputId}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={describedBy}
-          className={[
-            "min-h-[44px] w-full px-md py-sm rounded-md border font-base text-base",
-            "bg-neutral-0 text-neutral-800 placeholder:text-neutral-400",
-            "transition-colors motion-reduce:transition-none",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
-            "disabled:opacity-50 disabled:cursor-not-allowed",
-            error
-              ? "border-error-500 focus-visible:ring-error-500"
-              : "border-neutral-300 focus:border-primary-400",
-            className,
-          ].join(" ")}
-          {...rest}
-        />
+        <div className="relative">
+          <input
+            ref={ref}
+            id={inputId}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describedBy}
+            className={[
+              "min-h-[44px] w-full px-md py-sm rounded-md border font-base text-base",
+              "bg-neutral-0 text-neutral-800 placeholder:text-neutral-400",
+              "transition-colors motion-reduce:transition-none",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
+              "disabled:opacity-50 disabled:cursor-not-allowed",
+              isPassword ? "pr-11" : "",
+              error
+                ? "border-error-500 focus-visible:ring-error-500"
+                : "border-neutral-300 focus:border-primary-400",
+              className,
+            ].join(" ")}
+            {...rest}
+            type={isPassword && reveal ? "text" : rest.type}
+          />
+          {isPassword ? (
+            <button
+              type="button"
+              onClick={() => setReveal((r) => !r)}
+              aria-label={reveal ? "Hide password" : "Show password"}
+              className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-neutral-500 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-md"
+            >
+              {reveal ? <EyeOff size={18} aria-hidden /> : <Eye size={18} aria-hidden />}
+            </button>
+          ) : null}
+        </div>
         {error ? (
           <p id={errorId} role="alert" className="text-sm text-error-700">
             {error}

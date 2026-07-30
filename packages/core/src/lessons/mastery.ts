@@ -66,6 +66,19 @@ export function updateLetterMastery(
   };
 }
 
+/**
+ * Word-level mastery update for the ASL Signs curriculum. Uses the identical
+ * rolling-average formula as `updateLetterMastery` — kept as a separate
+ * export so call sites are self-documenting and the formula can diverge
+ * independently if sign mastery weighting needs tuning later.
+ */
+export function updateSignWordMastery(
+  previous: MasteryState | null,
+  attempt: MasteryAttempt,
+): MasteryState {
+  return updateLetterMastery(previous, attempt);
+}
+
 function rollingAverage(previousAverage: number, latestValue: number): number {
   return previousAverage * (1 - RECENCY_WEIGHT) + latestValue * RECENCY_WEIGHT;
 }

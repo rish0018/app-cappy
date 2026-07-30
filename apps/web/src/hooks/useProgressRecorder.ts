@@ -21,10 +21,17 @@ import {
   getStreak,
   getMorseCharacterMastery,
   upsertMorseCharacterMastery,
+  getSignWordMastery,
+  upsertSignWordMastery,
   incrementDailyActivity,
   unlockAchievement,
 } from "@cappy/api";
-import { updateLetterMastery, updateMorseCharacterMastery, updateStreak } from "@cappy/core";
+import {
+  updateLetterMastery,
+  updateMorseCharacterMastery,
+  updateSignWordMastery,
+  updateStreak,
+} from "@cappy/core";
 import { toDayKey } from "@cappy/shared";
 import type { Letter, LessonStatus, MorseCharacter } from "@cappy/types";
 
@@ -205,5 +212,39 @@ export function useProgressRecorder() {
     }
   }, [userId]);
 
-  return { recordLessonProgress, recordLetterAttempt, recordMorseCharacterAttempt, recordDailyActivity };
+  const recordSignAttempt = React.useCallback(
+    async (signWord: string, correct: boolean, confidence: number) => {
+      if (!userId) return;
+      try {
+        const existing =
+          (await getSignWordMastery(userId)).find((m) => m.signWord === signWord) ?? null;
+        const next = updateSignWordMastery(
+          existing
+            ? {
+                masteryScore:  existing.masteryScore,
+                lastPracticed: existing.lastPracticed,
+                accuracy:      existing.accuracy,
+                avgConfidence: existing.avgConfidence,
+                practiceCount: existing.practiceCount,
+              }
+            : null,
+          { correct, confidence, practicedAt: new Date() },
+        );
+        await upsertSignWordMastery({
+          userId,
+          signWord,
+          masteryScore:  next.masteryScore,
+          lastPracticed: next.lastPracticed,
+          accuracy:      next.accuracy,
+          avgConfidence: next.avgConfidence,
+          practiceCount: next.practiceCount,
+        });
+      } catch (err) {
+        console.warn("[useProgressRecorder] failed to record sign attempt", err);
+      }
+    },
+    [userId],
+  );
+
+  return { recordLessonProgress, recordLetterAttempt, recordMorseCharacterAttempt, recordDailyActivity, recordSignAttempt };
 }

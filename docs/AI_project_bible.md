@@ -15,7 +15,7 @@
 | Mobile | Expo (React Native) + EAS | 98% |
 | Monorepo | Turborepo + pnpm | 99% |
 | ML Framework | TensorFlow (.js + Lite) | 95% |
-| Auth | Email/Password + Google OAuth + Apple Sign-In | 99% |
+| Auth | Email/Password + Google OAuth | 99% |
 | Deployment | Web-first, Mobile follows | 99% |
 | DB Implementation (schema + RLS + wiring `packages/api`) | Buildable as scoped — see `docs/DB_SETUP_GUIDE.md` | 90% confidence · ~14–20 hrs for one person |
 
@@ -232,8 +232,8 @@ daily_activity
 - ML models are **not** stored in Supabase Storage. They ship with the app.
 
 ### Auth
-- v1: Email/password + Google OAuth + Apple Sign-In (see `docs/DECISIONS.md` for why Apple moved up from "Future" — pulled into v1 on 2026-07-17). Native Apple Sign-In on mobile (`expo-apple-authentication` + `signInWithIdToken`) is a follow-up; the UI/backend contract for it already exists.
-- Future: GitHub, anonymous guest mode
+- v1: Email/password + Google OAuth. Apple Sign-In was pulled into v1 on 2026-07-17, then removed (no Apple Developer Program membership) — see `docs/DECISIONS.md`.
+- Future: Apple Sign-In (if membership is obtained), GitHub, anonymous guest mode
 
 ### Cost (v1 stays free tier)
 | Service | Purpose |

@@ -15,7 +15,7 @@ This folder contains the core project documentation for Cappy.
 - [CHANGELOG.md](CHANGELOG.md)   release and project history notes.
 - [GUIDE.md](GUIDE.md)   how to run the project locally (setup, env vars, troubleshooting).
 - [DB_SETUP_GUIDE.md](DB_SETUP_GUIDE.md)   step-by-step Supabase provisioning checklist.
-- [BACKEND_SSO_SETUP.md](BACKEND_SSO_SETUP.md)   runbook for configuring Google + Apple OAuth once a real Supabase project exists.
+- [BACKEND_SSO_SETUP.md](BACKEND_SSO_SETUP.md)   runbook for configuring Google OAuth once a real Supabase project exists.
 - [CONTRIBUTING.md](CONTRIBUTING.md)   contribution workflow and expectations.
 - [../apps/training/datasets/README.md](../apps/training/datasets/README.md)   the current training pipeline status, implementation notes, and acceptance policy.
 

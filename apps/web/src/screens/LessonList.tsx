@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card } from "@cappy/ui";
-import { mockLessonLetters, mockLessons, mockUserProgress } from "../mockData";
+import { mockLessonLetters, mockLessons, mockSignLessons, mockSignLessonWords, mockUserProgress } from "../mockData";
 import { ASL_LESSON_BACKGROUNDS } from "../lessonBackgrounds";
 import { ReferenceImage } from "../components/ReferenceImage";
 import { useLessonProgress } from "../hooks/useLessonProgress";

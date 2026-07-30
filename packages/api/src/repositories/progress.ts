@@ -13,6 +13,7 @@ import type {
   LetterMastery,
   MorseCharacter,
   MorseCharacterMastery,
+  SignWordMastery,
   Streak,
   UserProgress,
 } from "@cappy/types";
@@ -237,6 +238,63 @@ export async function upsertMorseCharacterMastery(
 
   if (error) throw error;
   return mapMorseCharacterMastery(data as MorseCharacterMasteryRow);
+}
+
+// ─── Sign word mastery ────────────────────────────────────────────────────────
+
+interface SignWordMasteryRow {
+  user_id: string;
+  sign_word: string;
+  mastery_score: number;
+  last_practiced: string | null;
+  accuracy: number;
+  avg_confidence: number;
+  practice_count: number;
+}
+
+function mapSignWordMastery(row: SignWordMasteryRow): SignWordMastery {
+  return {
+    userId:        row.user_id,
+    signWord:      row.sign_word,
+    masteryScore:  row.mastery_score,
+    lastPracticed: row.last_practiced,
+    accuracy:      row.accuracy,
+    avgConfidence: row.avg_confidence,
+    practiceCount: row.practice_count,
+  };
+}
+
+export async function getSignWordMastery(userId: string): Promise<SignWordMastery[]> {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from("sign_word_mastery")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  return (data as SignWordMasteryRow[]).map(mapSignWordMastery);
+}
+
+export async function upsertSignWordMastery(mastery: SignWordMastery): Promise<SignWordMastery> {
+  const supabase = createSupabaseClient();
+  const row: SignWordMasteryRow = {
+    user_id:        mastery.userId,
+    sign_word:      mastery.signWord,
+    mastery_score:  mastery.masteryScore,
+    last_practiced: mastery.lastPracticed,
+    accuracy:       mastery.accuracy,
+    avg_confidence: mastery.avgConfidence,
+    practice_count: mastery.practiceCount,
+  };
+
+  const { data, error } = await supabase
+    .from("sign_word_mastery")
+    .upsert(row, { onConflict: "user_id,sign_word" })
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  return mapSignWordMastery(data as SignWordMasteryRow);
 }
 
 export async function getStreak(userId: string): Promise<Streak | null> {
