@@ -160,6 +160,71 @@ export function LessonList() {
           })}
         </div>
       </motion.section>
+
+      {/* ── ASL Signs (word-level) ─────────────────────────────────────────── */}
+      <motion.section initial="hidden" animate="visible" variants={fade}>
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
+          Word-level signs
+        </p>
+        <h2 className="font-display text-2xl font-bold text-primary-900 mb-xs">
+          ASL Signs
+        </h2>
+        <p className="text-neutral-600">
+          Move beyond the alphabet — learn full words grouped by topic.
+        </p>
+      </motion.section>
+
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={stagger}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+          {mockSignLessons.map((lesson, i) => {
+            const words = mockSignLessonWords[lesson.id] ?? [];
+
+            return (
+              <motion.div key={lesson.id} custom={i} variants={item} className="h-full">
+                <Card variant="surface" className="relative h-full flex flex-col gap-md overflow-hidden !p-0">
+                  {/* Word-group colour band — no photo, use a tinted header */}
+                  <div
+                    aria-hidden="true"
+                    className="h-16 w-full bg-primary-50 flex items-center px-lg"
+                  >
+                    <span className="font-display text-3xl font-bold text-primary-300 select-none">
+                      {lesson.title.slice(0, 2)}
+                    </span>
+                    <span className="ml-auto rounded-full px-sm py-xs text-xs font-semibold bg-primary-100 text-primary-700">
+                      Active
+                    </span>
+                  </div>
+
+                  <div className="flex flex-1 flex-col gap-md p-lg pt-0">
+                    <div>
+                      <h3 className="font-display text-lg font-bold text-neutral-800">
+                        {lesson.title}
+                      </h3>
+                      <p className="text-sm text-neutral-600">
+                        {words.map((w) => w.replace(/_/g, " ")).join(" · ")}
+                      </p>
+                    </div>
+
+                    <div className="mt-auto">
+                      <Button
+                        variant="primary"
+                        onClick={() => navigate(`/signs/${lesson.id}/practice`)}
+                      >
+                        Start
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.section>
     </div>
   );
 }
