@@ -65,7 +65,7 @@ or directly:
 pnpm --filter @cappy/web dev
 ```
 
-This starts the Vite dev server (default: http://localhost:5173). Open that URL in your browser   hot reload is automatic on save.
+This starts the Vite dev server (default: http://localhost:5183, per `apps/web/vite.config.ts`). Open that URL in your browser   hot reload is automatic on save.
 
 **Build for production / verify it compiles:**
 ```bash
@@ -154,10 +154,7 @@ Runs `dev` in every app in parallel via Turborepo (currently: web + mobile). Use
 
 ## 6. Environment variables
 
-**None are required yet.** The backend (`packages/api`) is currently a typed stub   no real Supabase project is wired up, so there's nothing to configure to run the apps today.
-
-Once Supabase is provisioned (see `PROGRESS.md` → "What's Left"), you'll need a `.env` file (not committed   check `.gitignore`) with at minimum:
-`packages/api` now has a real `createSupabaseClient()` and real repository implementations   but there is still no live Supabase project, so the apps run today with auth/data calls throwing a clear "not configured yet" error at call time (both the web and mobile route guards fail open when this happens, so the app stays usable without a backend).
+**None are required to boot the apps.** `packages/api` now has a real `createSupabaseClient()` and real repository implementations   but until you provide your own project's credentials below, the apps run with auth/data calls throwing a clear "not configured yet" error at call time (both the web and mobile route guards fail open when this happens, so the app stays usable without a backend).
 
 To connect a real project, copy the example env files and fill in the values from your Supabase dashboard (Settings → API):
 ```
@@ -196,7 +193,7 @@ cappy/
 ├── packages/
 │   ├── ui/            # web-only React components + design tokens (colors, spacing, etc.)
 │   ├── core/           # framework-agnostic business logic (XP, streaks, ML prediction contract)
-│   ├── api/            # Supabase abstraction layer (stubbed for now)
+│   ├── api/            # Supabase abstraction layer (real repositories, real Supabase client factory)
 │   ├── types/          # shared TypeScript types used by everything
 │   ├── shared/         # small cross-cutting utilities
 │   └── config/         # shared tsconfig/eslint config
@@ -228,7 +225,7 @@ You mentioned training the model separately   once you have exported weights (`T
 |---|---|
 | `pnpm: command not found` | Install pnpm globally (see §1), or use `corepack enable` |
 | Workspace package not found / stale types after editing `packages/*` | Re-run `pnpm install` from root; restart your editor's TS server |
-| Port `5173` already in use (web) | Vite will auto-pick the next free port   check the terminal output for the actual URL |
+| Port `5183` already in use (web) | Vite will auto-pick the next free port   check the terminal output for the actual URL |
 | Metro bundler cache issues (mobile) | `pnpm --filter @cappy/mobile start -- --clear` |
 | `expo run:android` fails with `Plugin [id: 'expo-module-gradle-plugin'] was not found` | Almost always a pnpm node_modules layout issue. Confirm the root `.npmrc` has `node-linker=hoisted` (see §2), then delete `apps/mobile/android/`, re-run `pnpm install` from the repo root, and re-run `pnpm --filter @cappy/mobile android`. |
 | `expo run:android` / Metro pulls in a wrong, way-too-new version of `expo-constants` or `expo-linking` (e.g. `57.x` when the rest of the app is on Expo SDK 51) | `expo-router` declares these as unconstrained peer dependencies (`"*"`), so pnpm can resolve them to whatever's newest instead of the SDK-51-correct version. They're pinned explicitly in `apps/mobile/package.json` (`expo-constants: ~16.0.2`, `expo-linking: ~6.3.1`) to prevent this   if you see it recur (e.g. after upgrading `expo-router`), re-pin to the versions that match your installed `expo` SDK and re-run `pnpm install`. |
