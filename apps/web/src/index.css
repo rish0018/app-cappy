@@ -34,3 +34,37 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Same treatment when the in-app "Reduce motion" setting is on, regardless
+   of the OS-level media query above (framer-motion animations are handled
+   separately via MotionConfig in App.tsx). */
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* "Larger text" setting -- Tailwind's type scale is rem-based, so scaling
+   the root font-size scales the whole app proportionally. */
+html[data-text-size="large"] {
+  font-size: 118%;
+}
+
+/*
+ * "High contrast" setting -- a starter pass, not an exhaustive audit:
+ * strengthens the most common muted/secondary text and border colors
+ * against their backgrounds. Component-by-component contrast tuning is a
+ * separate, larger effort.
+ */
+html[data-contrast="high"] .text-neutral-500 {
+  @apply text-neutral-700;
+}
+html[data-contrast="high"] .text-neutral-400 {
+  @apply text-neutral-600;
+}
+html[data-contrast="high"] .border-neutral-200 {
+  @apply border-neutral-400;
+}

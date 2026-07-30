@@ -1,7 +1,19 @@
 /**
- * Wraps MediaPipe's HandLandmarker (Tasks API) for live webcam frames,
- * producing the same 63-number (21 landmarks x x/y/z) shape the training
- * pipeline extracted from static images (apps/training/scripts/extract_landmarks.py).
+ * Wraps MediaPipe's HandLandmarker (Tasks API) for live webcam frames.
+ *
+ * Returns both hands keyed by MediaPipe handedness ("Left" / "Right") so
+ * callers can use whichever they need:
+ *   - Letter predictor  → DetectedHands.dominant (highest-confidence hand)
+ *   - Sign predictor    → DetectedHands.left + DetectedHands.right
+ *
+ * MediaPipe reports screen left/right for selfie-camera feeds (anatomically
+ * mirrored). That is consistent with the Google ASL Signs training data, which
+ * was also recorded on selfie cameras, so the sign model learned from the same
+ * mirroring. Do not flip the labels.
+ *
+ * numHands is 2 so both hands are detected in a single detectForVideo call.
+ * The Tasks API is stateful and must only be called once per timestamp — a
+ * single shared singleton handles both use cases.
  */
 import {
   FilesetResolver,
@@ -23,7 +35,7 @@ async function getLandmarker(): Promise<HandLandmarker> {
       return HandLandmarker.createFromOptions(filesetResolver, {
         baseOptions: { modelAssetPath: MODEL_ASSET_URL },
         runningMode: "VIDEO",
-        numHands: 1,
+        numHands: 2,
         minHandDetectionConfidence: 0.5,
       });
     })();
@@ -31,27 +43,49 @@ async function getLandmarker(): Promise<HandLandmarker> {
   return landmarkerPromise;
 }
 
-/**
- * Detects a single hand's landmarks in a video frame. Returns null if no
- * hand is detected (the caller should skip prediction entirely in that
- * case, matching how the training data's "nothing" class was excluded from
- * the classifier   see apps/training/scripts/train_tfjs_model.py).
- */
-export async function detectHandLandmarks(
-  video: HTMLVideoElement,
-  timestampMs: number,
-): Promise<HandLandmarks | null> {
-  const landmarker = await getLandmarker();
-  const result: HandLandmarkerResult = landmarker.detectForVideo(video, timestampMs);
+export interface DetectedHands {
+  /**
+   * First detected hand by MediaPipe confidence order. Used by the letter
+   * predictor — identical behavior to the previous single-hand API.
+   */
+  dominant: HandLandmarks | null;
+  /** Screen-left hand landmarks (63 numbers), or null if not visible. */
+  left:     number[] | null;
+  /** Screen-right hand landmarks (63 numbers), or null if not visible. */
+  right:    number[] | null;
+}
 
-  if (!result.landmarks.length) {
-    return null;
-  }
-
-  const hand = result.landmarks[0]!;
+function flattenLandmarks(result: HandLandmarkerResult, index: number): number[] {
+  const hand = result.landmarks[index]!;
   const flat: number[] = [];
   for (const point of hand) {
     flat.push(point.x, point.y, point.z);
   }
   return flat;
+}
+
+export async function detectHandLandmarks(
+  video: HTMLVideoElement,
+  timestampMs: number,
+): Promise<DetectedHands> {
+  const landmarker = await getLandmarker();
+  const result: HandLandmarkerResult = landmarker.detectForVideo(video, timestampMs);
+
+  if (!result.landmarks.length) {
+    return { dominant: null, left: null, right: null };
+  }
+
+  const dominant = flattenLandmarks(result, 0);
+
+  let left:  number[] | null = null;
+  let right: number[] | null = null;
+
+  for (let i = 0; i < result.landmarks.length; i++) {
+    const label = result.handedness[i]?.[0]?.categoryName;
+    const flat  = flattenLandmarks(result, i);
+    if (label === "Left")  left  = flat;
+    if (label === "Right") right = flat;
+  }
+
+  return { dominant, left, right };
 }

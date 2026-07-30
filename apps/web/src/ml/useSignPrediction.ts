@@ -79,17 +79,8 @@ export function useSignPrediction(
           const video = videoRef.current;
           if (!video || video.readyState < 2) return;
 
-          // detectHandLandmarks returns a single-hand 63-float array.
-          // For the sign model we need both hands. MediaPipe Tasks API in
-          // handLandmarker.ts is configured for numHands=1 (dominant hand only).
-          // We place it in the right-hand slot; left stays zeros.
-          // TODO: when handLandmarker is upgraded to numHands=2, pass both hands.
-          const singleHand = await detectHandLandmarks(video, performance.now());
-
-          const frame = buildBothHandsFrame(
-            null,                                    // left_hand — not yet available
-            singleHand ? Array.from(singleHand) : null  // right_hand
-          );
+          const { left, right } = await detectHandLandmarks(video, performance.now());
+          const frame = buildBothHandsFrame(left, right);
 
           // Push to circular buffer (capped at SEQUENCE_LENGTH)
           const buf = bufferRef.current;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, MascotFigure, MorseSequenceDisplay, ProgressBar } from "@cappy/ui";
-import { MORSE_GROUPS, MORSE_MAP, type MorseWordStage } from "@cappy/types";
+import { MORSE_GROUPS, MORSE_MAP, type MorseCharacter, type MorseWordStage } from "@cappy/types";
 import {
   averageMasteryForCharacters,
   isWordStageUnlocked,
@@ -10,6 +10,18 @@ import {
   mockMorseLessonById,
   mockMorseWordStages,
 } from "../../morseMockData";
+import { useMorseProgress } from "../../hooks/useMorseProgress";
+
+function groupMasteryAverage(
+  characters: readonly MorseCharacter[],
+  masteryByCharacter: Partial<Record<MorseCharacter, number>>,
+): number {
+  const scores = characters
+    .filter((c) => c in masteryByCharacter)
+    .map((c) => masteryByCharacter[c]! / 100);
+  if (scores.length === 0) return 0;
+  return scores.reduce((sum, score) => sum + score, 0) / scores.length;
+}
 import {
   fadeUp,
   fadeUpReduced,
@@ -41,7 +53,8 @@ function wordStageChip(stage: MorseWordStage, unlocked: boolean): { label: strin
 
 export function MorseDashboard() {
   const navigate = useNavigate();
-  const activeLesson = mockMorseLessonById[mockActiveMorseLessonId]!;
+  const real = useMorseProgress();
+  const activeLesson = mockMorseLessonById[real?.activeLessonId ?? mockActiveMorseLessonId]!;
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
@@ -108,7 +121,9 @@ export function MorseDashboard() {
         <h2 className="font-display text-xl font-bold text-neutral-800 mb-md">Levels</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
           {MORSE_GROUPS.map((group, i) => {
-            const avg = averageMasteryForCharacters([...group.characters]);
+            const avg = real
+              ? groupMasteryAverage(group.characters, real.masteryByCharacter)
+              : averageMasteryForCharacters([...group.characters]);
             const isNext = !firstIncompleteFound && avg < 0.85;
             if (isNext) firstIncompleteFound = true;
             const state = groupState(avg, isNext);

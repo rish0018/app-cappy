@@ -6,3 +6,4 @@ export * from "./repositories/achievements";
 export * from "./repositories/auth";
 export * from "./repositories/profile";
 export * from "./repositories/dailyActivity";
+export * from "./repositories/settings";

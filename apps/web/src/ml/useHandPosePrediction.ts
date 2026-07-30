@@ -43,12 +43,12 @@ export function useHandPosePrediction(videoRef: React.RefObject<HTMLVideoElement
 
         intervalId = setInterval(async () => {
           if (!video || video.readyState < 2) return;
-          const landmarks = await detectHandLandmarks(video, performance.now());
-          if (!landmarks || !predictorRef.current) {
+          const { dominant } = await detectHandLandmarks(video, performance.now());
+          if (!dominant || !predictorRef.current) {
             setPrediction(null);
             return;
           }
-          const next = await predictorRef.current.predict(landmarks);
+          const next = await predictorRef.current.predict(dominant);
           if (!cancelled) setPrediction(next);
         }, PREDICTION_INTERVAL_MS);
       } catch (err) {

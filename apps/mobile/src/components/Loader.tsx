@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  AccessibilityInfo,
   Animated,
   Dimensions,
   Easing,
@@ -38,8 +39,31 @@ export function Loader({ onDone }: LoaderProps) {
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const containerOpacity = useRef(new Animated.Value(1)).current;
   const progress = useRef(new Animated.Value(0)).current;
+  const [reduceMotion, setReduceMotion] = useState<boolean | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+      if (!cancelled) setReduceMotion(enabled);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    // Wait to know the OS reduce-motion preference before starting the
+    // slideshow, so a motion-sensitive learner never sees even one cycle
+    // of the cross-fade play out.
+    if (reduceMotion === null) return;
+
+    if (reduceMotion) {
+      logoOpacity.setValue(1);
+      progress.setValue(1);
+      const exitTimer = setTimeout(onDone, 400);
+      return () => clearTimeout(exitTimer);
+    }
+
     Animated.timing(progress, {
       toValue: 1,
       duration: LOGO_DELAY_MS + 900,
@@ -91,7 +115,7 @@ export function Loader({ onDone }: LoaderProps) {
       clearTimeout(exitTimer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reduceMotion]);
 
   const barWidth = progress.interpolate({
     inputRange: [0, 1],

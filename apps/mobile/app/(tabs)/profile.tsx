@@ -20,13 +20,15 @@ import {
   mockStreak,
   mockUser,
 } from "../../src/mockData";
+import { useUserSettings } from "../../src/hooks/useUserSettings";
 
 type TextSize = "small" | "medium" | "large";
 const TEXT_SIZES: TextSize[] = ["small", "medium", "large"];
 
 export default function ProfileScreen() {
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [textSize, setTextSize] = useState<TextSize>("medium");
+  const { settings, updateSettings } = useUserSettings();
+  const reducedMotion = settings?.reducedMotion ?? false;
+  const textSize: TextSize = settings?.textSize ?? "medium";
   const [signingOut, setSigningOut] = useState(false);
 
   async function handleSignOut() {
@@ -157,7 +159,7 @@ export default function ProfileScreen() {
                 </View>
                 <Switch
                   value={reducedMotion}
-                  onValueChange={setReducedMotion}
+                  onValueChange={(next) => updateSettings({ reducedMotion: next })}
                   accessibilityLabel="Reduced motion"
                   accessibilityRole="switch"
                   trackColor={{ true: "#3e948c", false: "#e3ddd2" }}
@@ -171,7 +173,7 @@ export default function ProfileScreen() {
                 {TEXT_SIZES.map((size) => (
                   <Pressable
                     key={size}
-                    onPress={() => setTextSize(size)}
+                    onPress={() => updateSettings({ textSize: size })}
                     accessibilityRole="button"
                     accessibilityLabel={`Text size ${size}`}
                     accessibilityState={{ selected: textSize === size }}

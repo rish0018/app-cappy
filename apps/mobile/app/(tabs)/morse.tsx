@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { MORSE_GROUPS, MORSE_MAP } from "@cappy/types";
+import { MORSE_GROUPS, MORSE_MAP, type MorseCharacter } from "@cappy/types";
 import React from "react";
 import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,8 +14,20 @@ import {
   mockMorseLessonById,
   mockMorseWordStages,
 } from "../../src/morseMockData";
+import { useMorseProgress } from "../../src/hooks/useMorseProgress";
 
 type GroupState = "locked" | "active" | "completed";
+
+function groupMasteryAverage(
+  characters: readonly MorseCharacter[],
+  masteryByCharacter: Partial<Record<MorseCharacter, number>>,
+): number {
+  const scores = characters
+    .filter((c) => c in masteryByCharacter)
+    .map((c) => masteryByCharacter[c]! / 100);
+  if (scores.length === 0) return 0;
+  return scores.reduce((sum, score) => sum + score, 0) / scores.length;
+}
 
 function groupState(avgMastery: number, isNext: boolean): GroupState {
   if (avgMastery >= 0.85) return "completed";
@@ -30,7 +42,8 @@ const STATE_LABEL: Record<GroupState, string> = {
 };
 
 export default function MorseDashboardScreen() {
-  const activeLesson = mockMorseLessonById[mockActiveMorseLessonId]!;
+  const real = useMorseProgress();
+  const activeLesson = mockMorseLessonById[real?.activeLessonId ?? mockActiveMorseLessonId]!;
   let firstIncompleteFound = false;
 
   return (
@@ -69,7 +82,9 @@ export default function MorseDashboardScreen() {
         <Text className="mb-md text-lg font-bold text-neutral-800">Levels</Text>
         <View className="mb-xl gap-md">
           {MORSE_GROUPS.map((group) => {
-            const avg = averageMasteryForCharacters([...group.characters]);
+            const avg = real
+              ? groupMasteryAverage(group.characters, real.masteryByCharacter)
+              : averageMasteryForCharacters([...group.characters]);
             const isNext = !firstIncompleteFound && avg < 0.85;
             if (isNext) firstIncompleteFound = true;
             const state = groupState(avg, isNext);

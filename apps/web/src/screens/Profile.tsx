@@ -5,6 +5,7 @@ import { Button, Card, ProgressBar, StreakBadge, XPBadge } from "@cappy/ui";
 import { signOut } from "@cappy/api";
 import { ALL_LETTERS } from "@cappy/types";
 import { mockLetterMastery, mockStreak, mockUser } from "../mockData";
+import { useSettings } from "../settings/SettingsContext";
 import {
   fadeUp,
   fadeUpReduced,
@@ -14,8 +15,17 @@ import {
   staggerItemReduced,
 } from "../components/motion";
 
-function Toggle({ label, description, defaultChecked = false }: { label: string; description: string; defaultChecked?: boolean }) {
-  const [checked, setChecked] = React.useState(defaultChecked);
+function Toggle({
+  label,
+  description,
+  checked,
+  onChange,
+}: {
+  label: string;
+  description: string;
+  checked: boolean;
+  onChange: (next: boolean) => void;
+}) {
   return (
     <div className="flex items-center justify-between gap-md py-sm">
       <div>
@@ -27,7 +37,7 @@ function Toggle({ label, description, defaultChecked = false }: { label: string;
         role="switch"
         aria-checked={checked}
         aria-label={label}
-        onClick={() => setChecked((c) => !c)}
+        onClick={() => onChange(!checked)}
         className={[
           "relative inline-flex items-center h-8 w-14 min-w-[44px] rounded-full transition-colors motion-reduce:transition-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
@@ -64,6 +74,10 @@ export function Profile() {
   const item = reduced ? staggerItemReduced : staggerItem;
   const [signingOut, setSigningOut] = React.useState(false);
   const [signOutNotice, setSignOutNotice] = React.useState<string | null>(null);
+  const { settings, updateSettings } = useSettings();
+  const reducedMotionOn = settings?.reducedMotion ?? false;
+  const highContrastOn = settings?.highContrast ?? false;
+  const largerTextOn = (settings?.textSize ?? "medium") === "large";
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -154,14 +168,20 @@ export function Profile() {
           <Toggle
             label="Reduce motion"
             description="Turns off non-essential animations and transitions throughout Cappy."
+            checked={reducedMotionOn}
+            onChange={(next) => updateSettings({ reducedMotion: next })}
           />
           <Toggle
             label="High contrast"
             description="Increases contrast between text and backgrounds."
+            checked={highContrastOn}
+            onChange={(next) => updateSettings({ highContrast: next })}
           />
           <Toggle
             label="Larger text"
             description="Increases the base text size across the app."
+            checked={largerTextOn}
+            onChange={(next) => updateSettings({ textSize: next ? "large" : "medium" })}
           />
         </Card>
       </motion.section>

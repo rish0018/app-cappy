@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Route, Routes } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 import { NavLayout } from "./components/NavLayout";
 import { RequireAuth } from "./components/RequireAuth";
 import { MascotLayer } from "./mascot/MascotLayer";
 import { Loader } from "./components/Loader";
+import { SettingsProvider, useSettings } from "./settings/SettingsContext";
 import { Landing } from "./screens/Landing";
 import { Login } from "./screens/Login";
 import { Signup } from "./screens/Signup";
@@ -26,7 +28,35 @@ import { MorseWords } from "./screens/morse/MorseWords";
 
 const INTRO_SESSION_KEY = "cappy-intro-shown";
 
-export default function App() {
+/**
+ * Applies the persisted accessibility settings app-wide: MotionConfig's
+ * reducedMotion="always" forces every framer-motion useReducedMotion()
+ * call (used throughout the app) to report reduced regardless of the OS
+ * media query, and the data-* attributes on <html> drive the CSS in
+ * index.css for high contrast / larger text.
+ */
+function SettingsEffects({ children }: { children: React.ReactNode }) {
+  const { settings } = useSettings();
+
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (settings?.highContrast) root.setAttribute("data-contrast", "high");
+    else root.removeAttribute("data-contrast");
+
+    if (settings?.textSize && settings.textSize !== "medium") {
+      root.setAttribute("data-text-size", settings.textSize);
+    } else {
+      root.removeAttribute("data-text-size");
+    }
+
+    if (settings?.reducedMotion) root.setAttribute("data-reduced-motion", "true");
+    else root.removeAttribute("data-reduced-motion");
+  }, [settings?.highContrast, settings?.textSize, settings?.reducedMotion]);
+
+  return <MotionConfig reducedMotion={settings?.reducedMotion ? "always" : "user"}>{children}</MotionConfig>;
+}
+
+function AppRoutes() {
   const [introDone, setIntroDone] = React.useState(
     () => sessionStorage.getItem(INTRO_SESSION_KEY) === "1"
   );
@@ -71,5 +101,15 @@ export default function App() {
       </Routes>
       <MascotLayer />
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <SettingsProvider>
+      <SettingsEffects>
+        <AppRoutes />
+      </SettingsEffects>
+    </SettingsProvider>
   );
 }
