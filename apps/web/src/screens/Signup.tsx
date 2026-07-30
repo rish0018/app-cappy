@@ -136,7 +136,7 @@ export function Signup() {
 
             {checkEmail ? (
               <p role="status" className="text-sm text-primary-700 bg-primary-100 rounded-md px-md py-sm">
-                Almost there! We've sent a confirmation link to {email || "your email"}   open it to finish
+                Almost there! We&apos;ve sent a confirmation link to {email || "your email"}   open it to finish
                 setting up your account, then come back and sign in.
               </p>
             ) : null}

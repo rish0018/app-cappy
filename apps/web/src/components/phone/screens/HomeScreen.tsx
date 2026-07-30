@@ -1,15 +1,6 @@
 import * as React from "react";
 import { PhoneCard } from "../PhoneCard";
 
-// Brand Palette - Forest Theme Focus
-const colors = {
-  creamWhite: '#F8F4EE',
-  softBeige: '#CEC1AE',
-  sageGreen: '#8AB8AE',
-  deepTeal: '#3E948C',
-  warmWalnut: '#7A5438',
-};
-
 export function HomeScreen({ onNavigate }: { onNavigate?: (screen: string) => void }) {
   return (
     <div className="flex h-full flex-col px-6 py-8">

@@ -140,7 +140,7 @@ export default function SignupScreen() {
                   Create your account
                 </Text>
                 <Text className="mt-xs text-center text-sm text-neutral-500">
-                  A few details and you'll be learning in no time.
+                  A few details and you&apos;ll be learning in no time.
                 </Text>
               </View>
 

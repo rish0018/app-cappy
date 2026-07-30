@@ -38,7 +38,7 @@ export function LessonDemo() {
             </span>
             <h1 className="font-display text-2xl font-bold text-neutral-800">{lesson.title}</h1>
             <p className="text-sm text-neutral-600 mt-xs">
-              Take your time. Watch all {letters.length} signs as many times as you like   there's no rush.
+              Take your time. Watch all {letters.length} signs as many times as you like   there&apos;s no rush.
             </p>
           </div>
 
@@ -60,7 +60,7 @@ export function LessonDemo() {
 
           <div className="flex justify-end">
             <Button variant="primary" className="w-full max-w-xs" onClick={() => navigate(`/lessons/${lesson.id}/practice`)}>
-              I'm ready to try it
+              I&apos;m ready to try it
             </Button>
           </div>
         </Card>

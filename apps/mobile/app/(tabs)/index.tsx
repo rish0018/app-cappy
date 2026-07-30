@@ -47,7 +47,7 @@ export default function HomeScreen() {
                   Hi, {mockUser.displayName}
                 </Text>
                 <Text className="text-sm text-neutral-500">
-                  Ready for today's practice?
+                  Ready for today&apos;s practice?
                 </Text>
               </View>
               <View className="flex-row gap-sm">
@@ -104,7 +104,7 @@ export default function HomeScreen() {
 
             <Card className="mb-lg">
               <Text className="text-sm font-semibold text-neutral-500">
-                Today's XP goal
+                Today&apos;s XP goal
               </Text>
               <Text className="mt-xs text-lg font-bold text-neutral-800">
                 {mockXpToday} / {mockDailyXpGoal} XP

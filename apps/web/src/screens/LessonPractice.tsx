@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
+import { classifyConfidence } from "@cappy/core";
 import { Button, Card, ConfidenceIndicator, ProgressBar } from "@cappy/ui";
 import practiceCappy from "../assets/characters/character_practice_cappy.png";
 import thinkingCappy from "../assets/characters/character_thinking_cappy.png";
@@ -54,7 +55,7 @@ export function LessonPractice() {
             Step 2 of 3   Practice
           </span>
           <h1 className="font-display text-2xl font-bold text-neutral-800">
-            Show me the sign for "{letter}"
+            Show me the sign for &quot;{letter}&quot;
           </h1>
           <p className="text-xs font-semibold text-neutral-500">
             Letter {letterIndex + 1} of {letters.length}
@@ -93,7 +94,7 @@ export function LessonPractice() {
                   ? "Show your hand to the camera to get started."
                   : prediction.letter !== letter
                     ? `Looks like "${prediction.letter}" so far   try shaping it a bit more like "${letter}".`
-                    : score >= 0.9
+                    : classifyConfidence(score) === "high"
                       ? "Beautiful form   you've got this letter down."
                       : "Nice attempt   try adjusting your hand angle a little and give it another go."}
               </p>

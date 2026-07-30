@@ -150,7 +150,7 @@ export function Landing() {
                   className="cursor-target text-base bg-accent-500 hover:bg-accent-700 active:bg-accent-700"
                   onClick={() => navigate("/onboarding")}
                 >
-                  Let's get started
+                  Let&apos;s get started
                 </Button>
               </motion.div>
             </motion.div>
@@ -214,7 +214,7 @@ export function Landing() {
             className="max-w-lg w-full text-center border border-neutral-200 shadow-xl"
           >
             <p className="font-display text-2xl italic font-semibold text-neutral-800">
-              "There's no clock running, and no wrong way to learn."
+              &quot;There&apos;s no clock running, and no wrong way to learn.&quot;
             </p>
             <p className="mt-sm text-sm text-neutral-500">  Cappy</p>
             <div className="mt-lg pt-lg border-t border-neutral-200 flex items-baseline justify-center gap-xs">

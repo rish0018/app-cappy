@@ -209,7 +209,7 @@ export function Onboarding() {
               className="w-full text-base"
               onClick={() => navigate("/dashboard")}
             >
-              Let's get started
+              Let&apos;s get started
             </Button>
           </motion.div>
         </motion.div>

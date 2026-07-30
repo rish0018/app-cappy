@@ -74,7 +74,7 @@ export function Dashboard() {
           <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">
             Hi, {mockUser.displayName}
           </h1>
-          <p className="text-neutral-600">Here's where you left off   no rush, pick up whenever you're ready.</p>
+          <p className="text-neutral-600">Here&apos;s where you left off   no rush, pick up whenever you&apos;re ready.</p>
         </div>
         <div className="hidden sm:block absolute -right-4 -bottom-4 opacity-90 pointer-events-none">
           <MascotFigure pose="curious" size="md" />

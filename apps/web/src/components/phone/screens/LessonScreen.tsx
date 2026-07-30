@@ -1,16 +1,6 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 
-// Brand Palette - Winter Theme Focus
-const colors = {
-  primaryBlue: '#4F7EA8',
-  warmSand: '#D9AA78',
-  softBeige: '#CEC1AE',
-  sageGreen: '#8AB8AE',
-  creamWhite: '#F8F4EE',
-  warmWalnut: '#7A5438',
-};
-
 // Physics-based animation configurations
 const springTransition = {
   type: "spring",
@@ -76,7 +66,7 @@ export function LessonScreen() {
         className="flex flex-col items-center gap-3 px-4 pb-4 text-center"
       >
         <h2 className="font-display text-3xl font-bold text-[#7A5438]">
-          "I Love You"
+          &quot;I Love You&quot;
         </h2>
         <p className="max-w-[16rem] text-[0.95rem] font-medium leading-relaxed text-[#7A5438]/70">
           Thumb, index, and pinky finger extended. Hold it gently, and relax your other fingers.

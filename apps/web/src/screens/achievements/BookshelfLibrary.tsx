@@ -209,13 +209,13 @@ function BookDetailOverlay({
           <p className="text-neutral-700">{achievement.description}</p>
           <div className="rounded-lg bg-primary-50 p-md">
             <p className="text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">
-              Mentor Cappy's note
+              Mentor Cappy&apos;s note
             </p>
             <p className="text-sm italic text-neutral-700">
-              "
+              &quot;
               {MENTOR_NOTE[achievement.id] ??
                 "Every page in this library is one you earned."}
-              "
+              &quot;
             </p>
           </div>
           <button

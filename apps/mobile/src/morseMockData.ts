@@ -25,7 +25,7 @@ export const mockMorseUnits: MorseUnit[] = MORSE_GROUPS.map((group, index) => ({
       : "Bonus prosigns — put everything together.",
 }));
 
-export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, groupIndex) => {
+export const mockMorseLessons: MorseLesson[] = MORSE_GROUPS.flatMap((group, _groupIndex) => {
   const unitId = `morse-unit-${group.id}`;
   const characters = group.characters;
 

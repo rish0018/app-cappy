@@ -153,6 +153,6 @@ Apple Sign-In has two valid flows: the web-based OAuth redirect (works everywher
 
 ## 7. Open items / known gaps
 
-- No login/signup screens exist yet in `apps/web` or `apps/mobile` (out of scope for this backend runbook   see `docs/PROGRESS.md` → "Product surfaces not yet built"). This doc only covers backend/provider configuration; UI screens and route guards are separate work.
+- Login/signup screens and route guards now exist on both `apps/web` and `apps/mobile` (`apps/web/src/screens/{Login,Signup}.tsx`, `apps/mobile/app/{login,signup}.tsx`, web's `RequireAuth`, mobile's `useAuthGate()`) — see `docs/PROGRESS.md` → "Product surfaces" for current state. This doc still only covers backend/provider configuration, not UI.
 - `signInWithIdToken` for native Apple Sign-In (§5c.4) is now implemented   see §5c above. Remaining gap is the nonce-hardening step and a real-device verification pass (also §5c).
 - Apple's consent screen review and Google's OAuth consent screen verification (needed once you go beyond "Testing" status with real users) both take real calendar time   start those Apple Developer Program / Google verification steps well before a public launch date, not the week of.

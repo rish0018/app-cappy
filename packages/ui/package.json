@@ -4,11 +4,15 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
   "dependencies": {
+    "@cappy/core": "workspace:*",
     "@cappy/types": "workspace:*",
     "framer-motion": "^12.42.2"
   },

@@ -47,7 +47,7 @@ const PANELS: PanelDef[] = [
         <div className="flex items-center gap-md">
           <img src={logoMark} alt="" className="h-14 w-14 rounded-full shadow-md" />
           <div>
-            <p className="font-display text-lg font-semibold text-neutral-800">Hi, I'm Cappy</p>
+            <p className="font-display text-lg font-semibold text-neutral-800">Hi, I&apos;m Cappy</p>
             <p className="text-sm text-neutral-500">Ready when you are   no rush.</p>
           </div>
         </div>
@@ -69,7 +69,7 @@ const PANELS: PanelDef[] = [
           <img src={sceneCuriosityDesk} alt="" className="h-24 w-24 rounded-2xl object-cover shadow-sm" />
           <div>
             <p className="font-display text-lg font-semibold text-neutral-800">Lesson 1 &middot; ASL</p>
-            <p className="text-sm text-neutral-500">Watch how it's signed, at your own pace.</p>
+            <p className="text-sm text-neutral-500">Watch how it&apos;s signed, at your own pace.</p>
           </div>
         </div>
         <p className="flex items-center gap-xs text-sm font-medium text-primary-600">
@@ -143,7 +143,7 @@ const PANELS: PanelDef[] = [
     content: (
       <>
         <img src={sceneCappyUniverse} alt="" className="h-40 w-full rounded-2xl object-cover shadow-sm" />
-        <p className="text-sm text-neutral-500">Every skill's path, side by side.</p>
+        <p className="text-sm text-neutral-500">Every skill&apos;s path, side by side.</p>
       </>
     ),
   },

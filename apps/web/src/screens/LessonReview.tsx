@@ -58,10 +58,6 @@ export function LessonReview() {
   const accuracy = useCountUp(SESSION_ACCURACY, TICK_DURATION_MS, reduced);
   const minutes = useCountUp(SESSION_MINUTES, TICK_DURATION_MS, reduced);
 
-  if (!lesson) {
-    return <p className="text-neutral-600">Lesson not found.</p>;
-  }
-
   const fallbackLetters: Letter[] = mockWeakLetters.length > 0 ? mockWeakLetters : ["A", "B"];
   const fallbackReviewItems = fallbackLetters.map((letter) => ({
     letter,
@@ -69,6 +65,10 @@ export function LessonReview() {
     masteryScore: Math.round((mockLetterMastery.find((m) => m.letter === letter)?.masteryScore ?? 0) * 100),
   }));
   const reviewItems = useReviewSet(fallbackReviewItems);
+
+  if (!lesson) {
+    return <p className="text-neutral-600">Lesson not found.</p>;
+  }
 
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-xl">

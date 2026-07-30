@@ -45,7 +45,7 @@ export function DailyGoalCard({ minutesToday, goalMinutes }: DailyGoalCardProps)
         </span>
       </div>
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">Today's goal</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-primary-600 mb-xs">Today&apos;s goal</p>
         <p className="font-display text-lg font-bold text-neutral-800">
           {met ? "Goal met   lovely." : `${Math.max(goalMinutes - minutesToday, 0)} quiet minutes to go`}
         </p>

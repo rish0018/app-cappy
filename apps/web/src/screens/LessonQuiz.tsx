@@ -37,12 +37,15 @@ export function LessonQuiz() {
     return () => window.clearTimeout(timer);
   }, [secondsLeft]);
 
-  if (!lesson) {
+  const answer = letters.length > 0 ? letters[questionIndex % letters.length] : undefined;
+  // questionIndex is kept as a dep (even though pickChoices only reads answer) so the
+  // choice order reshuffles every question, including when the same letter repeats.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const choices = React.useMemo(() => (answer ? pickChoices(answer) : []), [answer, questionIndex]);
+
+  if (!lesson || !answer) {
     return <p className="text-neutral-600">Lesson not found.</p>;
   }
-
-  const answer = letters[questionIndex % letters.length]!;
-  const choices = React.useMemo(() => pickChoices(answer), [answer, questionIndex]);
 
   const advance = () => {
     setFeedback(null);
@@ -140,7 +143,7 @@ export function LessonQuiz() {
                   exit={{ opacity: 0 }}
                   className="font-semibold text-error-700"
                 >
-                  Not quite   the answer was "{answer}".
+                  Not quite   the answer was &quot;{answer}&quot;.
                 </motion.p>
               ) : null}
             </AnimatePresence>
