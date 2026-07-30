@@ -60,6 +60,8 @@ node_modules
 .env.local
 .env.*.local
 !.env.example
+.env.e2e
+!.env.e2e.example
 .supabase-access-token
 
 # ==========================
