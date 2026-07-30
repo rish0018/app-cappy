@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, MascotFigure } from "@cappy/ui";
 import { useAdaptiveRecommendation } from "../hooks/useAdaptiveRecommendation";
+import { useDashboardData } from "../hooks/useDashboardData";
 import { LETTER_GROUPS } from "@cappy/types";
 import {
   mockActiveLessonId,
@@ -29,10 +30,12 @@ import { ExploreMorseCard } from "../components/dashboard/ExploreMorseCard";
 import { averageMasteryForCharacters } from "../morseMockData";
 import { MORSE_GROUPS } from "@cappy/types";
 
-function groupMasteryAverage(letters: string[]): number {
-  const scores = mockLetterMastery.filter((m) => letters.includes(m.letter));
+function groupMasteryAverage(letters: string[], masteryByLetter: Record<string, number>): number {
+  const scores = letters
+    .filter((letter) => letter in masteryByLetter)
+    .map((letter) => masteryByLetter[letter]!);
   if (scores.length === 0) return 0;
-  return scores.reduce((sum, m) => sum + m.masteryScore, 0) / scores.length;
+  return scores.reduce((sum, score) => sum + score, 0) / scores.length;
 }
 
 function groupState(avgMastery: number, isNext: boolean): "locked" | "active" | "completed" {
@@ -45,13 +48,27 @@ function groupState(avgMastery: number, isNext: boolean): "locked" | "active" | 
 const TODAY_INDEX = mockWeeklyLabels.length - 1;
 const DAILY_GOAL_MINUTES = 20;
 
+const mockMasteryByLetter: Record<string, number> = Object.fromEntries(
+  mockLetterMastery.map((m) => [m.letter, m.masteryScore]),
+);
+
 export function Dashboard() {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
-  const activeLesson = mockLessonById[mockActiveLessonId]!;
-  const activeProgress = mockUserProgress.find((p) => p.lessonId === activeLesson.id);
-  const weekTotal = mockWeeklyMinutes.reduce((a, b) => a + b, 0);
   const recommendation = useAdaptiveRecommendation();
+  const dashboardData = useDashboardData();
+
+  const displayName = dashboardData?.displayName || mockUser.displayName;
+  const activeLesson = mockLessonById[dashboardData?.activeLessonId ?? mockActiveLessonId]!;
+  const activeCompletionPercentage =
+    dashboardData?.activeLessonCompletionPercentage ??
+    mockUserProgress.find((p) => p.lessonId === activeLesson.id)?.completionPercentage ??
+    0;
+  const masteryByLetter = dashboardData?.letterMasteryByLetter ?? mockMasteryByLetter;
+  const weeklyMinutes = dashboardData?.weeklyMinutes ?? mockWeeklyMinutes;
+  const weekTotal = weeklyMinutes.reduce((a, b) => a + b, 0);
+  const morseLevel1Mastery =
+    dashboardData?.morseLevel1Mastery ?? averageMasteryForCharacters([...(MORSE_GROUPS[0]?.characters ?? [])]);
 
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
@@ -72,7 +89,7 @@ export function Dashboard() {
             Welcome back
           </p>
           <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">
-            Hi, {mockUser.displayName}
+            Hi, {displayName}
           </h1>
           <p className="text-neutral-600">Here&apos;s where you left off   no rush, pick up whenever you&apos;re ready.</p>
         </div>
@@ -102,7 +119,7 @@ export function Dashboard() {
           <ContinueLessonCard
             title={activeLesson.title}
             description={activeLesson.description}
-            progress={(activeProgress?.completionPercentage ?? 0) / 100}
+            progress={activeCompletionPercentage / 100}
             onContinue={() => navigate(`/lessons/${activeLesson.id}/demo`)}
           />
         </div>
@@ -115,7 +132,7 @@ export function Dashboard() {
           transition={{ delay: 0.12 }}
         >
           <WeeklyActivityChart
-            minutes={mockWeeklyMinutes}
+            minutes={weeklyMinutes}
             labels={mockWeeklyLabels}
             todayIndex={TODAY_INDEX}
             goalMinutes={DAILY_GOAL_MINUTES}
@@ -136,11 +153,11 @@ export function Dashboard() {
         transition={{ delay: 0.18 }}
       >
         <div className="lg:col-span-3">
-          <DailyGoalCard minutesToday={mockWeeklyMinutes[TODAY_INDEX] ?? 0} goalMinutes={DAILY_GOAL_MINUTES} />
+          <DailyGoalCard minutesToday={weeklyMinutes[TODAY_INDEX] ?? 0} goalMinutes={DAILY_GOAL_MINUTES} />
         </div>
         <div className="lg:col-span-2">
           <ExploreMorseCard
-            levelOneMastery={averageMasteryForCharacters([...(MORSE_GROUPS[0]?.characters ?? [])])}
+            levelOneMastery={morseLevel1Mastery}
             onExplore={() => navigate("/morse")}
           />
         </div>
@@ -158,7 +175,7 @@ export function Dashboard() {
         <h2 className="font-display text-xl font-bold text-neutral-800 mb-md">Letter mastery overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md">
           {LETTER_GROUPS.map((group, i) => {
-            const avg = groupMasteryAverage(group.letters as unknown as string[]);
+            const avg = groupMasteryAverage(group.letters as unknown as string[], masteryByLetter);
             const isNext = !firstIncompleteFound && avg < 0.85;
             if (isNext) firstIncompleteFound = true;
             const state = groupState(avg, isNext);
