@@ -62,6 +62,7 @@ interface StreakRow {
   current_streak: number;
   longest_streak: number;
   last_active_date: string | null;
+  late_night_practice_count: number;
 }
 
 function mapUserProgress(row: UserProgressRow): UserProgress {
@@ -117,6 +118,7 @@ function mapStreak(row: StreakRow): Streak {
     currentStreak: row.current_streak,
     longestStreak: row.longest_streak,
     lastActiveDate: row.last_active_date,
+    lateNightPracticeCount: row.late_night_practice_count,
   };
 }
 
@@ -256,6 +258,7 @@ export async function upsertStreak(streak: Streak): Promise<Streak> {
     current_streak: streak.currentStreak,
     longest_streak: streak.longestStreak,
     last_active_date: streak.lastActiveDate,
+    late_night_practice_count: streak.lateNightPracticeCount,
   };
 
   const { data, error } = await supabase

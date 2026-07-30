@@ -167,7 +167,13 @@ describe("progress repository", () => {
     it("maps an upserted row to Streak", async () => {
       const { upsertStreak } = await import("./progress");
       mockResult({
-        data: { user_id: "u1", current_streak: 3, longest_streak: 10, last_active_date: "2026-07-29" },
+        data: {
+          user_id: "u1",
+          current_streak: 3,
+          longest_streak: 10,
+          last_active_date: "2026-07-29",
+          late_night_practice_count: 2,
+        },
         error: null,
       });
 
@@ -176,9 +182,16 @@ describe("progress repository", () => {
         currentStreak: 3,
         longestStreak: 10,
         lastActiveDate: "2026-07-29",
+        lateNightPracticeCount: 2,
       });
 
-      expect(result).toEqual({ userId: "u1", currentStreak: 3, longestStreak: 10, lastActiveDate: "2026-07-29" });
+      expect(result).toEqual({
+        userId: "u1",
+        currentStreak: 3,
+        longestStreak: 10,
+        lastActiveDate: "2026-07-29",
+        lateNightPracticeCount: 2,
+      });
     });
   });
 });

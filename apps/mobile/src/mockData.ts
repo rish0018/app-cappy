@@ -31,6 +31,7 @@ export const mockStreak: Streak = {
   currentStreak: 6,
   longestStreak: 14,
   lastActiveDate: "2026-07-02",
+  lateNightPracticeCount: 2,
 };
 
 export const mockXpToday = 45;
