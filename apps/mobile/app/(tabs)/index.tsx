@@ -18,6 +18,7 @@ import {
   mockXpToday,
 } from "../../src/mockData";
 import { useAdaptiveRecommendation } from "../../src/hooks/useAdaptiveRecommendation";
+import { useDashboardData } from "../../src/hooks/useDashboardData";
 
 function masteryColorClass(score: number): string {
   if (score >= 80) return "bg-primary-500";
@@ -25,9 +26,21 @@ function masteryColorClass(score: number): string {
   return "bg-neutral-200";
 }
 
+const mockMasteryByLetter: Record<string, number> = Object.fromEntries(
+  Object.values(mockLetterMastery).map((m) => [m.letter, m.masteryScore]),
+);
+
 export default function HomeScreen() {
-  const continueLesson = mockLessons.find((l) => l.id === CONTINUE_LESSON_ID)!;
   const recommendation = useAdaptiveRecommendation();
+  const dashboardData = useDashboardData();
+
+  const displayName = dashboardData?.displayName || mockUser.displayName;
+  const continueLesson =
+    mockLessons.find((l) => l.id === (dashboardData?.activeLessonId ?? CONTINUE_LESSON_ID)) ??
+    mockLessons.find((l) => l.id === CONTINUE_LESSON_ID)!;
+  const activeCompletionPercentage =
+    dashboardData?.activeLessonCompletionPercentage ?? continueLesson.completionPercentage;
+  const masteryByLetter = dashboardData?.letterMasteryByLetter ?? mockMasteryByLetter;
 
   return (
     <ImageBackground
@@ -44,7 +57,7 @@ export default function HomeScreen() {
             <View className="mb-lg mt-md flex-row items-center justify-between">
               <View>
                 <Text className="text-2xl font-bold text-neutral-800">
-                  Hi, {mockUser.displayName}
+                  Hi, {displayName}
                 </Text>
                 <Text className="text-sm text-neutral-500">
                   Ready for today&apos;s practice?
@@ -86,7 +99,7 @@ export default function HomeScreen() {
               </Text>
               <View className="mt-md">
                 <ProgressBar
-                  percentage={continueLesson.completionPercentage}
+                  percentage={activeCompletionPercentage}
                   colorClassName="bg-info-500"
                   trackClassName="bg-info-100"
                 />
@@ -128,16 +141,16 @@ export default function HomeScreen() {
                 </Text>
                 <View className="flex-row flex-wrap gap-sm">
                   {group.letters.map((letter) => {
-                    const mastery = mockLetterMastery[letter];
+                    const masteryScore = masteryByLetter[letter] ?? mockLetterMastery[letter].masteryScore;
                     return (
                       <View
                         key={letter}
                         accessibilityRole="text"
-                        accessibilityLabel={`Letter ${letter}, ${mastery.masteryScore}% mastery`}
-                        className={`h-11 w-11 items-center justify-center rounded-md ${masteryColorClass(mastery.masteryScore)}`}
+                        accessibilityLabel={`Letter ${letter}, ${masteryScore}% mastery`}
+                        className={`h-11 w-11 items-center justify-center rounded-md ${masteryColorClass(masteryScore)}`}
                       >
                         <Text
-                          className={`text-base font-bold ${mastery.masteryScore >= 40 ? "text-white" : "text-neutral-500"}`}
+                          className={`text-base font-bold ${masteryScore >= 40 ? "text-white" : "text-neutral-500"}`}
                         >
                           {letter}
                         </Text>

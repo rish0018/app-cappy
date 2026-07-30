@@ -6,6 +6,7 @@ import {
   mockRecentAchievementId,
   mockUserAchievements,
 } from "../mockData";
+import { useAchievements } from "../hooks/useAchievements";
 import {
   fadeUp,
   fadeUpReduced,
@@ -32,7 +33,16 @@ const figurePopInReduced: Variants = {
 };
 
 export function Achievements() {
-  const recent = mockAchievements.find((a) => a.id === mockRecentAchievementId);
+  const real = useAchievements();
+  const achievements = real?.achievements ?? mockAchievements;
+  const userAchievements = real?.userAchievements ?? mockUserAchievements;
+
+  const mostRecentUnlock = real
+    ? [...real.userAchievements].sort(
+        (a, b) => new Date(b.unlockedAt).getTime() - new Date(a.unlockedAt).getTime(),
+      )[0]
+    : { achievementId: mockRecentAchievementId };
+  const recent = achievements.find((a) => a.id === mostRecentUnlock?.achievementId);
   const reduced = useReducedMotion();
 
   React.useEffect(() => {
@@ -74,8 +84,8 @@ export function Achievements() {
       ) : null}
 
       <BookshelfLibrary
-        achievements={mockAchievements}
-        userAchievements={mockUserAchievements}
+        achievements={achievements}
+        userAchievements={userAchievements}
       />
     </div>
   );

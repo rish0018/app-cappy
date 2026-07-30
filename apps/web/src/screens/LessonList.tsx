@@ -5,6 +5,8 @@ import { Button, Card } from "@cappy/ui";
 import { mockLessonLetters, mockLessons, mockUserProgress } from "../mockData";
 import { ASL_LESSON_BACKGROUNDS } from "../lessonBackgrounds";
 import { ReferenceImage } from "../components/ReferenceImage";
+import { useLessonProgress } from "../hooks/useLessonProgress";
+import type { UserProgress } from "@cappy/types";
 import {
   fadeUp,
   fadeUpReduced,
@@ -16,8 +18,7 @@ import {
 
 type GroupState = "locked" | "active" | "completed";
 
-function stateFor(lessonId: string): GroupState {
-  const progress = mockUserProgress.find((p) => p.lessonId === lessonId);
+function stateFor(progress: UserProgress | undefined): GroupState {
   if (!progress || progress.status === "not-started") return "locked";
   if (progress.status === "completed") return "completed";
   return "active";
@@ -31,9 +32,15 @@ const STATE_CHIP: Record<GroupState, { label: string; classes: string }> = {
 };
 
 /** ASL "Levels" grid   one card per 5-letter group, mirroring Morse's level grid instead of the old single-lesson dashed path. */
+const mockProgressByLessonId: Record<string, UserProgress> = Object.fromEntries(
+  mockUserProgress.map((p) => [p.lessonId, p]),
+);
+
 export function LessonList() {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
+  const realProgress = useLessonProgress();
+  const progressByLessonId = realProgress ?? mockProgressByLessonId;
 
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
@@ -61,10 +68,8 @@ export function LessonList() {
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
           {mockLessons.map((lesson, i) => {
-            const state = stateFor(lesson.id);
-            const progress = mockUserProgress.find(
-              (p) => p.lessonId === lesson.id,
-            );
+            const progress = progressByLessonId[lesson.id];
+            const state = stateFor(progress);
             const chip = STATE_CHIP[state];
             const letters = mockLessonLetters[lesson.id] ?? [];
             const previewLetter = letters[0];

@@ -1,15 +1,20 @@
 import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Card } from "@cappy/ui";
+import { Card, MASCOT_POSE_SRC } from "@cappy/ui";
 import type { Achievement, UserAchievement } from "@cappy/types";
 import {
   ACHIEVEMENT_LIBRARY,
+  ACHIEVEMENT_POSE,
   CATEGORY_LABEL,
   CATEGORY_ORDER,
   MENTOR_NOTE,
   RARITY_STYLE,
   type BookCategory,
 } from "./libraryData";
+
+function achievementIconSrc(achievementId: string): string {
+  return MASCOT_POSE_SRC[ACHIEVEMENT_POSE[achievementId] ?? "mentor"];
+}
 
 export interface BookshelfLibraryProps {
   achievements: Achievement[];
@@ -145,8 +150,18 @@ function BookSpine({
           : "cursor-default border-neutral-400 bg-neutral-300",
       ].join(" ")}
     >
-      <span className="mb-sm text-xl" aria-hidden="true">
-        {unlocked ? achievement.icon : "🔒"}
+      <span
+        className={[
+          "mb-sm flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-white/70",
+          unlocked ? "" : "grayscale opacity-50",
+        ].join(" ")}
+        aria-hidden="true"
+      >
+        <img
+          src={achievementIconSrc(achievement.id)}
+          alt=""
+          className="h-full w-full object-contain object-top"
+        />
       </span>
       {unlocked ? (
         <span
@@ -195,7 +210,12 @@ function BookDetailOverlay({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col items-start gap-xs border-r border-tan-200 pr-lg sm:pr-lg">
-          <span className="text-5xl">{achievement.icon}</span>
+          <img
+            src={achievementIconSrc(achievement.id)}
+            alt=""
+            aria-hidden="true"
+            className="h-20 w-20 object-contain object-top"
+          />
           <h2 className="font-display text-xl font-bold text-neutral-800">
             {achievement.name}
           </h2>

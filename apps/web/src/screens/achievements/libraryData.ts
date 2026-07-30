@@ -70,6 +70,22 @@ export const ACHIEVEMENT_LIBRARY: Record<
   "ach-perfect-quiz": { category: "mastery", rarity: "epic" },
 };
 
+/**
+ * Cappy pose shown on each book spine/detail page, replacing the raw emoji
+ * previously stored in achievements.icon (see supabase/seed.sql). Reuses
+ * the same 5 poses @cappy/ui's MascotFigure already ships with, so no new
+ * artwork is needed -- keeps every achievement icon on-brand instead of a
+ * mismatched emoji glyph.
+ */
+export const ACHIEVEMENT_POSE: Record<string, "curious" | "mentor" | "celebration" | "practice" | "thinking"> = {
+  "ach-first-lesson": "curious",
+  "ach-streak-7": "practice",
+  "ach-night-owl": "thinking",
+  "ach-comeback": "curious",
+  "ach-group-ae": "mentor",
+  "ach-perfect-quiz": "celebration",
+};
+
 /** Cappy's in-character note shown on the right-hand page when a book is opened. */
 export const MENTOR_NOTE: Record<string, string> = {
   "ach-first-lesson": "The hardest part was showing up. You already did that.",

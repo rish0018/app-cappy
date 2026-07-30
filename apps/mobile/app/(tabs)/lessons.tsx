@@ -4,10 +4,24 @@ import { Image, ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LessonTile } from "../../src/components/LessonTile";
 import { mockLessons, mockUnits } from "../../src/mockData";
+import { useLessonProgress } from "../../src/hooks/useLessonProgress";
+import type { LessonStatus, UserProgress } from "@cappy/types";
 
 const curiousCappy = require("../../assets/characters/character_curious_cappy.png");
 
+function stateFor(
+  mock: { status: LessonStatus; completionPercentage: number },
+  progress: UserProgress | undefined,
+) {
+  return {
+    status: progress?.status ?? mock.status,
+    completionPercentage: progress?.completionPercentage ?? mock.completionPercentage,
+  };
+}
+
 export default function LessonsScreen() {
+  const realProgress = useLessonProgress();
+
   return (
     <ImageBackground
       source={require("../../assets/background_winter.jpg")}
@@ -41,18 +55,24 @@ export default function LessonsScreen() {
                 <View className="gap-sm">
                   {mockLessons
                     .filter((lesson) => lesson.unitId === unit.id)
-                    .map((lesson) => (
-                      <LessonTile
-                        key={lesson.id}
-                        title={lesson.title}
-                        description={lesson.description}
-                        status={lesson.status}
-                        completionPercentage={lesson.completionPercentage}
-                        xpReward={lesson.xpReward}
-                        estimatedMinutes={lesson.estimatedMinutes}
-                        onPress={() => router.push(`/lesson/${lesson.id}/demo`)}
-                      />
-                    ))}
+                    .map((lesson) => {
+                      const { status, completionPercentage } = stateFor(
+                        lesson,
+                        realProgress?.[lesson.id],
+                      );
+                      return (
+                        <LessonTile
+                          key={lesson.id}
+                          title={lesson.title}
+                          description={lesson.description}
+                          status={status}
+                          completionPercentage={completionPercentage}
+                          xpReward={lesson.xpReward}
+                          estimatedMinutes={lesson.estimatedMinutes}
+                          onPress={() => router.push(`/lesson/${lesson.id}/demo`)}
+                        />
+                      );
+                    })}
                 </View>
               </View>
             ))}

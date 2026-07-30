@@ -25,6 +25,7 @@ import {
   getMorseCharacterMastery,
   upsertMorseCharacterMastery,
   incrementDailyActivity,
+  unlockAchievement,
 } from "@cappy/api";
 import { updateLetterMastery, updateMorseCharacterMastery, updateStreak } from "@cappy/core";
 import { toDayKey } from "@cappy/shared";
@@ -71,6 +72,20 @@ export function useProgressRecorder() {
         await upsertUserProgress({ userId, ...input });
       } catch (err) {
         console.warn("[useProgressRecorder] failed to record lesson progress", err);
+      }
+
+      // Achievement unlocks are best-effort and independently caught --
+      // unlockAchievement() is upsert-or-ignore (see repositories/
+      // achievements.ts), so calling it every time the condition is true is
+      // safe and idempotent, not just on "first time this became true."
+      if (input.status === "completed") {
+        try {
+          await unlockAchievement(userId, "ach-first-lesson");
+          if (input.lessonId === "lesson-a-e") await unlockAchievement(userId, "ach-group-ae");
+          if (input.score === 100) await unlockAchievement(userId, "ach-perfect-quiz");
+        } catch (err) {
+          console.warn("[useProgressRecorder] failed to unlock a lesson-completion achievement", err);
+        }
       }
     },
     [userId],
@@ -145,8 +160,9 @@ export function useProgressRecorder() {
 
   const recordDailyActivity = React.useCallback(async () => {
     if (!userId) return;
+    let existing: Awaited<ReturnType<typeof getStreak>> = null;
     try {
-      const existing = await getStreak(userId);
+      existing = await getStreak(userId);
       const next = updateStreak(
         existing
           ? {
@@ -162,6 +178,23 @@ export function useProgressRecorder() {
       // lesson completed today. Minutes/XP/letters aren't threaded through
       // call sites yet, so only lessonsCompleted accumulates for now.
       await incrementDailyActivity({ userId, date: toDayKey(new Date()), lessonsCompleted: 1 });
+
+      try {
+        if (next.currentStreak === 7) await unlockAchievement(userId, "ach-streak-7");
+
+        // "Returned after a break": the streak just reset to 1 because of a
+        // real gap (>1 day since last activity), not a brand-new account
+        // (existing.currentStreak > 0 means there was a real streak before).
+        if (existing && existing.lastActiveDate && next.currentStreak === 1 && existing.currentStreak > 0) {
+          const gapDays = Math.round(
+            (new Date(toDayKey(new Date())).getTime() - new Date(existing.lastActiveDate).getTime()) /
+              (24 * 60 * 60 * 1000),
+          );
+          if (gapDays > 1) await unlockAchievement(userId, "ach-comeback");
+        }
+      } catch (err) {
+        console.warn("[useProgressRecorder] failed to unlock a streak-based achievement", err);
+      }
     } catch (err) {
       console.warn("[useProgressRecorder] failed to record daily activity", err);
     }

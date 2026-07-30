@@ -149,14 +149,27 @@ on conflict (id) do nothing;
 
 -- ============================================================================
 -- Achievements   meaningful milestones only (AI_project_bible.md §12).
--- Unchanged from the original seed (ids/content untouched by the
--- curriculum-id migration; achievements.id stays uuid).
+-- Ids/content match apps/web/src/mockData.ts's mockAchievements exactly, so
+-- they line up with the bookshelf UI's hand-authored styling/copy
+-- (apps/web/src/screens/achievements/libraryData.ts's ACHIEVEMENT_LIBRARY/
+-- MENTOR_NOTE, keyed by these same ids). Supersedes the original
+-- uuid-keyed placeholder rows (deleted below   pre-launch, no real
+-- user_achievements rows reference them yet).
 -- ============================================================================
+delete from public.achievements where id in (
+  '00000000-0000-0000-0000-000000000401',
+  '00000000-0000-0000-0000-000000000402',
+  '00000000-0000-0000-0000-000000000403',
+  '00000000-0000-0000-0000-000000000404',
+  '00000000-0000-0000-0000-000000000405'
+);
+
 insert into public.achievements (id, name, description, icon)
 values
-  ('00000000-0000-0000-0000-000000000401', 'First Steps', 'Complete your first lesson.', 'footprints'),
-  ('00000000-0000-0000-0000-000000000402', 'Hand Shape Novice', 'Master your first letter group (A, S, E).', 'hand'),
-  ('00000000-0000-0000-0000-000000000403', 'On a Roll', 'Reach a 7-day practice streak.', 'flame'),
-  ('00000000-0000-0000-0000-000000000404', 'Dedicated Learner', 'Reach a 30-day practice streak.', 'calendar-check'),
-  ('00000000-0000-0000-0000-000000000405', 'Alphabet Complete', 'Achieve mastery on all 26 letters.', 'trophy')
+  ('ach-first-lesson', 'First Steps', 'Completed your first lesson.', '🌱'),
+  ('ach-streak-7', 'Week Warrior', 'Kept a 7-day streak going.', '🔥'),
+  ('ach-group-ae', 'A-E Mastered', 'Mastered the A–E letter group.', '🅰️'),
+  ('ach-perfect-quiz', 'Sharp Eye', 'Scored 100% on a quiz.', '🎯'),
+  ('ach-night-owl', 'Night Owl', 'Practiced after 9pm five times.', '🦉'),
+  ('ach-comeback', 'Welcome Back', 'Returned after a break   no judgment here.', '🌤️')
 on conflict (id) do nothing;

@@ -18,6 +18,9 @@ const POSE_SRC: Record<MascotFigurePose, string> = {
   thinking: thinkingCappy,
 };
 
+/** Exposed so small icon-sized usages (e.g. achievement badges) can reuse the same pose art without a separate asset. */
+export const MASCOT_POSE_SRC: Record<MascotFigurePose, string> = POSE_SRC;
+
 /** Roughly 120px / 200px / 280px tall. */
 const SIZE_HEIGHT: Record<MascotFigureSize, string> = {
   md: "120px",
