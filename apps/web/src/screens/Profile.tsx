@@ -39,7 +39,7 @@ function Toggle({
         aria-label={label}
         onClick={() => onChange(!checked)}
         className={[
-          "relative inline-flex items-center h-8 w-14 min-w-[44px] rounded-full transition-colors motion-reduce:transition-none",
+          "relative inline-flex items-center h-11 w-14 min-w-[44px] rounded-full transition-colors motion-reduce:transition-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
           checked ? "bg-primary-500" : "bg-neutral-300",
         ].join(" ")}

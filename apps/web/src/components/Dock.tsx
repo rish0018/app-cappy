@@ -146,7 +146,10 @@ export function DockItem({ children, className, onClick }: DockItemProps) {
   const sizeTransform = useTransform(
     pointerDistance,
     [-distance, 0, distance],
-    [40, magnification, 40]
+    // Base (unmagnified) size is 44   the minimum touch target; only the
+    // hover/near-pointer magnification (desktop-only, no hover on touch)
+    // grows it further.
+    [44, magnification, 44]
   );
 
   const size = useSpring(sizeTransform, spring);

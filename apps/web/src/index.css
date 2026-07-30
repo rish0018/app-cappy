@@ -68,3 +68,16 @@ html[data-contrast="high"] .text-neutral-400 {
 html[data-contrast="high"] .border-neutral-200 {
   @apply border-neutral-400;
 }
+html[data-contrast="high"] .divide-neutral-200 > :not([hidden]) ~ :not([hidden]) {
+  @apply border-neutral-400;
+}
+/* tan-600 is the darkest defined tan swatch (see @cappy/ui's tailwind
+   preset)   there's no darker in-family shade to bump to, so this borrows
+   neutral-800 (already in the palette) to hit legible contrast instead of
+   inventing a new color. */
+html[data-contrast="high"] .text-tan-600 {
+  @apply text-neutral-800;
+}
+html[data-contrast="high"] .border-tan-200 {
+  @apply border-tan-600;
+}
