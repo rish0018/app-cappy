@@ -170,7 +170,14 @@ export function useProgressRecorder() {
           : { currentStreak: 0, longestStreak: 0, lastActiveDate: null },
         new Date(),
       );
-      await upsertStreak({ userId, ...next });
+      // "ach-night-owl" ("Practiced after 9pm five times"): a simple
+      // cumulative counter on the streaks row, since daily_activity only
+      // tracks a date, not time of day. Local time is what the learner
+      // actually experiences as "late", so this reads the client clock
+      // rather than a server timestamp.
+      const isLateNight = new Date().getHours() >= 21;
+      const lateNightPracticeCount = (existing?.lateNightPracticeCount ?? 0) + (isLateNight ? 1 : 0);
+      await upsertStreak({ userId, ...next, lateNightPracticeCount });
       // One call site fires per completed lesson/unit; each call is one more
       // lesson completed today. Minutes/XP/letters aren't threaded through
       // call sites yet, so only lessonsCompleted accumulates for now.
@@ -178,6 +185,7 @@ export function useProgressRecorder() {
 
       try {
         if (next.currentStreak === 7) await unlockAchievement(userId, "ach-streak-7");
+        if (lateNightPracticeCount >= 5) await unlockAchievement(userId, "ach-night-owl");
 
         // "Returned after a break": the streak just reset to 1 because of a
         // real gap (>1 day since last activity), not a brand-new account

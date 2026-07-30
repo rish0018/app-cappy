@@ -47,6 +47,8 @@ export interface Streak {
   currentStreak: number;
   longestStreak: number;
   lastActiveDate: string | null;
+  /** Cumulative count of sessions recorded after 9pm local time -- backs the "ach-night-owl" achievement. */
+  lateNightPracticeCount: number;
 }
 
 export interface Achievement {

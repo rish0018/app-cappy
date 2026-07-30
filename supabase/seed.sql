@@ -164,12 +164,16 @@ delete from public.achievements where id in (
   '00000000-0000-0000-0000-000000000405'
 );
 
+-- `icon` values are Cappy pose keys (matching apps/*/src/screens/
+-- achievements/libraryData.ts's ACHIEVEMENT_POSE), not emoji -- the
+-- bookshelf UI renders a themed Cappy illustration per achievement, not
+-- this column's raw value.
 insert into public.achievements (id, name, description, icon)
 values
-  ('ach-first-lesson', 'First Steps', 'Completed your first lesson.', '🌱'),
-  ('ach-streak-7', 'Week Warrior', 'Kept a 7-day streak going.', '🔥'),
-  ('ach-group-ae', 'A-E Mastered', 'Mastered the A–E letter group.', '🅰️'),
-  ('ach-perfect-quiz', 'Sharp Eye', 'Scored 100% on a quiz.', '🎯'),
-  ('ach-night-owl', 'Night Owl', 'Practiced after 9pm five times.', '🦉'),
-  ('ach-comeback', 'Welcome Back', 'Returned after a break   no judgment here.', '🌤️')
-on conflict (id) do nothing;
+  ('ach-first-lesson', 'First Steps', 'Completed your first lesson.', 'curious'),
+  ('ach-streak-7', 'Week Warrior', 'Kept a 7-day streak going.', 'practice'),
+  ('ach-group-ae', 'A-E Mastered', 'Mastered the A–E letter group.', 'mentor'),
+  ('ach-perfect-quiz', 'Sharp Eye', 'Scored 100% on a quiz.', 'celebration'),
+  ('ach-night-owl', 'Night Owl', 'Practiced after 9pm five times.', 'thinking'),
+  ('ach-comeback', 'Welcome Back', 'Returned after a break   no judgment here.', 'curious')
+on conflict (id) do update set icon = excluded.icon;
