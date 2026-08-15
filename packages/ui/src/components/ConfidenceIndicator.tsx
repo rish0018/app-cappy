@@ -1,10 +1,12 @@
 import * as React from "react";
+import { Check, Timer, RotateCcw, type LucideIcon } from "lucide-react";
+import { classifyConfidence, type ConfidenceTier } from "@cappy/core";
 
-export type ConfidenceTier = "high" | "medium" | "low";
+export type { ConfidenceTier };
 
 export interface ConfidenceTierCopy {
   text: string;
-  icon: string;
+  icon: LucideIcon;
 }
 
 export interface ConfidenceIndicatorProps {
@@ -15,23 +17,10 @@ export interface ConfidenceIndicatorProps {
   className?: string;
 }
 
-// Kept in sync with @cappy/core's CONFIDENCE_THRESHOLDS (0.9/0.7). Not
-// imported directly to avoid a web-only package depending on @cappy/core's
-// build output; if these ever need to diverge, split into ml-specific vs.
-// UI-tier thresholds instead of assuming they're always identical.
-const HIGH_THRESHOLD = 0.9;
-const MEDIUM_THRESHOLD = 0.7;
-
-function classify(score: number): ConfidenceTier {
-  if (score >= HIGH_THRESHOLD) return "high";
-  if (score >= MEDIUM_THRESHOLD) return "medium";
-  return "low";
-}
-
 const DEFAULT_TIER_COPY: Record<ConfidenceTier, ConfidenceTierCopy> = {
-  high: { text: "Nice! Sign recognized.", icon: "✓" },
-  medium: { text: "Close   hold the sign a little longer.", icon: "⏱" },
-  low: { text: "Not quite   let's see the demo again.", icon: "↻" },
+  high: { text: "Nice! Sign recognized.", icon: Check },
+  medium: { text: "Close   hold the sign a little longer.", icon: Timer },
+  low: { text: "Not quite   let's see the demo again.", icon: RotateCcw },
 };
 
 const TIER_CLASSES: Record<ConfidenceTier, string> = {
@@ -45,9 +34,10 @@ const TIER_CLASSES: Record<ConfidenceTier, string> = {
  * explanatory text, per accessibility guidance in PROJECT_BIBLE.
  */
 export function ConfidenceIndicator({ score, copy: copyOverride, className = "" }: ConfidenceIndicatorProps) {
-  const tier = classify(score);
+  const tier = classifyConfidence(score);
   const copy = { ...DEFAULT_TIER_COPY[tier], ...copyOverride?.[tier] };
   const classes = TIER_CLASSES[tier];
+  const Icon = copy.icon;
 
   return (
     <div
@@ -58,7 +48,7 @@ export function ConfidenceIndicator({ score, copy: copyOverride, className = "" 
         className,
       ].join(" ")}
     >
-      <span aria-hidden="true">{copy.icon}</span>
+      <Icon aria-hidden size={16} />
       <span>{copy.text}</span>
     </div>
   );

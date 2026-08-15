@@ -7,6 +7,7 @@ import celebrationCappy from "../../assets/characters/character_celebration_capp
 import { isWordStageUnlocked, mockMorseWordStageById } from "../../morseMockData";
 import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../../components/motion";
 import { reactTo } from "../../mascot/mascotStore";
+import { useProgressRecorder } from "../../hooks/useProgressRecorder";
 
 function buildOptions(correct: string, pool: string[]): string[] {
   const distractors = pool.filter((w) => w !== correct).slice(0, 3);
@@ -28,6 +29,8 @@ export function MorseWords() {
   const [selected, setSelected] = React.useState<string | null>(null);
   const [finished, setFinished] = React.useState(false);
   const reduced = useReducedMotion();
+  const { recordLessonProgress, recordDailyActivity } = useProgressRecorder();
+  const correctCountRef = React.useRef(0);
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
 
@@ -69,10 +72,22 @@ export function MorseWords() {
   const isLastWord = wordIndex + 1 >= stage.words.length;
 
   const handleNext = () => {
+    if (correct) correctCountRef.current += 1;
     setSelected(null);
     if (isLastWord) {
       setFinished(true);
       reactTo("unitComplete");
+      const accuracy = correctCountRef.current / stage.words.length;
+      void recordLessonProgress({
+        lessonId: `morse-words-${stage.id}`,
+        status: "completed",
+        attempts: 1,
+        completionPercentage: 100,
+        score: Math.round(accuracy * 100),
+        startedAt: null,
+        completedAt: new Date().toISOString(),
+      });
+      void recordDailyActivity();
       return;
     }
     setWordIndex((i) => i + 1);

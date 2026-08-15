@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Button, Card, ProgressBar } from "@cappy/ui";
 import { ALL_LETTERS, type Letter } from "@cappy/types";
-import { mockLessonById } from "../mockData";
+import { mockLessonById, mockLessonLetters } from "../mockData";
 import { fadeUp, fadeUpReduced, scaleIn, scaleInReduced } from "../components/motion";
 import { useMascotReaction } from "../mascot/mascotStore";
 import { ReferenceImage } from "../components/ReferenceImage";
+import { useProgressRecorder } from "../hooks/useProgressRecorder";
 
 function pickChoices(answer: Letter): Letter[] {
   const others = ALL_LETTERS.filter((letter) => letter !== answer).slice(0, 3);
@@ -21,11 +22,14 @@ export function LessonQuiz() {
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [secondsLeft, setSecondsLeft] = React.useState(15);
   const [feedback, setFeedback] = React.useState<"correct" | "incorrect" | null>(null);
-  const totalQuestions = 5;
+  const letters = lesson ? mockLessonLetters[lesson.id] ?? [] : [];
+  const totalQuestions = letters.length || 5;
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const scale = reduced ? scaleInReduced : scaleIn;
   const react = useMascotReaction();
+  const { recordLetterAttempt, recordLessonProgress, recordDailyActivity } = useProgressRecorder();
+  const correctCountRef = React.useRef(0);
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
@@ -33,16 +37,30 @@ export function LessonQuiz() {
     return () => window.clearTimeout(timer);
   }, [secondsLeft]);
 
-  if (!lesson) {
+  const answer = letters.length > 0 ? letters[questionIndex % letters.length] : undefined;
+  // questionIndex is kept as a dep (even though pickChoices only reads answer) so the
+  // choice order reshuffles every question, including when the same letter repeats.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const choices = React.useMemo(() => (answer ? pickChoices(answer) : []), [answer, questionIndex]);
+
+  if (!lesson || !answer) {
     return <p className="text-neutral-600">Lesson not found.</p>;
   }
-
-  const answer = lesson.title.replace("The Letter ", "") as Letter;
-  const choices = React.useMemo(() => pickChoices(answer), [answer, questionIndex]);
 
   const advance = () => {
     setFeedback(null);
     if (questionIndex + 1 >= totalQuestions) {
+      const accuracy = correctCountRef.current / totalQuestions;
+      void recordLessonProgress({
+        lessonId: lesson.id,
+        status: "completed",
+        attempts: 1,
+        completionPercentage: 100,
+        score: Math.round(accuracy * 100),
+        startedAt: null,
+        completedAt: new Date().toISOString(),
+      });
+      void recordDailyActivity();
       navigate(`/lessons/${lesson.id}/review`);
       return;
     }
@@ -53,8 +71,10 @@ export function LessonQuiz() {
   const handleAnswer = (choice: Letter) => {
     if (feedback) return;
     const isCorrect = choice === answer;
+    if (isCorrect) correctCountRef.current += 1;
     setFeedback(isCorrect ? "correct" : "incorrect");
     react(isCorrect ? "correct" : "wrong");
+    void recordLetterAttempt(answer, isCorrect, isCorrect ? 0.85 : 0.35);
     window.setTimeout(advance, isCorrect ? 700 : 500);
   };
 
@@ -123,7 +143,7 @@ export function LessonQuiz() {
                   exit={{ opacity: 0 }}
                   className="font-semibold text-error-700"
                 >
-                  Not quite   the answer was "{answer}".
+                  Not quite   the answer was &quot;{answer}&quot;.
                 </motion.p>
               ) : null}
             </AnimatePresence>

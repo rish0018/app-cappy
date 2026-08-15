@@ -32,7 +32,6 @@
     "plugins": [
       "expo-router",
       "expo-dev-client",
-      "expo-apple-authentication",
       [
         "expo-splash-screen",
         {
@@ -41,7 +40,15 @@
           "backgroundColor": "#3e948c"
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "Cappy needs camera access to check your hand shape.",
+          "enableMicrophonePermission": false,
+          "enableCodeScanner": false
+        }
+      ]
     ],
     "extra": {
       "eas": {

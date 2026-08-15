@@ -3,9 +3,20 @@ import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { configureSupabaseCredentials } from "@cappy/api";
 import { Loader } from "../src/components/Loader";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// @cappy/api is resolved through a workspace symlink, so babel-preset-expo's
+// EXPO_PUBLIC_* inlining never runs on its source   read the vars here,
+// inside the app's own bundle, and hand them over explicitly.
+if (process.env.EXPO_PUBLIC_SUPABASE_URL && process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY) {
+  configureSupabaseCredentials(
+    process.env.EXPO_PUBLIC_SUPABASE_URL,
+    process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+  );
+}
 
 // Module-level flag: resets on full app relaunch, mirroring the web app's
 // sessionStorage-gated one-time intro.

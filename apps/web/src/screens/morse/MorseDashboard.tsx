@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Button, Card, MorseSequenceDisplay, ProgressBar } from "@cappy/ui";
-import { MORSE_GROUPS, MORSE_MAP, type MorseWordStage } from "@cappy/types";
+import { Button, Card, MascotFigure, MorseSequenceDisplay, ProgressBar } from "@cappy/ui";
+import { MORSE_GROUPS, MORSE_MAP, type MorseCharacter, type MorseWordStage } from "@cappy/types";
 import {
   averageMasteryForCharacters,
   isWordStageUnlocked,
@@ -10,6 +10,18 @@ import {
   mockMorseLessonById,
   mockMorseWordStages,
 } from "../../morseMockData";
+import { useMorseProgress } from "../../hooks/useMorseProgress";
+
+function groupMasteryAverage(
+  characters: readonly MorseCharacter[],
+  masteryByCharacter: Partial<Record<MorseCharacter, number>>,
+): number {
+  const scores = characters
+    .filter((c) => c in masteryByCharacter)
+    .map((c) => masteryByCharacter[c]! / 100);
+  if (scores.length === 0) return 0;
+  return scores.reduce((sum, score) => sum + score, 0) / scores.length;
+}
 import {
   fadeUp,
   fadeUpReduced,
@@ -41,7 +53,8 @@ function wordStageChip(stage: MorseWordStage, unlocked: boolean): { label: strin
 
 export function MorseDashboard() {
   const navigate = useNavigate();
-  const activeLesson = mockMorseLessonById[mockActiveMorseLessonId]!;
+  const real = useMorseProgress();
+  const activeLesson = mockMorseLessonById[real?.activeLessonId ?? mockActiveMorseLessonId]!;
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
@@ -50,14 +63,24 @@ export function MorseDashboard() {
 
   return (
     <div className="flex flex-col gap-3xl">
-      <motion.section initial="hidden" animate="visible" variants={fade}>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
-          Taps and tones
-        </p>
-        <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">Morse Code</h1>
-        <p className="text-neutral-600">
-          Six character levels, then whole words   five new letters and numbers at a time.
-        </p>
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={fade}
+        className="relative overflow-hidden rounded-xl border border-primary-100 bg-gradient-to-br from-primary-50 to-neutral-0 px-lg py-xl sm:px-xl"
+      >
+        <div className="relative z-10 max-w-lg">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 mb-xs">
+            Taps and tones
+          </p>
+          <h1 className="font-display text-3xl font-bold text-primary-900 mb-xs">Morse Code</h1>
+          <p className="text-neutral-600">
+            Character levels, then whole words and sentences   five new letters and numbers at a time.
+          </p>
+        </div>
+        <div className="hidden sm:block absolute -right-4 -bottom-4 opacity-90 pointer-events-none">
+          <MascotFigure pose="mentor" size="md" />
+        </div>
       </motion.section>
 
       <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>
@@ -98,7 +121,9 @@ export function MorseDashboard() {
         <h2 className="font-display text-xl font-bold text-neutral-800 mb-md">Levels</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
           {MORSE_GROUPS.map((group, i) => {
-            const avg = averageMasteryForCharacters([...group.characters]);
+            const avg = real
+              ? groupMasteryAverage(group.characters, real.masteryByCharacter)
+              : averageMasteryForCharacters([...group.characters]);
             const isNext = !firstIncompleteFound && avg < 0.85;
             if (isNext) firstIncompleteFound = true;
             const state = groupState(avg, isNext);
@@ -133,7 +158,7 @@ export function MorseDashboard() {
                     </div>
                   ) : (
                     <div className="flex items-center gap-md rounded-lg bg-neutral-50 px-md py-sm">
-                      <span className="text-sm text-neutral-600">SOS · AR · KN</span>
+                      <span className="text-sm text-neutral-600">{(group.prosigns ?? []).join(" · ")}</span>
                     </div>
                   )}
 

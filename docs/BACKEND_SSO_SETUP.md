@@ -2,7 +2,7 @@
 
 **Purpose:** A concrete, step-by-step runbook for the CTO to execute **once a real Supabase project exists**. Everything referenced here (schema, RLS, seed data, `packages/api` wiring) is already built against placeholder env vars   see `docs/DB_SETUP_GUIDE.md` for what's already implemented. This doc is the remaining piece: connecting that code to a real Supabase project and configuring the two v1 social auth providers.
 
-**Scope:** Email/password (needs no extra provider config   Supabase Auth handles it out of the box) + Google OAuth + Apple Sign-In. This is "SSO" in the product sense (social login), **not** enterprise SAML/OIDC SSO   that is explicitly out of scope for v1.
+**Scope:** Email/password (needs no extra provider config   Supabase Auth handles it out of the box) + Google OAuth. This is "SSO" in the product sense (social login), **not** enterprise SAML/OIDC SSO   that is explicitly out of scope for v1. Apple Sign-In was considered for v1 but removed (no Apple Developer Program membership) — see `docs/DECISIONS.md`.
 
 **Prerequisite reading:** `docs/AI_project_bible.md` §9 (Backend), `docs/DB_SETUP_GUIDE.md` (schema/RLS/seed already written), `packages/api/src/client.ts` (env var contract).
 
@@ -14,7 +14,7 @@
 - `supabase/migrations/20260716120001_rls_policies.sql`   RLS enabled on every table, `auth.uid() = user_id` baseline on user-data tables, public-read on curriculum tables.
 - `supabase/seed.sql`   "ASL Alphabet" course, Group 1 (A/S/E) unit/lessons/exercises, 5 achievement rows.
 - `packages/api/src/client.ts`   reads `SUPABASE_URL`/`SUPABASE_ANON_KEY` (or the Vite/Expo-prefixed equivalents) and throws a clear error if unset; no code changes needed to go live, only real env vars.
-- `packages/api/src/repositories/auth.ts`   `signUp`, `signInWithPassword`, `signInWithOAuth('google' | 'apple')`, `signOut`, `getSession`, `onAuthStateChange`.
+- `packages/api/src/repositories/auth.ts`   `signUp`, `signInWithPassword`, `signInWithOAuth('google')`, `signOut`, `getSession`, `onAuthStateChange`.
 
 Everything below is dashboard/CLI configuration, not application code.
 
@@ -100,49 +100,7 @@ For mobile, use `expo-auth-session`'s `AuthSession.makeRedirectUri()` at runtime
 
 ---
 
-## 5. Configure Apple Sign-In
-
-Apple's setup has more moving pieces than Google's. Budget extra time here, and note this **requires an active Apple Developer Program membership** ($99/year)   there is no free tier for Sign in with Apple configuration.
-
-### 5a. Apple Developer account
-
-1. Go to [developer.apple.com/account](https://developer.apple.com/account) → **Certificates, IDs & Profiles**.
-2. **Identifiers → App IDs**: confirm (or create) an App ID matching `apps/mobile/app.json`'s `ios.bundleIdentifier`: `com.cappy.mobile`. Under **Capabilities**, enable **Sign In with Apple**.
-3. **Identifiers → Services IDs → +** : create a new Services ID   this is the identifier Supabase will use as the "Client ID" for web-based Apple auth (distinct from the App ID above).
-   - Identifier: e.g. `com.cappy.mobile.signin` (must be different from the App ID string).
-   - Enable **Sign In with Apple** on this Services ID → **Configure**:
-     - Primary App ID: select `com.cappy.mobile` from step 2.
-     - **Domains and Subdomains**: `<your-project-ref>.supabase.co`.
-     - **Return URLs**: `https://<your-project-ref>.supabase.co/auth/v1/callback` (same shape as Google's).
-4. **Keys → +**: create a new key, enable **Sign In with Apple**, associate it with the App ID from step 2. Download the `.p8` key file **immediately**   Apple only lets you download it once. Note the **Key ID** shown on this page.
-5. Note your **Team ID** (top-right of the Apple Developer account page, or **Membership** tab).
-
-You now have four values Supabase needs: **Services ID** (from step 3), **Team ID**, **Key ID**, and the **.p8 private key contents** (from step 4).
-
-### 5b. Supabase dashboard
-
-1. **Authentication → Providers → Apple** → toggle enabled.
-2. Fill in:
-   - **Client ID**: the Services ID from step 5a.3 (e.g. `com.cappy.mobile.signin`).
-   - **Secret Key**: Supabase generates the required signed JWT client secret for you if you provide the Team ID, Key ID, and paste the `.p8` file contents into the fields provided   follow the in-dashboard field labels exactly; do not hand-roll the JWT.
-3. Save.
-
-### 5c. iOS-specific native flow (`expo-apple-authentication`)
-
-Apple Sign-In has two valid flows: the web-based OAuth redirect (works everywhere, same as Google above) and Apple's **native** in-app sign-in sheet on iOS, which Apple requires you to *offer* if you offer any other third-party login on iOS (App Store Review Guideline 4.8)   plain email/password alone would be exempt, but since Google OAuth is also offered, native Apple Sign-In should be the iOS path, not just the web redirect.
-
-**Implemented (2026-07-21):** the native module, app.json plugin, `signInWithAppleIdToken`, and the platform branch in both sign-in screens are all in place. What's below is now a description of what exists, not a to-do list.
-
-1. `expo-apple-authentication@~6.4.2` (the SDK 51-compatible version, not whatever `latest` resolves to) is installed in `apps/mobile` via `pnpm --filter @cappy/mobile add expo-apple-authentication@~6.4.2`.
-2. The plugin is registered in `apps/mobile/app.json` under `expo.plugins`: `"expo-apple-authentication"`.
-3. `apps/mobile/app.json`'s `ios.bundleIdentifier` is `com.cappy.mobile`   this must match the App ID from step 5a.2 exactly.
-4. `apps/mobile/app/login.tsx` and `signup.tsx` branch on platform in `handleSSO`: iOS calls `AppleAuthentication.signInAsync()` to get an identity token natively, then exchanges it with Supabase via the new `signInWithAppleIdToken(idToken, nonce?)` in `packages/api/src/repositories/auth.ts` (calls `supabase.auth.signInWithIdToken({ provider: 'apple', token, nonce })`, mapping the session with the existing `mapSession` helper)   **not** `signInWithOAuth('apple')`, which remains the web-redirect path for Android/web. User cancellation (`ERR_REQUEST_CANCELED`) is treated as a silent no-op via `apps/mobile/src/lib/appleAuth.ts`'s `isAppleCancellation`, not surfaced as an error.
-5. Android and web continue to use `signInWithOAuth('apple')` (the same redirect-based flow as Google, reusing the redirect URL allow-list from §4c   add `cappy://` and your web domains there too, they're shared across providers).
-6. **Not yet done, needs a real device:** the `nonce` parameter is left unset in the mobile call (Supabase's `signInWithIdToken` accepts it optionally for replay protection). A hardened build should generate a raw nonce, SHA-256 hash it into the `signInAsync({ nonce: hashed })` request, and pass the raw nonce through to `signInWithAppleIdToken` for verification   this needs `expo-crypto` and a real device to validate; skipped here since it's a security hardening step, not a functional blocker for basic sign-in to work. Everything above this line has been typechecked but **not run on a real device/simulator** (no Apple ID available in this environment)   the full flow (native sheet → identity token → Supabase session → RLS-scoped queries) still needs that verification pass before shipping.
-
----
-
-## 6. Smoke test
+## 5. Smoke test
 
 1. Confirm `pnpm --filter @cappy/api typecheck` still passes (no code changes should be needed for this step   only env vars and dashboard config).
 2. Web: run `pnpm --filter @cappy/web dev`, attempt email/password sign-up, then Google sign-in, against the real project. Confirm a row appears in `auth.users` (Studio → Authentication → Users) and that you can call `getProfile()`/`updateProfile()` from `packages/api` afterward once a matching `public.users` row is created.
@@ -151,8 +109,8 @@ Apple Sign-In has two valid flows: the web-based OAuth redirect (works everywher
 
 ---
 
-## 7. Open items / known gaps
+## 6. Open items / known gaps
 
-- No login/signup screens exist yet in `apps/web` or `apps/mobile` (out of scope for this backend runbook   see `docs/PROGRESS.md` → "Product surfaces not yet built"). This doc only covers backend/provider configuration; UI screens and route guards are separate work.
-- `signInWithIdToken` for native Apple Sign-In (§5c.4) is now implemented   see §5c above. Remaining gap is the nonce-hardening step and a real-device verification pass (also §5c).
-- Apple's consent screen review and Google's OAuth consent screen verification (needed once you go beyond "Testing" status with real users) both take real calendar time   start those Apple Developer Program / Google verification steps well before a public launch date, not the week of.
+- Login/signup screens and route guards now exist on both `apps/web` and `apps/mobile` (`apps/web/src/screens/{Login,Signup}.tsx`, `apps/mobile/app/{login,signup}.tsx`, web's `RequireAuth`, mobile's `useAuthGate()`) — see `docs/PROGRESS.md` → "Product surfaces" for current state. This doc still only covers backend/provider configuration, not UI.
+- Google's OAuth consent screen verification (needed once you go beyond "Testing" status with real users) takes real calendar time   start that well before a public launch date, not the week of.
+- Apple Sign-In was removed from v1 scope (no Apple Developer Program membership) — see `docs/DECISIONS.md` for the reversal and what was torn out.

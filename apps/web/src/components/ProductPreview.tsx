@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { Lock, Play, Check, type LucideIcon } from "lucide-react";
 import { ProgressBar, XPBadge } from "@cappy/ui";
 import "./ProductPreview.css";
 
@@ -30,10 +31,11 @@ function MiniTile({ title, state }: { title: string; state: "locked" | "active" 
     active: "bg-primary-500 text-neutral-0",
     completed: "bg-success-100 text-success-700",
   };
-  const icon: Record<typeof state, string> = { locked: "🔒", active: "▶", completed: "✓" };
+  const Icon: Record<typeof state, LucideIcon> = { locked: Lock, active: Play, completed: Check };
+  const StateIcon = Icon[state];
   return (
     <div className={`flex flex-col items-center justify-center gap-xs rounded-lg p-md ${stateClasses[state]}`}>
-      <span className="text-lg">{icon[state]}</span>
+      <StateIcon size={18} />
       <span className="text-sm font-medium">{title}</span>
     </div>
   );
@@ -47,7 +49,7 @@ const PANELS: PanelDef[] = [
         <div className="flex items-center gap-md">
           <img src={logoMark} alt="" className="h-14 w-14 rounded-full shadow-md" />
           <div>
-            <p className="font-display text-lg font-semibold text-neutral-800">Hi, I'm Cappy</p>
+            <p className="font-display text-lg font-semibold text-neutral-800">Hi, I&apos;m Cappy</p>
             <p className="text-sm text-neutral-500">Ready when you are   no rush.</p>
           </div>
         </div>
@@ -69,7 +71,7 @@ const PANELS: PanelDef[] = [
           <img src={sceneCuriosityDesk} alt="" className="h-24 w-24 rounded-2xl object-cover shadow-sm" />
           <div>
             <p className="font-display text-lg font-semibold text-neutral-800">Lesson 1 &middot; ASL</p>
-            <p className="text-sm text-neutral-500">Watch how it's signed, at your own pace.</p>
+            <p className="text-sm text-neutral-500">Watch how it&apos;s signed, at your own pace.</p>
           </div>
         </div>
         <p className="flex items-center gap-xs text-sm font-medium text-primary-600">
@@ -143,7 +145,7 @@ const PANELS: PanelDef[] = [
     content: (
       <>
         <img src={sceneCappyUniverse} alt="" className="h-40 w-full rounded-2xl object-cover shadow-sm" />
-        <p className="text-sm text-neutral-500">Every skill's path, side by side.</p>
+        <p className="text-sm text-neutral-500">Every skill&apos;s path, side by side.</p>
       </>
     ),
   },

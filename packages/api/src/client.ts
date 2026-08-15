@@ -6,75 +6,50 @@
  * apps and other packages must go through @cappy/api's repositories
  * (see src/repositories/*), never instantiate their own client.
  *
- * Expected environment variables (not read yet   stub only):
- *   SUPABASE_URL       - project URL
- *   SUPABASE_ANON_KEY  - public anon key
+ * Credentials come from configureSupabaseCredentials(), called once at each
+ * app's own entry point:
+ *   - apps/mobile: EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY
+ *   - apps/web:    VITE_SUPABASE_URL        / VITE_SUPABASE_ANON_KEY
+ * (Node/tests fall back to plain SUPABASE_URL / SUPABASE_ANON_KEY via
+ * process.env   see resolveCredentials() below for why this package can't
+ * read the app-specific vars itself.)
  *
- * Supported env var pairs (first one found wins):
- *   - Root / Node:  SUPABASE_URL              / SUPABASE_ANON_KEY
- *   - Web (Vite):   VITE_SUPABASE_URL         / VITE_SUPABASE_ANON_KEY
- *   - Mobile (Expo): EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY
+ * This file must never reference `import.meta`   Metro (React Native's
+ * bundler) rejects that token as a parse error, not a runtime one, so it
+ * can't be feature-detected or try/catch'd away.
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export type SupabaseClientLike = SupabaseClient;
 
-interface EnvSource {
-  [key: string]: string | undefined;
-}
-
 /**
- * Reads env vars from every source this code might run under
- * (`process.env` in Node/Metro/web builds, `import.meta.env` under Vite).
- * Wrapped in try/catch because `import.meta` throws a SyntaxError if
- * referenced in a CommonJS context rather than simply being undefined.
+ * `packages/api` is resolved by Metro through a pnpm workspace symlink
+ * (node_modules/@cappy/api -> ../../../packages/api), so it's treated as
+ * external and never gets babel-preset-expo's inline-env-var transform
+ * literal `process.env.EXPO_PUBLIC_*` reads here would silently stay
+ * unresolved at runtime (same story for Vite's `define`, which only
+ * rewrites exact textual matches). So this package never reads env vars
+ * itself; each app reads its own (from a file that genuinely lives inside
+ * that app, guaranteed to go through its own babel/vite transform) and
+ * passes them in via configureSupabaseCredentials() at startup.
  */
-function readEnv(): EnvSource {
-  const sources: EnvSource[] = [];
+let overrideCredentials: { url: string; anonKey: string } | null = null;
 
-  const nodeProcess = (globalThis as { process?: { env?: EnvSource } }).process;
-  if (nodeProcess?.env) {
-    sources.push(nodeProcess.env);
-  }
-
-  try {
-    // No optional chaining here (`?.`)   Vite's dev server statically
-    // pattern-matches the literal `import.meta.env` member-access expression
-    // to inject the real env object at runtime. Optional chaining lowers to
-    // a conditional/temp-variable form that defeats that match and silently
-    // resolves to `undefined` even with a valid .env.local   confirmed via
-    // a headless-browser repro, not a guess. The `as any` cast is erased at
-    // compile time and does not affect the emitted runtime expression.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const viteEnv = (import.meta as any).env as EnvSource | undefined;
-    if (viteEnv) {
-      sources.push(viteEnv);
-    }
-  } catch {
-    // Not running under Vite/ESM (e.g. plain Node, Jest, Metro)   ignore.
-  }
-
-  return Object.assign({}, ...sources);
+export function configureSupabaseCredentials(url: string, anonKey: string): void {
+  overrideCredentials = { url, anonKey };
+  cachedClient = null;
 }
-
-const ENV_PAIRS: ReadonlyArray<[url: string, key: string]> = [
-  ["SUPABASE_URL", "SUPABASE_ANON_KEY"],
-  ["VITE_SUPABASE_URL", "VITE_SUPABASE_ANON_KEY"],
-  ["EXPO_PUBLIC_SUPABASE_URL", "EXPO_PUBLIC_SUPABASE_ANON_KEY"],
-];
 
 function resolveCredentials(): { url: string; anonKey: string } | null {
-  const env = readEnv();
-
-  for (const [urlKey, anonKeyKey] of ENV_PAIRS) {
-    const url = env[urlKey];
-    const anonKey = env[anonKeyKey];
-    if (url && anonKey) {
-      return { url, anonKey };
-    }
+  if (overrideCredentials) {
+    return overrideCredentials;
   }
 
-  return null;
+  // Node/tests only (e.g. scripts run directly under `node`, Jest)   real
+  // process.env, no bundler inlining involved.
+  const url = process.env.SUPABASE_URL;
+  const anonKey = process.env.SUPABASE_ANON_KEY;
+  return url && anonKey ? { url, anonKey } : null;
 }
 
 let cachedClient: SupabaseClient | null = null;

@@ -15,7 +15,6 @@ const VARIANT_CLASSES: Record<CardVariant, string> = {
   ].join(" "),
   feature: [
     "bg-gradient-to-br from-neutral-0 to-primary-50",
-    "dark:from-neutral-900 dark:to-neutral-800",
     "border border-primary-100 rounded-2xl p-xl shadow-lg",
   ].join(" "),
   outline: "bg-transparent border-2 border-neutral-300 rounded-lg p-lg",

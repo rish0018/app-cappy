@@ -16,33 +16,40 @@
  * apps/training/scripts/normalize_landmarks.py exactly   do not
  * reimplement this logic differently in the two places.
  *
- * LANDMARK-DETECTION HALF (NOT implemented   this is the real gap):
+ * LANDMARK-DETECTION HALF (Android: implemented and verified 2026-07-27;
+ * iOS: not implemented):
  * `predict()` takes `HandLandmarks` (63 numbers) as input, same as the web
- * predictor, but nothing in this repo currently produces that input on
- * React Native. The web pipeline gets it from
- * `@mediapipe/tasks-vision`, which is a WASM + browser-canvas API and has
- * no direct RN equivalent:
- *   - `react-native-vision-camera` frame processors could run a native
- *     hand-landmark model per-frame, but that requires either writing a
- *     native (Swift/Kotlin) frame-processor plugin or finding a
- *     maintained community one   as of this session no maintained,
- *     MediaPipe-Tasks-equivalent RN plugin was confirmed to exist/work;
- *     shipping one would be its own project (native module + testing on
- *     real devices), not something this session can respond to safely.
- *   - A WASM-in-hidden-WebView bridge (render @mediapipe/tasks-vision in
- *     an off-screen WebView, pipe camera frames in as base64/ImageBitmap,
- *     and landmark results back out via postMessage) is technically
- *     possible but adds a heavy, unverified integration with painful
- *     performance/latency characteristics for a real-time UI   not
- *     attempted here since it could not be verified end-to-end without a
- *     device.
- *   - `apps/mobile/app/lesson/[id]/practice.tsx` continues to use its
- *     mock confidence-tier cycler; wiring `expo-camera`'s frame stream
- *     into a real landmark source is the remaining integration point.
- *     Whichever approach is chosen, it only needs to produce
- *     `HandLandmarks` (63 numbers, same order as MediaPipe's 21 x (x,y,z))
- *     for `RNHandPosePredictor.predict()` below to consume   the model
- *     half of this file does not need to change.
+ * predictor. On Android, this now comes from a real native frame-processor
+ * plugin: `apps/mobile/android/app/src/main/java/com/cappy/mobile/
+ * HandLandmarksFrameProcessorPlugin.kt`, registered with
+ * `react-native-vision-camera` (v4   the older, non-Nitro plugin API; v5
+ * requires New Architecture, which this app doesn't use) and wrapping
+ * MediaPipe Tasks Vision's on-device `HandLandmarker` (same 21-point model
+ * family the web app's `@mediapipe/tasks-vision` uses). JS side:
+ * `apps/mobile/src/ml/handLandmarks.ts` calls the plugin per-frame and
+ * flattens its output into the 63-number shape this file expects;
+ * `apps/mobile/src/ml/useHandPosePrediction.ts` ties it to this predictor
+ * and `apps/mobile/app/lesson/[id]/practice.tsx` now renders the real
+ * confidence tier instead of a mock cycler.
+ *
+ * Two real bugs had to be fixed to get here (both would otherwise silently
+ * produce "no hand detected" forever, since the plugin's catch-all
+ * swallows errors by design   see the plugin file for why):
+ *   1. MediaPipe's `MediaImageBuilder(android.media.Image)` only accepts
+ *      RGBA_8888; Camera2/CameraX `ImageAnalysis` frames are always
+ *      YUV_420_888 in practice. Fixed by converting YUV -> NV21 -> JPEG ->
+ *      Bitmap in the plugin and using `BitmapImageBuilder` instead.
+ *   2. The JSI bridge can't marshal boxed `java.lang.Float`   landmark
+ *      x/y/z coordinates need an explicit `.toDouble()` before crossing
+ *      into JS.
+ *
+ * Verified on a real (webcam-passthrough) camera feed on an Android
+ * emulator: `ConfidenceIndicator` responded live and correctly to an actual
+ * hand entering/leaving frame, not just a fixed/mock value. Not verified:
+ * a physical Android device, or iOS at all (no Swift equivalent plugin
+ * written this session   see lukaszkurantdev/blog-hand-landmarks for a
+ * reference iOS implementation using the same MediaPipe HandLandmarker,
+ * which could be ported the same way).
  */
 import "@tensorflow/tfjs-react-native";
 import * as tf from "@tensorflow/tfjs";

@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, Divider, Input, SSOButton } from "@cappy/ui";
 import { signInWithOAuth, signInWithPassword } from "@cappy/api";
 import logoMark from "../assets/logo-mark-circular.png";
+import sceneCuriosityDesk from "../assets/scene_curiosity_desk.png";
 import { scaleIn, scaleInReduced } from "../components/motion";
 
 /**
@@ -18,7 +19,7 @@ export function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
-  const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | "apple" | null>(null);
+  const [pendingProvider, setPendingProvider] = React.useState<"password" | "google" | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,24 +37,31 @@ export function Login() {
     }
   }
 
-  async function handleOAuth(provider: "google" | "apple") {
+  async function handleOAuth(provider: "google") {
     setError(null);
     setPendingProvider(provider);
     try {
-      await signInWithOAuth(provider);
-      navigate("/dashboard");
+      // signInWithOAuth() redirects the browser away immediately -- it
+      // resolves once the redirect starts, not once auth completes (see
+      // packages/api/src/repositories/auth.ts), so navigate("/dashboard")
+      // here would never actually run. Supabase instead redirects the
+      // browser straight back to this URL post-auth once redirectTo is set
+      // (falls back to the dashboard-less Site URL otherwise).
+      await signInWithOAuth(provider, `${window.location.origin}/dashboard`);
     } catch {
-      setError(
-        `We couldn't connect to ${provider === "google" ? "Google" : "Apple"} just now. Mind trying again in a moment?`,
-      );
+      setError("We couldn't connect to Google just now. Mind trying again in a moment?");
     } finally {
       setPendingProvider(null);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary-50 px-lg py-2xl">
-      <motion.div className="max-w-md w-full" initial="hidden" animate="visible" variants={step}>
+    <div
+      className="relative min-h-screen flex items-center justify-center bg-primary-50 bg-cover bg-center px-lg py-2xl"
+      style={{ backgroundImage: `url(${sceneCuriosityDesk})` }}
+    >
+      <div className="absolute inset-0 bg-white/70" aria-hidden="true" />
+      <motion.div className="relative max-w-md w-full" initial="hidden" animate="visible" variants={step}>
         <Card variant="feature" className="flex flex-col gap-xl">
           <div className="text-center">
             <img src={logoMark} alt="" aria-hidden="true" className="h-14 w-14 rounded-full mx-auto mb-lg" />
@@ -66,11 +74,6 @@ export function Login() {
               provider="google"
               disabled={pendingProvider !== null}
               onClick={() => handleOAuth("google")}
-            />
-            <SSOButton
-              provider="apple"
-              disabled={pendingProvider !== null}
-              onClick={() => handleOAuth("apple")}
             />
           </div>
 

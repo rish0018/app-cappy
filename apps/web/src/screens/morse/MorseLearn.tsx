@@ -25,7 +25,7 @@ export function MorseLearn() {
     })),
     ...(lesson.prosigns ?? []).map((prosign) => ({
       label: prosign,
-      pattern: MORSE_PROSIGNS[prosign],
+      pattern: MORSE_PROSIGNS[prosign]!,
     })),
   ];
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ImageOff } from "lucide-react";
 import { getAslSampleImage } from "../assets/asl-samples";
 
 export interface ReferenceImageProps {
@@ -31,12 +32,12 @@ export function ReferenceImage({ letter, className = "", alt }: ReferenceImagePr
         role="img"
         aria-label={alt ?? `Reference photo of the ASL sign for ${letter} (not available yet)`}
         className={[
-          "w-full aspect-square rounded-lg bg-neutral-800 flex items-center justify-center",
+          "aspect-square rounded-lg bg-neutral-800 flex items-center justify-center",
           className,
         ].join(" ")}
       >
-        <span className="text-7xl text-neutral-0" aria-hidden="true">
-          🤟
+        <span className="text-neutral-0" aria-hidden="true">
+          <ImageOff size={48} />
         </span>
       </div>
     );
@@ -46,7 +47,7 @@ export function ReferenceImage({ letter, className = "", alt }: ReferenceImagePr
     // Source photos are square (200x200, from the training dataset's test
     // set)   aspect-square + object-contain shows the full frame instead of
     // cropping into a 16:9 box (which cut off most of the hand/sign).
-    <div className={["w-full aspect-square rounded-lg bg-neutral-800 overflow-hidden", className].join(" ")}>
+    <div className={["aspect-square rounded-lg bg-neutral-800 overflow-hidden", className].join(" ")}>
       <img
         src={src}
         alt={alt ?? `Reference photo of the ASL sign for the letter ${letter}`}

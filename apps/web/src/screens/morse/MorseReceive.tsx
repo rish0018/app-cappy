@@ -6,6 +6,7 @@ import { MORSE_MAP, type MorseCharacter } from "@cappy/types";
 import { patternToAudioTimeline, validateReceiveAttempt } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
 import { fadeUp, fadeUpReduced } from "../../components/motion";
+import { useProgressRecorder } from "../../hooks/useProgressRecorder";
 
 function buildOptions(correct: MorseCharacter, pool: MorseCharacter[]): MorseCharacter[] {
   const distractors = pool.filter((c) => c !== correct).slice(0, 3);
@@ -25,6 +26,7 @@ export function MorseReceive() {
   const [selected, setSelected] = React.useState<MorseCharacter | null>(null);
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
+  const { recordMorseCharacterAttempt } = useProgressRecorder();
 
   const options = React.useMemo(() => {
     if (!lesson) return [];
@@ -73,7 +75,10 @@ export function MorseReceive() {
               key={option}
               variant={selected === option ? "primary" : "secondary"}
               disabled={selected !== null}
-              onClick={() => setSelected(option)}
+              onClick={() => {
+                setSelected(option);
+                void recordMorseCharacterAttempt(character, "receive", option === character);
+              }}
             >
               {option}
             </Button>

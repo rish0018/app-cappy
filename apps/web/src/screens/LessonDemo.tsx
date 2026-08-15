@@ -2,11 +2,15 @@ import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button, Card, ProgressBar } from "@cappy/ui";
-import { mockLessonById } from "../mockData";
+import { mockLessonById, mockLessonLetters } from "../mockData";
 import { fadeUp, fadeUpReduced } from "../components/motion";
 import { ReferenceImage } from "../components/ReferenceImage";
 
-/** One primary action per screen: watch the demo, then move on. */
+/**
+ * "5-at-once" learn step (PROJECT_BIBLE §129/§131): shows every letter in
+ * the lesson's group side by side, mirroring MorseLearn.tsx's
+ * grid-of-sub-cards layout, instead of a single letter at a time.
+ */
 export function LessonDemo() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -18,7 +22,7 @@ export function LessonDemo() {
     return <p className="text-neutral-600">Lesson not found.</p>;
   }
 
-  const letter = lesson.title.replace("The Letter ", "");
+  const letters = mockLessonLetters[lesson.id] ?? [];
 
   return (
     <div className="max-w-xl mx-auto flex flex-col gap-xl">
@@ -27,23 +31,38 @@ export function LessonDemo() {
       </motion.div>
 
       <motion.div initial="hidden" animate="visible" variants={fade} transition={{ delay: 0.08 }}>
-        <Card variant="surface" className="flex flex-col items-center gap-lg text-center py-2xl">
-          <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-            Step 1 of 3   Watch
-          </span>
-          <h1 className="font-display text-2xl font-bold text-neutral-800">
-            Watch the sign for "{letter}"
-          </h1>
+        <Card variant="surface" className="flex flex-col gap-lg">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
+              Step 1 of 3   Watch
+            </span>
+            <h1 className="font-display text-2xl font-bold text-neutral-800">{lesson.title}</h1>
+            <p className="text-sm text-neutral-600 mt-xs">
+              Take your time. Watch all {letters.length} signs as many times as you like   there&apos;s no rush.
+            </p>
+          </div>
 
-          <ReferenceImage letter={letter} />
+          <div className="grid grid-cols-2 gap-md">
+            {letters.map((letter, index) => {
+              const isLastOdd = letters.length % 2 !== 0 && index === letters.length - 1;
+              return (
+                <Card
+                  key={letter}
+                  variant="outline"
+                  className={["flex flex-col items-center gap-sm p-lg", isLastOdd ? "col-span-2" : ""].join(" ")}
+                >
+                  <ReferenceImage letter={letter} className="w-32" />
+                  <p className="text-lg font-bold text-neutral-800">{letter}</p>
+                </Card>
+              );
+            })}
+          </div>
 
-          <p className="text-neutral-600 max-w-sm">
-            Take your time. Watch it as many times as you like   there's no rush.
-          </p>
-
-          <Button variant="primary" className="w-full max-w-xs" onClick={() => navigate(`/lessons/${lesson.id}/practice`)}>
-            I'm ready to try it
-          </Button>
+          <div className="flex justify-end">
+            <Button variant="primary" className="w-full max-w-xs" onClick={() => navigate(`/lessons/${lesson.id}/practice`)}>
+              I&apos;m ready to try it
+            </Button>
+          </div>
         </Card>
       </motion.div>
     </div>

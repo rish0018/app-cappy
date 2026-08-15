@@ -47,6 +47,8 @@ export interface Streak {
   currentStreak: number;
   longestStreak: number;
   lastActiveDate: string | null;
+  /** Cumulative count of sessions recorded after 9pm local time -- backs the "ach-night-owl" achievement. */
+  lateNightPracticeCount: number;
 }
 
 export interface Achievement {
@@ -60,6 +62,23 @@ export interface UserAchievement {
   userId: string;
   achievementId: string;
   unlockedAt: string;
+}
+
+/**
+ * Per-word mastery for the word-level ASL Signs curriculum. Mirrors
+ * LetterMastery exactly — same rolling-average formula, same fields —
+ * but keyed on `signWord` (lowercase Google ASL Signs label, e.g. "hello")
+ * instead of a Letter union.
+ */
+export interface SignWordMastery {
+  userId: string;
+  /** Lowercase label matching preprocessing.json from the LSTM model, e.g. "thank_you". */
+  signWord: string;
+  masteryScore: number;
+  lastPracticed: string | null;
+  accuracy: number;
+  avgConfidence: number;
+  practiceCount: number;
 }
 
 /** Daily activity aggregate, per PROJECT_BIBLE §H.12. */

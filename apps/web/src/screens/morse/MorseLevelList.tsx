@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Card, LessonTile } from "@cappy/ui";
 import { mockMorseLessonStatusById, mockMorseLessons, mockMorseUnits } from "../../morseMockData";
+import { useMorseProgress } from "../../hooks/useMorseProgress";
 import {
   fadeUp,
   fadeUpReduced,
@@ -19,6 +20,7 @@ function pathForLesson(lessonId: string, exerciseType: string): string {
 
 export function MorseLevelList() {
   const navigate = useNavigate();
+  const real = useMorseProgress();
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
   const stagger = reduced ? staggerChildrenReduced : staggerChildren;
@@ -54,7 +56,9 @@ export function MorseLevelList() {
                 variants={stagger}
               >
                 {lessons.map((lesson, i) => {
-                  const status = mockMorseLessonStatusById[lesson.id] ?? "not-started";
+                  const status = real
+                    ? (real.progressByLessonId[lesson.id]?.status ?? "not-started")
+                    : (mockMorseLessonStatusById[lesson.id] ?? "not-started");
                   const state = status === "completed" ? "completed" : status === "in-progress" ? "active" : "locked";
                   return (
                     <motion.div key={lesson.id} custom={i} variants={item}>

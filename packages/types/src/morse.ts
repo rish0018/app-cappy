@@ -22,11 +22,24 @@ export const MORSE_MAP: Record<MorseCharacter, string> = {
   "5": ".....", "6": "-....", "7": "--...", "8": "---..", "9": "----.",
 };
 
-/** Bonus-level prosigns, kept separate from MORSE_MAP since they aren't single characters. */
+/**
+ * Bonus-level prosigns and punctuation, kept separate from MORSE_MAP since
+ * neither is a single `MorseCharacter`. Punctuation labels are spelled out
+ * ("PERIOD") rather than the literal symbol so they read cleanly as
+ * lesson/practice-card titles, same convention as the operator prosigns.
+ */
 export const MORSE_PROSIGNS: Record<string, string> = {
   SOS: "...---...",
   AR: ".-.-.", // "end of message"
   KN: "-.--.", // "invite a specific station to transmit"
+  AS: ".-...", // "wait"
+  BT: "-...-", // "break" (new paragraph/section)
+  SK: "...-.-", // "end of contact" (sign-off)
+  PERIOD: ".-.-.-",
+  COMMA: "--..--",
+  QUESTION: "..--..",
+  SLASH: "-..-.",
+  EQUALS: "-...-", // same pattern as BT   real Morse reuses it for both
 };
 
 export interface MorseGroup {
@@ -49,7 +62,8 @@ export const MORSE_GROUPS: readonly MorseGroup[] = [
   { id: "level-3", label: "Level 3   K–O", characters: ["K", "L", "M", "N", "O"] },
   { id: "level-4", label: "Level 4   P–T", characters: ["P", "Q", "R", "S", "T"] },
   { id: "level-5", label: "Level 5   U–Z", characters: ["U", "V", "W", "X", "Y", "Z"] },
-  { id: "level-6", label: "Level 6   Bonus: Prosigns", characters: [], prosigns: ["SOS", "AR", "KN"] },
+  { id: "level-6", label: "Level 6   Bonus: Prosigns", characters: [], prosigns: ["SOS", "AR", "KN", "AS", "BT", "SK"] },
+  { id: "level-7", label: "Level 7   Bonus: Punctuation", characters: [], prosigns: ["PERIOD", "COMMA", "QUESTION", "SLASH", "EQUALS"] },
 ] as const;
 
 export type MorseExerciseType = "learn" | "send" | "receive" | "checkout";
@@ -119,6 +133,21 @@ export const MORSE_WORD_STAGES: readonly MorseWordStage[] = [
     status: "active",
     requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
     orderIndex: 4,
+  },
+  {
+    id: "sentences-1",
+    label: "Full Sentences",
+    description: "Longer messages   the real test of everything you've learned.",
+    words: [
+      "THE QUICK FOX",
+      "CALL ME AT NOON",
+      "MEET ME AT THE DOCK",
+      "SEND HELP NOW",
+      "WEATHER IS CLEAR TODAY",
+    ],
+    status: "active",
+    requiredGroupIds: ["level-1", "level-2", "level-3", "level-4", "level-5"],
+    orderIndex: 5,
   },
 ] as const;
 

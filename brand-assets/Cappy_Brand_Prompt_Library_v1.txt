@@ -137,6 +137,32 @@ CHARACTER PROMPTS
     symbols gently float nearby. Calm reflective expression. [Append
     Global Brand Art Direction]
 
+16. Signing Cappy Purpose: ASL lesson demo/learn screens, fingerspelling
+    reference moments. Filename: character_signing_cappy_v1 Prompt:
+    Create Cappy mid-fingerspelling, one paw raised in a clear ASL
+    handshape, the other resting on an open reference book, warm focused
+    expression, small motion-arc lines suggesting gentle movement.
+    [Append Global Brand Art Direction]
+
+17. Encouraging Cappy Purpose: Practice feedback on a near-miss attempt,
+    streak reminders, "almost there" moments. Filename:
+    character_encouraging_cappy_v1 Prompt: Create Cappy leaning slightly
+    forward with a warm, patient smile and one paw raised in a gentle
+    thumbs-up / cheering gesture, radiating quiet encouragement rather
+    than excitement. [Append Global Brand Art Direction]
+
+18. Greeting Cappy Purpose: Login, signup, onboarding welcome moments.
+    Filename: character_greeting_cappy_v1 Prompt: Create Cappy waving
+    hello with one paw raised, warm open posture, standing in a softly
+    lit doorway of the learning workshop as if welcoming someone in.
+    [Append Global Brand Art Direction]
+
+19. Listening Cappy Purpose: Morse code lessons, audio playback moments.
+    Filename: character_listening_cappy_v1 Prompt: Create Cappy with a
+    paw cupped gently near one ear, eyes closed in calm concentration,
+    faint dot-dash sound waves drawn as soft light trails nearby.
+    [Append Global Brand Art Direction]
+
 =====================================================================
 RECOMMENDED FOLDER STRUCTURE
 =====================================================================

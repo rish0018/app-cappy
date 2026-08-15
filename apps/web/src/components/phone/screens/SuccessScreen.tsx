@@ -40,7 +40,7 @@ export function SuccessScreen() {
 
       <div className="flex flex-col gap-1">
         <p className="font-display text-[1.1rem] font-semibold text-[#2b2620]">Great job.</p>
-        <p className="text-[0.85rem] text-[#877a68]">You've got this sign down.</p>
+        <p className="text-[0.85rem] text-[#877a68]">You&apos;ve got this sign down.</p>
       </div>
     </div>
   );

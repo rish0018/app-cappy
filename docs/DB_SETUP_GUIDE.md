@@ -19,7 +19,7 @@ The schema is already fully derived from `packages/types` (no unknowns there), a
 
 ## 1. Provision the Supabase project
 
-**Est. time: 1–1.5 hrs**
+**Est. time: 1–1.5 hrs**   **✅ Done (2026-07-23).** Live project `cewsjfxtvhxvawsfgxpf` provisioned, CLI linked (`supabase link --project-ref cewsjfxtvhxvawsfgxpf`). Migrations were already applied on this project (`supabase migration list` showed both `20260716120000` and `20260716120001` present remotely) and `supabase db diff --linked` came back clean (only default Postgres grants + an unrelated `pg_net` extension, nothing missing).
 
 1. Create a free account at supabase.com if you don't have one.
 2. Create a new project (pick a region close to your expected users; free tier is fine for v1 per `AI_project_bible.md` §9 cost table).
@@ -93,7 +93,7 @@ Write a `supabase/seed.sql` (or a seed script under `scripts/`) that inserts:
 
 ## 5. Environment variables
 
-**Est. time: 0.5 hr**   **✅ `.env.example` files done in code** (root, `apps/web/.env.example`, `apps/mobile/.env.example`), documenting exactly these variable names. **Still needed:** the real `.env`/`.env.local` files with actual values, which can only exist once step 1 gives you a real project   these are gitignored on purpose (see `.gitignore`).
+**Est. time: 0.5 hr**   **✅ Done (2026-07-23).** Root `.env`, `apps/web/.env.local`, and `apps/mobile/.env.local` all populated with the real project URL and the **publishable key** (`sb_publishable_...`   Supabase's current replacement for the legacy `anon` key; drop-in compatible with `@supabase/supabase-js`). All three confirmed gitignored via `git check-ignore -v`.
 
 Per `docs/GUIDE.md` §6 (already stubbed, waiting on this work):
 
@@ -113,7 +113,7 @@ Per `docs/GUIDE.md` §6 (already stubbed, waiting on this work):
 3. Implement each repository in `packages/api/src/repositories/` (`courses.ts`, `lessons.ts`, `progress.ts`, `achievements.ts`) against the real client   the typed signatures already exist and currently throw "not implemented." Swap the throw for a real Supabase call, mapping snake_case DB rows to the camelCase `packages/types` shapes.
 4. Do **not** let `apps/web` or `apps/mobile` import `@supabase/supabase-js` directly   everything goes through these repositories, per the "apps never talk to DB tables directly" rule (`AI_project_bible.md` §7).
 
-**Checkpoint (still pending   needs a real project):** A small script or temporary test in `packages/api` can fetch the seeded course/lesson list and get real data back, fully typed. The code is ready; there's just nothing live to call yet.
+**Checkpoint:** ✅ verified 2026-07-23 via a direct REST call against the live project   `GET /rest/v1/courses` returned the real seeded "ASL Alphabet" course row, and `GET /rest/v1/user_progress` correctly returned `[]` (not an error) for the unauthenticated anon key, confirming RLS is filtering rather than erroring. `pnpm --filter @cappy/api typecheck` passes.
 
 ---
 
@@ -121,11 +121,11 @@ Per `docs/GUIDE.md` §6 (already stubbed, waiting on this work):
 
 **Est. time: 2–3 hrs** (screens + route guards; OAuth redirect config is the fiddly part)
 
-- Email/password: use Supabase Auth's built-in `signUp`/`signInWithPassword` via the client from step 6.
-- Google OAuth: configure the Google provider in Supabase dashboard (Authentication → Providers), then set up redirect URIs for both web (your Vercel domain + localhost) and mobile (Expo's auth session redirect scheme).
+- Email/password: use Supabase Auth's built-in `signUp`/`signInWithPassword` via the client from step 6. **✅ Verified (2026-07-24)**   real signup + email confirmation + login confirmed working against the live project.
+- Google OAuth: configure the Google provider in Supabase dashboard (Authentication → Providers), then set up redirect URIs for both web (your Vercel domain + localhost) and mobile (Expo's auth session redirect scheme). **✅ Configured and verified (2026-07-30)** against the live project.
 - Build minimal login/signup screens in both apps (currently absent   see `docs/PROGRESS.md` → "Product surfaces not yet built") and a route guard that redirects unauthenticated users.
 
-**Checkpoint:** You can sign up, log in, log out, and hit a route guard on both web and mobile against the real project. See `docs/BACKEND_SSO_SETUP.md` §6 for the full smoke-test checklist.
+**Checkpoint:** ✅ Email/password signup → confirm → log in → log out, and Google OAuth sign-in, both confirmed working end-to-end on web against the real project. Apple Sign-In was removed from scope (no Apple Developer Program membership)   see `docs/DECISIONS.md`. See `docs/BACKEND_SSO_SETUP.md` §5 for the full checklist.
 
 ---
 

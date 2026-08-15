@@ -2,21 +2,11 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { ConfidenceIndicator } from "@cappy/ui";
 
-// Brand Palette
-const colors = {
-  sageGreen: '#8AB8AE',
-  warmSand: '#D9AA78',
-  warmWalnut: '#7A5438',
-  creamWhite: '#F8F4EE',
-  softBeige: '#CEC1AE',
-  primaryBlue: '#4F7EA8',
-};
-
 const springTransition = {
   type: "spring",
   stiffness: 90,
   damping: 15,
-};
+} as const;
 
 /** Screen 4: Practice - Emphatic, forgiving, and dynamic */
 export function PracticeScreen() {
@@ -34,7 +24,7 @@ export function PracticeScreen() {
           Action Time
         </span>
         <h2 className="font-display text-3xl font-extrabold text-[#7A5438]">
-          Show me "YES!"
+          Show me &quot;YES!&quot;
         </h2>
         <p className="mt-2 text-[0.9rem] font-medium text-[#CEC1AE]">
           Make a fist and nod it gently in the frame.

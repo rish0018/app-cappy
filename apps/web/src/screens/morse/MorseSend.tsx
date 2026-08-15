@@ -1,16 +1,18 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
+import { Check, Timer, RotateCcw } from "lucide-react";
 import { Button, Card, ConfidenceIndicator, MorseKeyer, MorseSequenceDisplay } from "@cappy/ui";
 import { MORSE_MAP } from "@cappy/types";
 import { tapsToPattern, validateSendAttempt, type TapEvent } from "@cappy/core";
 import { mockMorseLessonById } from "../../morseMockData";
 import { fadeUp, fadeUpReduced } from "../../components/motion";
+import { useProgressRecorder } from "../../hooks/useProgressRecorder";
 
 const SEND_COPY = {
-  high: { text: "Sent perfectly!", icon: "✓" },
-  medium: { text: "Close   check your dot/dash timing.", icon: "⏱" },
-  low: { text: "Let's try that pattern again.", icon: "↻" },
+  high: { text: "Sent perfectly!", icon: Check },
+  medium: { text: "Close   check your dot/dash timing.", icon: Timer },
+  low: { text: "Let's try that pattern again.", icon: RotateCcw },
 };
 
 /**
@@ -27,6 +29,7 @@ export function MorseSend() {
   const [result, setResult] = React.useState<ReturnType<typeof validateSendAttempt> | null>(null);
   const reduced = useReducedMotion();
   const fade = reduced ? fadeUpReduced : fadeUp;
+  const { recordMorseCharacterAttempt } = useProgressRecorder();
 
   if (!lesson) {
     return <p className="text-neutral-600">Lesson not found.</p>;
@@ -40,7 +43,9 @@ export function MorseSend() {
   };
 
   const checkAttempt = () => {
-    setResult(validateSendAttempt(taps, character));
+    const attempt = validateSendAttempt(taps, character);
+    setResult(attempt);
+    void recordMorseCharacterAttempt(character, "send", attempt.correct);
   };
 
   const nextCharacter = () => {

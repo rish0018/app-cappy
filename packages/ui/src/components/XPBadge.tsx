@@ -1,5 +1,6 @@
 import * as React from "react";
 import { motion, useAnimationControls, useReducedMotion, type Variants } from "framer-motion";
+import { Star } from "lucide-react";
 import { OVERSHOOT_EASE } from "../motion";
 
 export interface XPBadgeProps {
@@ -43,7 +44,7 @@ export function XPBadge({ xp, className = "" }: XPBadgeProps) {
         className,
       ].join(" ")}
     >
-      <span aria-hidden="true">⭐</span>
+      <Star aria-hidden="true" size={14} fill="currentColor" strokeWidth={0} />
       {xp} XP
     </motion.span>
   );

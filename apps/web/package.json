@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@cappy/api": "workspace:*",
     "@cappy/core": "workspace:*",
+    "@cappy/shared": "workspace:*",
     "@cappy/types": "workspace:*",
     "@cappy/ui": "workspace:*",
     "@mediapipe/tasks-vision": "^0.10.17",

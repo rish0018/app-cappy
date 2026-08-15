@@ -5,7 +5,7 @@ import { Dock, DockIcon, DockItem, DockLabel } from "./Dock";
 
 const DOCK_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: Home },
-  { to: "/lessons", label: "Lessons", icon: BookOpen },
+  { to: "/lessons", label: "ASL", icon: BookOpen },
   { to: "/morse", label: "Morse", icon: Radio },
   { to: "/achievements", label: "Achievements", icon: Award },
   { to: "/profile", label: "Profile", icon: User },

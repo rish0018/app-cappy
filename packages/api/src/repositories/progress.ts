@@ -6,7 +6,17 @@
  * code. Every table here is RLS-protected (`auth.uid() = user_id`)   see
  * supabase/migrations/20260716120001_rls_policies.sql.
  */
-import type { Letter, LessonProgress, LessonStatus, LetterMastery, Streak, UserProgress } from "@cappy/types";
+import type {
+  Letter,
+  LessonProgress,
+  LessonStatus,
+  LetterMastery,
+  MorseCharacter,
+  MorseCharacterMastery,
+  SignWordMastery,
+  Streak,
+  UserProgress,
+} from "@cappy/types";
 import { createSupabaseClient } from "../client";
 
 interface UserProgressRow {
@@ -38,11 +48,22 @@ interface LetterMasteryRow {
   practice_count: number;
 }
 
+interface MorseCharacterMasteryRow {
+  user_id: string;
+  character: MorseCharacter;
+  mastery_score: number;
+  last_practiced: string | null;
+  send_accuracy: number;
+  receive_accuracy: number;
+  practice_count: number;
+}
+
 interface StreakRow {
   user_id: string;
   current_streak: number;
   longest_streak: number;
   last_active_date: string | null;
+  late_night_practice_count: number;
 }
 
 function mapUserProgress(row: UserProgressRow): UserProgress {
@@ -80,12 +101,25 @@ function mapLetterMastery(row: LetterMasteryRow): LetterMastery {
   };
 }
 
+function mapMorseCharacterMastery(row: MorseCharacterMasteryRow): MorseCharacterMastery {
+  return {
+    userId: row.user_id,
+    character: row.character,
+    masteryScore: row.mastery_score,
+    lastPracticed: row.last_practiced,
+    sendAccuracy: row.send_accuracy,
+    receiveAccuracy: row.receive_accuracy,
+    practiceCount: row.practice_count,
+  };
+}
+
 function mapStreak(row: StreakRow): Streak {
   return {
     userId: row.user_id,
     currentStreak: row.current_streak,
     longestStreak: row.longest_streak,
     lastActiveDate: row.last_active_date,
+    lateNightPracticeCount: row.late_night_practice_count,
   };
 }
 
@@ -171,6 +205,98 @@ export async function upsertLetterMastery(mastery: LetterMastery): Promise<Lette
   return mapLetterMastery(data as LetterMasteryRow);
 }
 
+export async function getMorseCharacterMastery(userId: string): Promise<MorseCharacterMastery[]> {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from("morse_character_mastery")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  return (data as MorseCharacterMasteryRow[]).map(mapMorseCharacterMastery);
+}
+
+export async function upsertMorseCharacterMastery(
+  mastery: MorseCharacterMastery,
+): Promise<MorseCharacterMastery> {
+  const supabase = createSupabaseClient();
+  const row: MorseCharacterMasteryRow = {
+    user_id: mastery.userId,
+    character: mastery.character,
+    mastery_score: mastery.masteryScore,
+    last_practiced: mastery.lastPracticed,
+    send_accuracy: mastery.sendAccuracy,
+    receive_accuracy: mastery.receiveAccuracy,
+    practice_count: mastery.practiceCount,
+  };
+
+  const { data, error } = await supabase
+    .from("morse_character_mastery")
+    .upsert(row, { onConflict: "user_id,character" })
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  return mapMorseCharacterMastery(data as MorseCharacterMasteryRow);
+}
+
+// ─── Sign word mastery ────────────────────────────────────────────────────────
+
+interface SignWordMasteryRow {
+  user_id: string;
+  sign_word: string;
+  mastery_score: number;
+  last_practiced: string | null;
+  accuracy: number;
+  avg_confidence: number;
+  practice_count: number;
+}
+
+function mapSignWordMastery(row: SignWordMasteryRow): SignWordMastery {
+  return {
+    userId:        row.user_id,
+    signWord:      row.sign_word,
+    masteryScore:  row.mastery_score,
+    lastPracticed: row.last_practiced,
+    accuracy:      row.accuracy,
+    avgConfidence: row.avg_confidence,
+    practiceCount: row.practice_count,
+  };
+}
+
+export async function getSignWordMastery(userId: string): Promise<SignWordMastery[]> {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from("sign_word_mastery")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  return (data as SignWordMasteryRow[]).map(mapSignWordMastery);
+}
+
+export async function upsertSignWordMastery(mastery: SignWordMastery): Promise<SignWordMastery> {
+  const supabase = createSupabaseClient();
+  const row: SignWordMasteryRow = {
+    user_id:        mastery.userId,
+    sign_word:      mastery.signWord,
+    mastery_score:  mastery.masteryScore,
+    last_practiced: mastery.lastPracticed,
+    accuracy:       mastery.accuracy,
+    avg_confidence: mastery.avgConfidence,
+    practice_count: mastery.practiceCount,
+  };
+
+  const { data, error } = await supabase
+    .from("sign_word_mastery")
+    .upsert(row, { onConflict: "user_id,sign_word" })
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  return mapSignWordMastery(data as SignWordMasteryRow);
+}
+
 export async function getStreak(userId: string): Promise<Streak | null> {
   const supabase = createSupabaseClient();
   const { data, error } = await supabase
@@ -190,6 +316,7 @@ export async function upsertStreak(streak: Streak): Promise<Streak> {
     current_streak: streak.currentStreak,
     longest_streak: streak.longestStreak,
     last_active_date: streak.lastActiveDate,
+    late_night_practice_count: streak.lateNightPracticeCount,
   };
 
   const { data, error } = await supabase
